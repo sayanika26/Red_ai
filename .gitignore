@@ -1,0 +1,32 @@
+# Local configuration and credentials
+.env
+app/.env
+secrets/
+*.pem
+*.key
+*.p12
+
+# Large models, caches, and runtime state
+runtime/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.log
+*.tmp
+.DS_Store
+
+# Generated audio and private recordings
+app/output/
+output/
+reference/
+voice_auditions/
+*.wav
+*.mp3
+*.m4a
+*.flac
+
+# Dataset audio and generated datasets (metadata templates remain tracked)
+dataset/raw/
+dataset/processed/
+dataset/synthetic_google_leda/

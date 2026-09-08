@@ -1,0 +1,11 @@
+{
+  "gemma3:12b": {
+    "provider": "ollama",
+    "multilingual": true,
+    "bengali": true,
+    "hindi": true,
+    "english": true,
+    "code_switching": true,
+    "notes": "Default Prithi local conversational model"
+  }
+}

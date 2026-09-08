@@ -1,0 +1,11 @@
+httpx==0.28.1
+google-cloud-texttospeech==2.37.0
+faster-whisper==1.2.1
+ctranslate2==4.8.2
+nvidia-cublas-cu12==12.9.2.10; platform_system == "Linux" and platform_machine == "x86_64"
+numpy==1.26.4
+scipy==1.15.3
+soundfile==0.14.0
+torch==2.11.0
+transformers==4.49.0
+f5-tts @ git+https://github.com/AI4Bharat/IndicF5.git@13f7c4d627cc10111aea8fe9c0039462cacacdc7
