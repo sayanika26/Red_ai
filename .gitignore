@@ -8,12 +8,18 @@ secrets/
 
 # Large models, caches, and runtime state
 runtime/
+*.db
+*.sqlite
+*.sqlite3
+.cache/
+.huggingface/
 __pycache__/
 **/__pycache__/
 *.pyc
 *.pyo
 *.log
 *.tmp
+backups/
 .DS_Store
 
 # Generated audio and private recordings
@@ -30,3 +36,9 @@ voice_auditions/
 dataset/raw/
 dataset/processed/
 dataset/synthetic_google_leda/
+
+# Fine-tuning artifacts (keep safe configs, scripts, and reviewed JSONL trackable)
+training/checkpoints/
+training/**/checkpoints/
+training/**/outputs/
+training/**/cache/

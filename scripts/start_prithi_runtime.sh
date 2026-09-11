@@ -7,6 +7,7 @@ BIN_DIR="${RUNTIME_DIR}/bin"; MODEL_DIR="${RUNTIME_DIR}/models"; LOG_DIR="${RUNT
 LIB_DIR="${RUNTIME_DIR}/lib/ollama"; OLLAMA_BIN="${BIN_DIR}/ollama"; PID_FILE="${RUNTIME_DIR}/ollama.pid"
 if [[ -f "${PROJECT_ROOT}/app/.env" ]]; then set -a; source "${PROJECT_ROOT}/app/.env"; set +a; fi
 export OLLAMA_MODELS="${MODEL_DIR}" OLLAMA_HOST="127.0.0.1:11434"
+export OLLAMA_KEEP_ALIVE="${PRITHI_OLLAMA_KEEP_ALIVE:-10m}"
 export PRITHI_LLM_BASE_URL="${PRITHI_LLM_BASE_URL:-http://127.0.0.1:11434/v1}"
 export PRITHI_LLM_API_KEY="${PRITHI_LLM_API_KEY:-ollama}" PRITHI_LLM_MODEL="${PRITHI_LLM_MODEL:-gemma3:12b}"
 export GOOGLE_APPLICATION_CREDENTIALS="${GOOGLE_APPLICATION_CREDENTIALS:-${PROJECT_ROOT}/secrets/google-tts.json}"

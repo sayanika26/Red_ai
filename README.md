@@ -1,117 +1,106 @@
 # Prithi Voice AI
 
-## 1. What this project is
+Prithi v1 is a Bengali-first, Hindi/English-capable browser voice companion. Browser audio is transcribed locally with faster-whisper on NVIDIA GPU, structured conversational replies come from a local OpenAI-compatible Ollama model, and Google Chirp/Gemini TTS returns spoken audio. SQLite stores only compact, per-browser-user profile, relationship, and approved stable-memory state.
 
-Prithi is a multilingual Bengali/Hindi/English conversational voice prototype. A configurable OpenAI-compatible LLM produces structured replies and emotional delivery metadata; Google TTS produces speech; faster-whisper provides local file transcription.
+## Prithi v1 — Quick Start
 
-## 2. Architecture
-
-`User text → Prithi Brain → OpenAI-compatible LLM → validated reply/emotion/style → Prithi TTS → WAV`
-
-STT is currently a separate reusable file-transcription module and is not connected to live chat or a microphone.
-
-## 3. Requirements
-
-Use Linux, Python 3.10+, FFmpeg, persistent disk, and preferably an NVIDIA GPU. The tested GPU is NVIDIA L4. See `docs/SYSTEM_REQUIREMENTS.md`.
-
-## 4. Fresh installation
+### Fresh Lightning Studio
 
 ```bash
-git clone <repo>
+git clone https://github.com/sayanika26/Red_ai.git prithi-voice
 cd prithi-voice
 ./setup.sh
 ./scripts/bootstrap_models.sh
-./scripts/start_prithi_runtime.sh
-./scripts/verify_environment.sh
 ```
 
-Large models are not downloaded by `setup.sh`. Model downloads are isolated in `bootstrap_models.sh`.
-
-## 5. Restore on a new Lightning Studio
-
-Clone into `~/prithi-voice`, run the commands above, then restore private credentials separately. To enable user-level automatic runtime startup:
-
-```bash
-mkdir -p ~/.lightning_studio
-cp scripts/lightning_on_start_example.sh ~/.lightning_studio/on_start.sh
-chmod +x ~/.lightning_studio/on_start.sh
-```
-
-Review an existing `on_start.sh` before replacing it; append the command instead if it already has custom actions.
-
-## 6. Setup Google TTS credentials
-
-Place the private JSON at `secrets/google-tts.json`, set permission `600`, and export its path:
+Place the Google service-account file at `secrets/google-tts.json`, restrict it, and review the private configuration:
 
 ```bash
 chmod 600 secrets/google-tts.json
-export GOOGLE_APPLICATION_CREDENTIALS="$PWD/secrets/google-tts.json"
+nano app/.env
+./scripts/start_prithi_all.sh
 ```
 
-Copy `app/.env.example` to `app/.env` and adjust only local/provider values. Both secrets and `.env` are ignored by Git.
+The setup script creates `app/.env` with a random web access token when it is missing. It never creates or copies Google credentials. Use Lightning's port viewer for the configured port (default `8000`); the start script deliberately does not invent a public URL.
 
-## 7. Start runtime
+### Existing installation
 
 ```bash
-./scripts/start_prithi_runtime.sh
+cd ~/prithi-voice
+./scripts/start_prithi_all.sh
 ```
 
-## 8. Check runtime status
+## Runtime commands
 
 ```bash
+# Full safe status (add PRITHI_STATUS_RUN_TESTS=true to run tests)
 ./scripts/status_prithi_runtime.sh
+
+# Stop only Prithi-managed web and Ollama processes
+./scripts/stop_prithi_all.sh
+
+# Start components separately when debugging
+./scripts/start_prithi_runtime.sh
+./scripts/start_prithi_web.sh
 ```
 
-Stop only the project-managed Ollama process with `./scripts/stop_prithi_runtime.sh`.
+## Backup and restore memory
 
-## 9. Launch Prithi text chat
+Backups default to the private directory `~/prithi-backups` and deliberately exclude credentials, `app/.env`, recordings, generated audio, and public model weights.
 
 ```bash
-source ~/.virtualenvs/prithi-voice/bin/activate
-export GOOGLE_APPLICATION_CREDENTIALS="$PWD/secrets/google-tts.json"
-python app/prithi_chat.py
+./scripts/backup_prithi.sh
+./scripts/restore_prithi.sh ~/prithi-backups/PRITHI_BACKUP_DIRECTORY
+./scripts/start_prithi_all.sh
 ```
 
-Commands: `/debug`, `/reset`, `/quit`, `/exit`.
+The restore script validates SQLite integrity, preserves the previous database as `prithi_memory.db.pre-restore`, restores mode `0600`, and requires a web restart before restored relationship state is loaded.
 
-## 10. Run tests
+## Architecture
 
-```bash
-python app/test_prithi_brain.py
-python app/test_llm_provider.py
-python app/test_prithi_stt.py
-```
+`Browser microphone → PCM conversion → forced-language faster-whisper → Prithi Brain → Ollama gemma3:12b → validated language/emotion/style → Google TTS → browser playback`
 
-## 11. Switch Ollama model
+The browser keeps only an opaque random identity. SQLite stores its SHA-256 digest, not the raw identifier. Eight-turn conversational history stays in RAM; only compact stable facts, profile preferences, and relationship metrics persist.
+
+## Models and providers
+
+- LLM: `gemma3:12b` through local Ollama's OpenAI-compatible endpoint.
+- Bengali STT: persistent `large-v3`; other/backup STT: `large-v3-turbo`.
+- Neutral TTS: Google Chirp 3 HD Leda (`bn-IN`, `hi-IN`, `en-IN`).
+- Expressive TTS: Google Gemini TTS Leda where supported.
+
+## Change the Ollama model
 
 ```bash
 OLLAMA_MODELS="$PWD/runtime/ollama/models" runtime/ollama/bin/ollama pull NEW_MODEL
 ```
 
-Then set `PRITHI_LLM_MODEL=NEW_MODEL` in `app/.env`. No application rewrite is needed.
+Then set `PRITHI_LLM_MODEL=NEW_MODEL` in the private `app/.env` and restart Prithi. The configured model must support the existing strict JSON output contract.
 
-## 12. Where large models are stored
+## Persistent paths
 
-- Ollama: `runtime/ollama/models/`
-- Whisper: `runtime/whisper/models/`
+- Ollama models/runtime: `runtime/ollama/`
+- Whisper models: `runtime/whisper/models/`
+- SQLite memory: `runtime/prithi_memory/prithi_memory.db`
+- Short-lived browser response audio: `runtime/web/audio/`
+- Private Google credential: `secrets/google-tts.json`
+- Private environment configuration: `app/.env`
 
-These paths are persistent locally and ignored by Git.
+Everything under `runtime/`, all secrets/private configuration, model caches, generated audio, and private recordings are excluded from Git.
 
-## 13. What is not stored in Git
+## Validation and troubleshooting
 
-Credentials, `.env`, models/runtime state, private or generated audio, raw/processed/synthetic datasets, caches, logs, and temporary files are excluded. See `docs/BACKUP_MANIFEST.md`.
+```bash
+source ~/.virtualenvs/prithi-voice/bin/activate
+python -m unittest discover -s app -p 'test_*.py'
+./scripts/scan_secrets.sh
+./scripts/status_prithi_runtime.sh
+```
 
-## 14. Troubleshooting
+- Port `11434` refused: run `./scripts/start_prithi_runtime.sh`.
+- Web page unavailable: run `./scripts/start_prithi_all.sh`, then check the configured port in Lightning.
+- Missing models: run `./scripts/bootstrap_models.sh`.
+- TTS error: confirm `secrets/google-tts.json` exists with mode `0600`.
+- STT CUDA error: run `./scripts/verify_environment.sh` and confirm NVIDIA L4/CUDA availability.
 
-- Connection refused on port 11434: run `./scripts/start_prithi_runtime.sh`.
-- Missing model: run `./scripts/bootstrap_models.sh`.
-- TTS credential error: verify `GOOGLE_APPLICATION_CREDENTIALS` points to an existing JSON file.
-- CUDA STT error: run `./scripts/verify_environment.sh` and confirm the NVIDIA driver and CUDA libraries.
-- Browser on another computer cannot use the server's `127.0.0.1`; use an SSH tunnel rather than exposing Ollama publicly.
-
-## 15. Backup/restore checklist
-
-1. Push committed source and metadata to a private repository.
-2. Back up secrets, private datasets, trained checkpoints, and databases using encrypted storage.
-3. Optionally archive `runtime/` to avoid downloading public models again.
-4. On restore, clone, run setup/bootstrap, restore credentials, verify permissions, and run the environment verifier.
+Prithi v1 remains a prototype: Bengali STT can misrecognize words, expressive Gemini TTS is the largest latency component, Gemma 3 can be conservative in adult/flirty contexts, and the voice is not a fine-tuned custom Prithi foundation model.

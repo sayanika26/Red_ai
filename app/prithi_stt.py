@@ -1,5 +1,8 @@
 import argparse
 import ctypes
+import gc
+import os
+import threading
 import time
 from pathlib import Path
 from typing import Any
@@ -26,10 +29,41 @@ PROJECT_DIR = Path(__file__).resolve().parent.parent
 MODEL_PATH = PROJECT_DIR / "runtime" / "whisper" / "models" / MODEL_NAME
 SUPPORTED_LANGUAGES = {"auto": None, "bengali": "bn", "hindi": "hi", "english": "en"}
 SUPPORTED_FORMATS = {".wav", ".mp3", ".m4a", ".flac"}
+BENGALI_PROMPT = "এটি স্বাভাবিক ভারতীয় বাংলা কথোপকথন। কথার মধ্যে মাঝে মাঝে English words থাকতে পারে। বাংলা শব্দ বাংলা লিপিতে লিখুন এবং পরিচিত English words English-এ রাখতে পারেন।"
+
+
+def decoding_options(language: str) -> dict[str, Any]:
+    options = {"vad_filter": True, "vad_parameters": {"min_silence_duration_ms": 2000, "speech_pad_ms": 300}}
+    if language_code(language) == "bn":
+        if os.environ.get("PRITHI_STT_BENGALI_PROMPT", "false").lower() == "true":
+            options["initial_prompt"] = BENGALI_PROMPT
+        beam = int(os.environ.get("PRITHI_STT_BEAM_SIZE", "5"))
+        if beam not in (1, 2, 3, 4, 5):
+            raise ValueError("PRITHI_STT_BEAM_SIZE must be between 1 and 5")
+        options["beam_size"] = beam
+        options["vad_filter"] = os.environ.get("PRITHI_STT_BENGALI_VAD", "true").lower() == "true"
+    return options
 
 _MODEL: WhisperModel | None = None
 _COMPUTE_TYPE: str | None = None
 _MODEL_LOAD_TIME: float | None = None
+_MODEL_LOCK = threading.Lock()
+_TRANSCRIBE_SEMAPHORE = threading.BoundedSemaphore(2)
+_LARGE_MODEL = None
+_LARGE_LOCK = threading.Lock()
+
+
+def _get_large_model():
+    global _LARGE_MODEL
+    with _LARGE_LOCK:
+        if _LARGE_MODEL is not None:
+            return _LARGE_MODEL, "float16", 0.0
+        path = MODEL_PATH.parent / "large-v3"
+        if not (path / "model.bin").is_file():
+            raise RuntimeError("Configured Bengali large-v3 model is missing")
+        started = time.perf_counter()
+        _LARGE_MODEL = WhisperModel(str(path), device="cuda", compute_type="float16")
+        return _LARGE_MODEL, "float16", time.perf_counter() - started
 
 
 def language_code(language: str) -> str | None:
@@ -49,24 +83,40 @@ def ensure_model_downloaded() -> Path:
 def _get_model() -> tuple[WhisperModel, str, float]:
     global _MODEL, _COMPUTE_TYPE, _MODEL_LOAD_TIME
     if _MODEL is not None:
-        return _MODEL, _COMPUTE_TYPE or "unknown", _MODEL_LOAD_TIME or 0.0
-    model_path = ensure_model_downloaded()
-    failures = []
-    for compute_type in ("float16", "int8_float16"):
-        started = time.perf_counter()
-        try:
-            model = WhisperModel(str(model_path), device="cuda", compute_type=compute_type)
-            _MODEL = model
-            _COMPUTE_TYPE = compute_type
-            _MODEL_LOAD_TIME = time.perf_counter() - started
-            return model, compute_type, _MODEL_LOAD_TIME
-        except Exception as exc:
-            failures.append(f"{compute_type}: {type(exc).__name__}: {exc}")
-    raise RuntimeError("GPU Whisper initialization failed; CPU fallback was not used. " + " | ".join(failures))
+        return _MODEL, _COMPUTE_TYPE or "unknown", 0.0
+    with _MODEL_LOCK:
+        if _MODEL is not None:
+            return _MODEL, _COMPUTE_TYPE or "unknown", 0.0
+        model_path = ensure_model_downloaded()
+        failures = []
+        for compute_type in ("float16", "int8_float16"):
+            started = time.perf_counter()
+            try:
+                model = WhisperModel(str(model_path), device="cuda", compute_type=compute_type)
+                _MODEL = model
+                _COMPUTE_TYPE = compute_type
+                _MODEL_LOAD_TIME = time.perf_counter() - started
+                return model, compute_type, _MODEL_LOAD_TIME
+            except Exception as exc:
+                failures.append(f"{compute_type}: {type(exc).__name__}: {exc}")
+        raise RuntimeError("GPU Whisper initialization failed; CPU fallback was not used. " + " | ".join(failures))
+
+
+def unload_model() -> bool:
+    """Release the process-level Whisper reference; the next request reloads it."""
+    global _MODEL, _COMPUTE_TYPE, _MODEL_LOAD_TIME
+    with _MODEL_LOCK:
+        if _MODEL is None:
+            return False
+        _MODEL = None
+        _COMPUTE_TYPE = None
+        _MODEL_LOAD_TIME = None
+    gc.collect()
+    return True
 
 
 def validate_result(result: dict[str, Any]) -> None:
-    required = {"text", "detected_language", "language_probability", "duration", "transcription_time", "model", "device", "compute_type", "model_load_time"}
+    required = {"text", "detected_language", "language_probability", "duration", "transcription_time", "model", "device", "compute_type", "model_load_time", "model_reused"}
     missing = required - set(result)
     if missing:
         raise ValueError(f"STT result missing fields: {sorted(missing)}")
@@ -82,7 +132,7 @@ def validate_result(result: dict[str, Any]) -> None:
         raise ValueError("STT device must be cuda")
 
 
-def transcribe_audio(audio_path: str | Path, language: str = "auto") -> dict[str, Any]:
+def transcribe_audio(audio_path: str | Path, language: str = "auto", *, decoding: dict[str, Any] | None = None) -> dict[str, Any]:
     path = Path(audio_path).expanduser().resolve()
     requested_language = language_code(language)
     if not path.is_file():
@@ -92,29 +142,42 @@ def transcribe_audio(audio_path: str | Path, language: str = "auto") -> dict[str
     if path.stat().st_size == 0:
         raise ValueError(f"Audio file is empty: {path}")
 
-    model, compute_type, load_time = _get_model()
+    selected_model = os.environ.get("PRITHI_STT_BENGALI_PRIMARY", MODEL_NAME) if requested_language == "bn" else MODEL_NAME
+    if selected_model not in (MODEL_NAME, "large-v3"):
+        raise ValueError("Unsupported Bengali STT model")
+    model, compute_type, load_time = _get_large_model() if selected_model == "large-v3" else _get_model()
+    options = decoding_options(language) if decoding is None else dict(decoding)
+    if set(options) - {"vad_filter", "vad_parameters", "beam_size", "initial_prompt", "temperature", "best_of", "condition_on_previous_text"}:
+        raise ValueError("Unsupported decoding override")
     started = time.perf_counter()
     try:
-        segments, info = model.transcribe(
-            str(path),
-            language=requested_language,
-            task="transcribe",
-            vad_filter=True,
-            vad_parameters={"min_silence_duration_ms": 2000, "speech_pad_ms": 300},
-        )
-        text = " ".join(segment.text.strip() for segment in segments if segment.text.strip()).strip()
+        with _TRANSCRIBE_SEMAPHORE:
+            segments, info = model.transcribe(
+                str(path),
+                language=requested_language,
+                task="transcribe",
+                **options,
+            )
+            segments = list(segments)
+            text = " ".join(segment.text.strip() for segment in segments if segment.text.strip()).strip()
     except Exception as exc:
         raise RuntimeError(f"Could not decode/transcribe audio '{path}': {type(exc).__name__}: {exc}") from exc
     result = {
         "text": text,
+        "raw_transcript": text,
+        "normalized_transcript": text,
+        "segment_count": len(segments),
+        "segment_metrics": [{"avg_logprob": getattr(s, "avg_logprob", 0), "no_speech_prob": getattr(s, "no_speech_prob", 0), "compression_ratio": getattr(s, "compression_ratio", 0)} for s in segments],
+        "forced_language": requested_language,
         "detected_language": info.language,
         "language_probability": float(info.language_probability),
         "duration": float(info.duration),
         "transcription_time": time.perf_counter() - started,
-        "model": MODEL_NAME,
+        "model": selected_model,
         "device": "cuda",
         "compute_type": compute_type,
         "model_load_time": load_time,
+        "model_reused": load_time == 0.0,
     }
     validate_result(result)
     return result

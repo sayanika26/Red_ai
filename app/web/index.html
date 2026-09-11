@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#110c18">
+  <title>Prithi · AI Voice Companion</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-status="idle">
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#conversation-title" aria-label="Prithi home">
+        <span class="brand-mark" aria-hidden="true">P</span>
+        <span><strong>Prithi</strong><small>AI Voice Companion</small></span>
+      </a>
+      <div class="topbar-status">
+        <span id="version" class="version-chip">v—</span>
+        <span id="adult-mode-badge" class="mode-badge" data-mode="normal">Normal</span>
+        <div id="status" class="status" data-state="idle" role="status" aria-live="polite">
+          <span class="status-dot"></span><span class="status-label">Ready</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <aside class="companion-rail" aria-label="Prithi and voice controls">
+        <section class="profile-card glass-card">
+          <div class="portrait-wrap" aria-label="Stylized portrait of Prithi" role="img">
+            <div class="portrait-glow"></div>
+            <div class="portrait">
+              <div class="portrait-hair-back"></div><div class="portrait-neck"></div>
+              <div class="portrait-face">
+                <span class="portrait-brow left"></span><span class="portrait-brow right"></span>
+                <span class="portrait-eye left"></span><span class="portrait-eye right"></span>
+                <span class="portrait-nose"></span><span class="portrait-mouth"></span>
+              </div>
+              <div class="portrait-hair-front"></div><div class="portrait-shoulders"></div>
+              <span class="portrait-earring"></span>
+            </div>
+            <span class="presence-ring ring-one"></span><span class="presence-ring ring-two"></span>
+          </div>
+          <div class="profile-copy">
+            <p class="eyebrow">YOUR COMPANION</p><h1>Prithi</h1>
+            <p class="profile-line">Warm, thoughtful, and here to listen.</p>
+            <div class="profile-stats">
+              <span><small>Feeling</small><strong id="profile-emotion">Calm</strong></span>
+              <span><small>Presence</small><strong id="profile-presence">Ready</strong></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="voice-card glass-card">
+          <div class="section-heading compact">
+            <div><p class="eyebrow">VOICE</p><h2>Talk with Prithi</h2></div>
+            <div class="mini-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <label class="field-label" for="language">Conversation language</label>
+          <div class="select-wrap">
+            <select id="language">
+              <option value="bengali" selected>Bengali</option><option value="hindi">Hindi</option>
+              <option value="english">English</option><option value="auto">Auto detect</option>
+            </select>
+          </div>
+          <button id="talk" class="talk" type="button">
+            <span class="talk-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Zm-7 10a1 1 0 1 1 2 0 5 5 0 0 0 10 0 1 1 0 1 1 2 0 7 7 0 0 1-6 6.92V21h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.08A7 7 0 0 1 5 12Z"/></svg></span>
+            <span class="talk-copy"><strong>Start Talking</strong><small>Tap when you’re ready</small></span>
+            <span class="talk-pulse" aria-hidden="true"></span>
+          </button>
+          <div class="mic-feedback">
+            <div class="mic-feedback-copy"><span id="mic-level">Microphone idle</span><strong id="recording-time">0.0s</strong></div>
+            <div class="level-track" aria-hidden="true"><span id="mic-meter-fill"></span></div>
+          </div>
+          <div class="voice-actions" aria-label="Voice utilities">
+            <button id="stop-playback" class="icon-button" type="button" title="Stop recording or playback"><span aria-hidden="true">■</span> Stop</button>
+            <button id="play" class="icon-button hidden" type="button"><span aria-hidden="true">▶</span> Replay</button>
+            <button id="retry" class="icon-button hidden" type="button"><span aria-hidden="true">↻</span> Retry</button>
+          </div>
+        </section>
+
+        <section class="mode-panel glass-card" aria-labelledby="adult-mode-title">
+          <div class="mode-heading">
+            <div><p class="eyebrow">CONVERSATION MODE</p><h2 id="adult-mode-title">Boundaries & tone</h2></div>
+            <span class="privacy-dot" title="Session protected">●</span>
+          </div>
+          <p id="adult-mode-status" class="mode-status">Normal mode · Gemma</p>
+          <p class="mode-copy">Adult mode is optional, session-only, and never enabled from flirting or emotional conversation.</p>
+          <div id="adult-age-step" class="adult-step">
+            <label class="consent-check"><input id="adult-age-confirm" type="checkbox"><span>I confirm that I am 18 or older.</span></label>
+            <button id="adult-age-submit" class="soft-button" type="button">Confirm age</button>
+          </div>
+          <div id="adult-opt-in-step" class="adult-step hidden">
+            <p>Age confirmed. Adult mode can use stronger consensual romantic and sensual conversation.</p>
+            <button id="adult-enable" class="soft-button accent" type="button">Enable adult mode for this session</button>
+          </div>
+          <button id="adult-disable" class="soft-button danger hidden" type="button">Return to normal mode</button>
+        </section>
+
+        <nav class="utility-bar" aria-label="Conversation utilities">
+          <button id="memory-view" class="utility-button" type="button"><span aria-hidden="true">◇</span> Memories</button>
+          <button id="reset" class="utility-button" type="button"><span aria-hidden="true">↺</span> Clear chat</button>
+        </nav>
+      </aside>
+
+      <section class="conversation-panel glass-card" aria-labelledby="conversation-title">
+        <header class="conversation-header">
+          <div><p class="eyebrow">LIVE CONVERSATION</p><h2 id="conversation-title">A moment with Prithi</h2></div>
+          <div class="conversation-presence"><span></span> Private session</div>
+        </header>
+        <div id="conversation-feed" class="conversation-feed" aria-live="polite">
+          <section id="empty-state" class="empty-state">
+            <div class="empty-orb" aria-hidden="true"><span></span></div>
+            <p class="eyebrow">PRITHI IS READY</p><h3>Say what’s on your mind.</h3>
+            <p>Choose a language, tap <strong>Start Talking</strong>, and speak naturally. Your conversation will appear here.</p>
+            <div class="starter-prompts" aria-label="Conversation ideas"><span>How was your day?</span><span>I need to unwind</span><span>Let’s talk in Bengali</span></div>
+          </section>
+          <article id="current-turn" class="live-turn hidden">
+            <div class="bubble-row user-row">
+              <div class="bubble-avatar user-avatar" aria-hidden="true">Y</div>
+              <div class="bubble user-bubble"><div class="bubble-heading"><span>You</span><small>Transcript</small></div><p id="transcript" class="message muted">Listening for your voice…</p></div>
+            </div>
+            <div class="bubble-row prithi-row">
+              <div class="bubble-avatar prithi-avatar" aria-hidden="true">P</div>
+              <div class="bubble prithi-bubble">
+                <div class="bubble-heading"><span>Prithi</span><small id="reply-stage">Voice companion</small></div>
+                <p id="reply" class="message muted">Her reply will appear here.</p>
+                <div class="reply-meta"><span>Emotion <strong id="emotion">—</strong></span><span>Latency <strong id="latency">—</strong></span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <footer class="conversation-footer">
+          <div class="stage-track" aria-label="Voice turn progress">
+            <span data-stage="recording">Record</span><i></i><span data-stage="transcribing">Transcribe</span><i></i><span data-stage="thinking">Think</span><i></i><span data-stage="speaking">Speak</span>
+          </div>
+          <details class="advanced-panel">
+            <summary>Advanced details</summary>
+            <div class="advanced-content">
+              <p id="language-debug">Selected: Bengali · Whisper: bn · Forced: yes</p>
+              <p id="relationship-debug">Emotion: neutral · Relationship state starts fresh for this session.</p>
+              <section id="diagnostics" class="hidden" aria-live="polite">
+                <h3>Bengali STT diagnostics</h3><p>Five real recordings. Each is saved temporarily for comparison. No Prithi reply or TTS will run.</p>
+                <label><input id="diagnostic-consent" type="checkbox"> Save my next recording for this diagnostic test</label>
+                <p>Read the sentence, or edit it to match what you intend to say:</p>
+                <textarea id="diagnostic-reference" rows="3"></textarea><p id="diagnostic-progress">Sample 1 of 5</p><div id="diagnostic-results"></div>
+              </section>
+            </div>
+          </details>
+        </footer>
+        <p id="error" class="error hidden" role="alert"></p>
+      </section>
+    </div>
+  </main>
+
+  <div id="memory-panel" class="drawer-backdrop hidden" aria-hidden="true">
+    <aside class="memory-drawer" role="dialog" aria-modal="true" aria-labelledby="memory-title">
+      <header class="drawer-header"><div><p class="eyebrow">PRIVATE CONTEXT</p><h2 id="memory-title">Prithi’s memories</h2></div><button id="memory-close" class="close-button" type="button" aria-label="Close memories">×</button></header>
+      <p id="memory-status" class="memory-status">Persistent memory is enabled.</p><ul id="memory-list" class="memory-list"></ul>
+      <div class="drawer-actions"><button id="relationship-reset" class="soft-button" type="button">Reset relationship</button><button id="memory-delete" class="soft-button danger" type="button">Delete saved memories</button></div>
+    </aside>
+  </div>
+  <script src="app.js" defer></script>
+</body>
+</html>

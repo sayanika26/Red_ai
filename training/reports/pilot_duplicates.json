@@ -1,0 +1,399 @@
+{
+  "dataset": "training/data/raw/prithi_pilot_v1.jsonl",
+  "rows": 200,
+  "exact_prompt_groups": [],
+  "exact_reply_groups": [],
+  "near_duplicate_pairs": [
+    {
+      "left": "prithi_hindi_0043",
+      "right": "prithi_hindi_0119",
+      "sequence": 0.922,
+      "token_jaccard": 0.87
+    },
+    {
+      "left": "prithi_english_0044",
+      "right": "prithi_english_0120",
+      "sequence": 0.956,
+      "token_jaccard": 0.929
+    },
+    {
+      "left": "prithi_banglish_0058",
+      "right": "prithi_banglish_0126",
+      "sequence": 0.943,
+      "token_jaccard": 0.909
+    },
+    {
+      "left": "prithi_banglish_0058",
+      "right": "prithi_banglish_0148",
+      "sequence": 0.932,
+      "token_jaccard": 0.833
+    },
+    {
+      "left": "prithi_banglish_0062",
+      "right": "prithi_banglish_0124",
+      "sequence": 0.942,
+      "token_jaccard": 0.905
+    },
+    {
+      "left": "prithi_banglish_0074",
+      "right": "prithi_banglish_0128",
+      "sequence": 0.925,
+      "token_jaccard": 0.882
+    },
+    {
+      "left": "prithi_banglish_0074",
+      "right": "prithi_banglish_0150",
+      "sequence": 0.911,
+      "token_jaccard": 0.789
+    },
+    {
+      "left": "prithi_banglish_0078",
+      "right": "prithi_banglish_0132",
+      "sequence": 0.946,
+      "token_jaccard": 0.909
+    },
+    {
+      "left": "prithi_banglish_0078",
+      "right": "prithi_banglish_0152",
+      "sequence": 0.936,
+      "token_jaccard": 0.87
+    },
+    {
+      "left": "prithi_banglish_0082",
+      "right": "prithi_banglish_0130",
+      "sequence": 0.941,
+      "token_jaccard": 0.895
+    },
+    {
+      "left": "prithi_banglish_0086",
+      "right": "prithi_banglish_0134",
+      "sequence": 0.926,
+      "token_jaccard": 0.889
+    },
+    {
+      "left": "prithi_banglish_0086",
+      "right": "prithi_banglish_0154",
+      "sequence": 0.913,
+      "token_jaccard": 0.8
+    },
+    {
+      "left": "prithi_banglish_0090",
+      "right": "prithi_banglish_0136",
+      "sequence": 0.942,
+      "token_jaccard": 0.905
+    },
+    {
+      "left": "prithi_banglish_0090",
+      "right": "prithi_banglish_0156",
+      "sequence": 0.931,
+      "token_jaccard": 0.826
+    },
+    {
+      "left": "prithi_banglish_0098",
+      "right": "prithi_banglish_0138",
+      "sequence": 0.923,
+      "token_jaccard": 0.895
+    },
+    {
+      "left": "prithi_banglish_0098",
+      "right": "prithi_banglish_0158",
+      "sequence": 0.909,
+      "token_jaccard": 0.81
+    },
+    {
+      "left": "prithi_bengali_0101",
+      "right": "prithi_bengali_0139",
+      "sequence": 0.908,
+      "token_jaccard": 0.72
+    },
+    {
+      "left": "prithi_banglish_0102",
+      "right": "prithi_banglish_0140",
+      "sequence": 0.903,
+      "token_jaccard": 0.778
+    },
+    {
+      "left": "prithi_bengali_0109",
+      "right": "prithi_bengali_0141",
+      "sequence": 0.911,
+      "token_jaccard": 0.778
+    },
+    {
+      "left": "prithi_banglish_0110",
+      "right": "prithi_banglish_0142",
+      "sequence": 0.88,
+      "token_jaccard": 0.714
+    },
+    {
+      "left": "prithi_bengali_0113",
+      "right": "prithi_bengali_0143",
+      "sequence": 0.911,
+      "token_jaccard": 0.76
+    },
+    {
+      "left": "prithi_banglish_0114",
+      "right": "prithi_banglish_0144",
+      "sequence": 0.917,
+      "token_jaccard": 0.812
+    },
+    {
+      "left": "prithi_bengali_0121",
+      "right": "prithi_bengali_0145",
+      "sequence": 0.917,
+      "token_jaccard": 0.76
+    },
+    {
+      "left": "prithi_bengali_0121",
+      "right": "prithi_bengali_0182",
+      "sequence": 0.882,
+      "token_jaccard": 0.679
+    },
+    {
+      "left": "prithi_banglish_0122",
+      "right": "prithi_banglish_0146",
+      "sequence": 0.903,
+      "token_jaccard": 0.7
+    },
+    {
+      "left": "prithi_bengali_0125",
+      "right": "prithi_bengali_0147",
+      "sequence": 0.916,
+      "token_jaccard": 0.741
+    },
+    {
+      "left": "prithi_bengali_0125",
+      "right": "prithi_bengali_0183",
+      "sequence": 0.881,
+      "token_jaccard": 0.714
+    },
+    {
+      "left": "prithi_banglish_0126",
+      "right": "prithi_banglish_0148",
+      "sequence": 0.911,
+      "token_jaccard": 0.769
+    },
+    {
+      "left": "prithi_bengali_0127",
+      "right": "prithi_bengali_0149",
+      "sequence": 0.915,
+      "token_jaccard": 0.76
+    },
+    {
+      "left": "prithi_bengali_0127",
+      "right": "prithi_bengali_0185",
+      "sequence": 0.881,
+      "token_jaccard": 0.704
+    },
+    {
+      "left": "prithi_banglish_0128",
+      "right": "prithi_banglish_0150",
+      "sequence": 0.885,
+      "token_jaccard": 0.714
+    },
+    {
+      "left": "prithi_bengali_0131",
+      "right": "prithi_bengali_0151",
+      "sequence": 0.903,
+      "token_jaccard": 0.727
+    },
+    {
+      "left": "prithi_banglish_0132",
+      "right": "prithi_banglish_0152",
+      "sequence": 0.915,
+      "token_jaccard": 0.8
+    },
+    {
+      "left": "prithi_bengali_0133",
+      "right": "prithi_bengali_0153",
+      "sequence": 0.905,
+      "token_jaccard": 0.682
+    },
+    {
+      "left": "prithi_banglish_0134",
+      "right": "prithi_banglish_0154",
+      "sequence": 0.887,
+      "token_jaccard": 0.727
+    },
+    {
+      "left": "prithi_bengali_0135",
+      "right": "prithi_bengali_0155",
+      "sequence": 0.911,
+      "token_jaccard": 0.682
+    },
+    {
+      "left": "prithi_banglish_0136",
+      "right": "prithi_banglish_0156",
+      "sequence": 0.909,
+      "token_jaccard": 0.76
+    },
+    {
+      "left": "prithi_bengali_0137",
+      "right": "prithi_bengali_0157",
+      "sequence": 0.899,
+      "token_jaccard": 0.72
+    },
+    {
+      "left": "prithi_banglish_0138",
+      "right": "prithi_banglish_0158",
+      "sequence": 0.883,
+      "token_jaccard": 0.739
+    },
+    {
+      "left": "prithi_bengali_0141",
+      "right": "prithi_bengali_0179",
+      "sequence": 0.883,
+      "token_jaccard": 0.724
+    },
+    {
+      "left": "prithi_bengali_0143",
+      "right": "prithi_bengali_0180",
+      "sequence": 0.883,
+      "token_jaccard": 0.655
+    },
+    {
+      "left": "prithi_bengali_0145",
+      "right": "prithi_bengali_0182",
+      "sequence": 0.89,
+      "token_jaccard": 0.679
+    },
+    {
+      "left": "prithi_bengali_0145",
+      "right": "prithi_bengali_0197",
+      "sequence": 0.883,
+      "token_jaccard": 0.704
+    },
+    {
+      "left": "prithi_bengali_0147",
+      "right": "prithi_bengali_0183",
+      "sequence": 0.889,
+      "token_jaccard": 0.69
+    },
+    {
+      "left": "prithi_bengali_0147",
+      "right": "prithi_bengali_0198",
+      "sequence": 0.882,
+      "token_jaccard": 0.667
+    },
+    {
+      "left": "prithi_bengali_0149",
+      "right": "prithi_bengali_0185",
+      "sequence": 0.888,
+      "token_jaccard": 0.704
+    },
+    {
+      "left": "prithi_bengali_0149",
+      "right": "prithi_bengali_0200",
+      "sequence": 0.881,
+      "token_jaccard": 0.76
+    },
+    {
+      "left": "prithi_bengali_0155",
+      "right": "prithi_bengali_0189",
+      "sequence": 0.882,
+      "token_jaccard": 0.682
+    },
+    {
+      "left": "prithi_bengali_0159",
+      "right": "prithi_bengali_0177",
+      "sequence": 0.883,
+      "token_jaccard": 0.704
+    },
+    {
+      "left": "prithi_bengali_0161",
+      "right": "prithi_bengali_0179",
+      "sequence": 0.887,
+      "token_jaccard": 0.759
+    },
+    {
+      "left": "prithi_bengali_0163",
+      "right": "prithi_bengali_0180",
+      "sequence": 0.887,
+      "token_jaccard": 0.69
+    },
+    {
+      "left": "prithi_bengali_0164",
+      "right": "prithi_bengali_0181",
+      "sequence": 0.934,
+      "token_jaccard": 0.875
+    },
+    {
+      "left": "prithi_bengali_0164",
+      "right": "prithi_bengali_0196",
+      "sequence": 0.934,
+      "token_jaccard": 0.875
+    },
+    {
+      "left": "prithi_bengali_0165",
+      "right": "prithi_bengali_0182",
+      "sequence": 0.894,
+      "token_jaccard": 0.714
+    },
+    {
+      "left": "prithi_bengali_0167",
+      "right": "prithi_bengali_0183",
+      "sequence": 0.893,
+      "token_jaccard": 0.724
+    },
+    {
+      "left": "prithi_bengali_0168",
+      "right": "prithi_bengali_0184",
+      "sequence": 0.939,
+      "token_jaccard": 0.857
+    },
+    {
+      "left": "prithi_bengali_0168",
+      "right": "prithi_bengali_0199",
+      "sequence": 0.939,
+      "token_jaccard": 0.818
+    },
+    {
+      "left": "prithi_bengali_0169",
+      "right": "prithi_bengali_0185",
+      "sequence": 0.892,
+      "token_jaccard": 0.714
+    },
+    {
+      "left": "prithi_bengali_0172",
+      "right": "prithi_bengali_0187",
+      "sequence": 0.916,
+      "token_jaccard": 0.72
+    },
+    {
+      "left": "prithi_bengali_0173",
+      "right": "prithi_bengali_0188",
+      "sequence": 0.88,
+      "token_jaccard": 0.667
+    },
+    {
+      "left": "prithi_bengali_0174",
+      "right": "prithi_bengali_0189",
+      "sequence": 0.886,
+      "token_jaccard": 0.727
+    },
+    {
+      "left": "prithi_bengali_0175",
+      "right": "prithi_bengali_0190",
+      "sequence": 0.918,
+      "token_jaccard": 0.759
+    },
+    {
+      "left": "prithi_bengali_0178",
+      "right": "prithi_bengali_0193",
+      "sequence": 0.909,
+      "token_jaccard": 0.739
+    },
+    {
+      "left": "prithi_bengali_0181",
+      "right": "prithi_bengali_0196",
+      "sequence": 0.92,
+      "token_jaccard": 0.778
+    },
+    {
+      "left": "prithi_bengali_0184",
+      "right": "prithi_bengali_0199",
+      "sequence": 0.925,
+      "token_jaccard": 0.72
+    }
+  ],
+  "action": "Review only; no rows were deleted or modified."
+}

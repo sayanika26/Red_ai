@@ -14,9 +14,11 @@ class MockBackend:
     def __init__(self, response: dict) -> None:
         self.response = response
         self.calls = 0
+        self.last_messages = []
 
     def complete(self, messages: list[dict[str, str]]) -> str:
         self.calls += 1
+        self.last_messages = messages
         return json.dumps(self.response, ensure_ascii=False)
 
 
@@ -72,12 +74,33 @@ class PrithiBrainTests(unittest.TestCase):
             parse_brain_reply(json.dumps(invalid))
 
     def test_history_keeps_eight_complete_exchanges(self):
-        brain = PrithiBrain(MockBackend(result("Okay.", "english", "neutral")), history_turns=8)
+        class UniqueBackend:
+            calls = 0
+            def complete(self, messages):
+                self.calls += 1
+                return json.dumps(result(f"Okay {self.calls}.", "english", "neutral"))
+        brain = PrithiBrain(UniqueBackend(), history_turns=8)
         for number in range(10):
             brain.respond(f"message {number}")
         self.assertEqual(len(brain.history), 16)
         self.assertEqual(brain.history[0]["content"], "message 2")
 
+    def test_memory_context_is_scoped_and_missing_memory_is_not_invented(self):
+        backend = MockBackend(result("আজ tea ছেড়ে coffee?", "bengali", "playful"))
+        brain = PrithiBrain(backend)
+        memory = "Relevant remembered facts:\n- [preference] Prefers tea over coffee."
+        brain.respond("আজ coffee খাবো।", memory_context=memory, preferred_reply_language="bengali")
+        self.assertIn(memory, [message["content"] for message in backend.last_messages])
+        self.assertIn("never pretend to remember", str(backend.last_messages).casefold())
+
+    def test_clear_conversation_preserves_relationship(self):
+        backend = MockBackend(result("একটু বিশ্রাম নাও।", "bengali", "caring"))
+        brain = PrithiBrain(backend)
+        brain.respond("আজ খুব ক্লান্ত।", preferred_reply_language="bengali")
+        familiarity = brain.relationship_state.familiarity
+        brain.clear_conversation_history()
+        self.assertEqual(brain.history_turn_count, 0)
+        self.assertEqual(brain.relationship_state.familiarity, familiarity)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

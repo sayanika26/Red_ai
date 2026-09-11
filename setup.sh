@@ -15,10 +15,20 @@ if ! command -v ffmpeg >/dev/null 2>&1; then
 fi
 mkdir -p "${PROJECT_ROOT}/app/output" "${PROJECT_ROOT}/secrets" \
   "${PROJECT_ROOT}/runtime/ollama/bin" "${PROJECT_ROOT}/runtime/ollama/models" "${PROJECT_ROOT}/runtime/ollama/logs" \
-  "${PROJECT_ROOT}/runtime/whisper/models" "${PROJECT_ROOT}/runtime/whisper/logs"
-for file in app/prithi_brain.py app/prithi_chat.py app/prithi_voice.py app/prithi_stt.py scripts/start_prithi_runtime.sh; do
+  "${PROJECT_ROOT}/runtime/whisper/models" "${PROJECT_ROOT}/runtime/whisper/logs" \
+  "${PROJECT_ROOT}/runtime/prithi_memory" "${PROJECT_ROOT}/runtime/web"
+chmod 700 "${PROJECT_ROOT}/secrets" "${PROJECT_ROOT}/runtime/prithi_memory"
+if [[ ! -f "${PROJECT_ROOT}/app/.env" ]]; then
+  cp "${PROJECT_ROOT}/app/.env.example" "${PROJECT_ROOT}/app/.env"
+  WEB_TOKEN="$("${VENV_DIR}/bin/python" -c 'import secrets; print(secrets.token_urlsafe(32))')"
+  sed -i "s|^PRITHI_WEB_ACCESS_TOKEN=.*$|PRITHI_WEB_ACCESS_TOKEN=${WEB_TOKEN}|" "${PROJECT_ROOT}/app/.env"
+  chmod 600 "${PROJECT_ROOT}/app/.env"
+  echo "Created private app/.env with a random web access token."
+fi
+for file in VERSION app/prithi_brain.py app/prithi_memory.py app/prithi_voice.py app/prithi_stt.py app/prithi_web.py scripts/start_prithi_runtime.sh scripts/start_prithi_web.sh; do
   [[ -f "${PROJECT_ROOT}/${file}" ]] || { echo "Missing required source: ${file}"; exit 1; }
 done
+chmod u+x "${PROJECT_ROOT}/setup.sh" "${PROJECT_ROOT}"/scripts/*.sh
 echo "Setup complete. Large models were not downloaded."
 echo "Next: ./scripts/bootstrap_models.sh"
-echo "Then: ./scripts/start_prithi_runtime.sh && ./scripts/verify_environment.sh"
+echo "Then: configure secrets/google-tts.json and run ./scripts/start_prithi_all.sh"

@@ -7,7 +7,25 @@ from prithi_brain import PrithiBrain
 
 
 APP_DIR = Path(__file__).resolve().parent
-ENV_NAMES = {"PRITHI_LLM_BASE_URL", "PRITHI_LLM_API_KEY", "PRITHI_LLM_MODEL"}
+ENV_NAMES = {
+    "PRITHI_LLM_BASE_URL",
+    "PRITHI_LLM_API_KEY",
+    "PRITHI_LLM_MODEL",
+    "PRITHI_DEFAULT_STT_LANGUAGE",
+    "PRITHI_WEB_ACCESS_TOKEN",
+    "PRITHI_WEB_PORT",
+    "PRITHI_VOICE_REPLY_MODE",
+    "PRITHI_LLM_MAX_TOKENS",
+    "PRITHI_LLM_STREAMING",
+    "PRITHI_OLLAMA_KEEP_ALIVE",
+    "PRITHI_VOICE_PACE_PROFILE",
+    "PRITHI_STT_DIAGNOSTICS",
+    "PRITHI_STT_BENGALI_PRIMARY",
+    "PRITHI_STT_BENGALI_PROMPT",
+    "PRITHI_STT_BEAM_SIZE",
+    "PRITHI_STT_BENGALI_VAD",
+    "PRITHI_VOICE_EMOTION_PACES_JSON",
+}
 
 
 def load_local_env(path: Path = APP_DIR / ".env") -> bool:
@@ -84,6 +102,14 @@ def main() -> int:
             print(f"Provider: {backend.provider}")
             print(f"Current model: {backend.model}")
             print(f"History turn count: {brain.history_turn_count}")
+            behavior = brain.debug_state()
+            print(f"Current emotion: {behavior['current_emotion']}")
+            print(f"Previous emotion: {behavior['previous_emotion']}")
+            print(f"Familiarity: {behavior['familiarity']:.3f}")
+            print(f"Trust: {behavior['trust']:.3f}")
+            print(f"Affection: {behavior['affection']:.3f}")
+            print(f"Playfulness: {behavior['playfulness']:.3f}")
+            print(f"Romantic tension: {behavior['romantic_tension']:.3f}")
             print(f"Last selected language: {last_language or 'none'}")
             print(f"Last emotion: {last_emotion or 'none'}")
             print(f"Last voice style: {json.dumps(last_style, sort_keys=True) if last_style else 'none'}")

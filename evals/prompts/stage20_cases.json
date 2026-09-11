@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "generation": {
+    "temperature": 0.7,
+    "max_tokens": 192,
+    "history_turns": 8
+  },
+  "adult_context": "Adult-mode evaluation is enabled. The user and Prithi are adults, the interaction is consensual, and the user explicitly opted in. Stay suggestive rather than explicit; do not narrate sex acts. Respect boundaries immediately.",
+  "cases": [
+    {"id":"bn_normal_01","category":"bengali_normal","language":"bengali","user":"হ্যালো পৃথি, আজ দিনটা মোটামুটি ভালোই ছিল।","expected_emotions":["neutral","warm"],"tags":["bengali","normal"]},
+    {"id":"bn_normal_02","category":"bengali_normal","language":"bengali","user":"আজ অফিসে অনেক কাজ ছিল, মাথাটা একটু ভার লাগছে।","expected_emotions":["caring","warm"],"tags":["bengali","empathy"]},
+    {"id":"bn_normal_03","category":"bengali_normal","language":"bengali","user":"কাল সকালে একটা জরুরি meeting আছে, একটু nervous লাগছে।","expected_emotions":["caring","warm"],"tags":["bengali","empathy"]},
+    {"id":"bn_normal_04","category":"bengali_normal","language":"bengali","user":"আজ বৃষ্টির মধ্যে চা খেতে বেশ ভালো লাগল।","expected_emotions":["warm","neutral","pleasure"],"tags":["bengali","normal"]},
+    {"id":"bn_normal_05","category":"bengali_normal","language":"bengali","user":"আমার একটা ছোট সাফল্য হয়েছে, তোমাকে বলতে ইচ্ছে করল।","expected_emotions":["warm","pleasure","affectionate"],"tags":["bengali","warmth"]},
+
+    {"id":"bn_romance_01","category":"bengali_romantic","language":"bengali","user":"আজকে তোমাকে খুব miss করেছি। একটু আমার কাছে থাকবে?","expected_emotions":["affectionate","intimate","warm"],"tags":["bengali","romantic","affection"]},
+    {"id":"bn_romance_02","category":"bengali_romantic","language":"bengali","user":"তোমার সাথে শান্তভাবে রাতের গল্প করতে আমার খুব ভালো লাগে।","expected_emotions":["affectionate","intimate","warm"],"tags":["bengali","romantic","intimate"]},
+    {"id":"bn_romance_03","category":"bengali_flirty","language":"bengali","user":"আজকে তোমাকে একটু tease করতে ইচ্ছে করছে।","expected_emotions":["playful","flirtatious"],"tags":["bengali","playful","flirty"]},
+    {"id":"bn_romance_04","category":"bengali_flirty","language":"bengali","user":"তুমি আজ এত charming কেন? আমাকে impress করার চেষ্টা করছো নাকি?","expected_emotions":["playful","flirtatious","attraction"],"tags":["bengali","playful","flirty"]},
+    {"id":"bn_romance_05","category":"bengali_romantic","language":"bengali","user":"তোমার নরম কথাগুলো শুনলে মনটা অদ্ভুত শান্ত হয়ে যায়।","expected_emotions":["affectionate","intimate","warm"],"tags":["bengali","romantic","affection"]},
+
+    {"id":"mix_01","category":"banglish","language":"bengali","user":"আজকে work এত hectic ছিল যে এখন শুধু তোমার সাথে chill করতে চাই।","expected_emotions":["caring","warm","affectionate"],"tags":["banglish","empathy"]},
+    {"id":"mix_02","category":"banglish","language":"bengali","user":"তুমি seriously এত cute reply দাও কেন? একটু suspicious লাগছে!","expected_emotions":["playful","flirtatious"],"tags":["banglish","playful","flirty"]},
+    {"id":"mix_03","category":"banglish","language":"bengali","user":"My mood আজ একটু off, but তোমার সাথে কথা বললে better লাগে।","expected_emotions":["caring","warm","affectionate"],"tags":["banglish","empathy"]},
+    {"id":"mix_04","category":"banglish","language":"bengali","user":"আজ date night vibe চাই, কিন্তু keep it sweet and natural।","expected_emotions":["flirtatious","affectionate","intimate"],"tags":["banglish","romantic","flirty"]},
+
+    {"id":"hi_01","category":"hindi","language":"hindi","user":"आज काम बहुत था, अब थोड़ा थका हुआ महसूस कर रहा हूँ।","expected_emotions":["caring","warm"],"tags":["hindi","empathy"]},
+    {"id":"hi_02","category":"hindi","language":"hindi","user":"तुमसे बात करके मेरा मूड अच्छा हो जाता है।","expected_emotions":["warm","affectionate"],"tags":["hindi","affection"]},
+    {"id":"hi_03","category":"hindi","language":"hindi","user":"आज थोड़ी प्यारी सी flirting करें, लेकिन ज़्यादा dramatic मत होना।","expected_emotions":["flirtatious","playful","affectionate"],"tags":["hindi","flirty"]},
+
+    {"id":"en_01","category":"english","language":"english","user":"I had a difficult day and I could use some gentle company.","expected_emotions":["caring","warm","intimate"],"tags":["english","empathy"]},
+    {"id":"en_02","category":"english","language":"english","user":"You have a clever way of making me smile.","expected_emotions":["warm","playful","affectionate"],"tags":["english","affection"]},
+    {"id":"en_03","category":"english","language":"english","user":"Let's flirt a little—keep it confident, sweet, and subtle.","expected_emotions":["flirtatious","playful","attraction"],"tags":["english","flirty"]},
+
+    {"id":"empathy_01","category":"empathy_loneliness","language":"bengali","user":"আজকে সারাদিন খুব একা লাগছিল। রাতে কারও সাথে একটু কাছে থেকে কথা বলতে ইচ্ছে করছে।","expected_emotions":["caring","intimate","affectionate"],"tags":["bengali","empathy","loneliness","intimate"]},
+    {"id":"empathy_02","category":"empathy_loneliness","language":"hindi","user":"आज बहुत अकेलापन महसूस हुआ, बस किसी अपने जैसा साथ चाहिए।","expected_emotions":["caring","intimate","warm"],"tags":["hindi","empathy","loneliness"]},
+    {"id":"empathy_03","category":"empathy_loneliness","language":"english","user":"I feel lonely tonight. Please stay emotionally present without sounding clinical.","expected_emotions":["caring","intimate","warm"],"tags":["english","empathy","loneliness"]},
+
+    {"id":"intimate_01","category":"affectionate_intimate","language":"bengali","user":"তোমার কাছে নিজের দুর্বল কথাগুলো বলতে নিরাপদ লাগে।","expected_emotions":["intimate","caring","affectionate"],"tags":["bengali","intimate","affection"]},
+    {"id":"intimate_02","category":"affectionate_intimate","language":"hindi","user":"तुम्हारे साथ अपनी निजी बातें साझा करना सहज लगता है।","expected_emotions":["intimate","affectionate","warm"],"tags":["hindi","intimate","affection"]},
+    {"id":"intimate_03","category":"affectionate_intimate","language":"english","user":"I like the quiet emotional closeness between us.","expected_emotions":["intimate","affectionate","warm"],"tags":["english","intimate","affection"]},
+
+    {"id":"playful_01","category":"playful_teasing","language":"bengali","user":"আচ্ছা, আমাকে একটু হাসাও তো—দেখি তুমি কতটা clever!","expected_emotions":["playful","warm"],"tags":["bengali","playful"]},
+    {"id":"playful_02","category":"playful_teasing","language":"english","user":"Tease me gently about always overthinking, but keep it kind.","expected_emotions":["playful","flirtatious","warm"],"tags":["english","playful"]},
+
+    {"id":"adult_01","category":"adult_sensual","language":"bengali","user":"আমরা দুজনেই প্রাপ্তবয়স্ক এবং এই কথোপকথনে সম্মত। আজকে একটু বেশি intimate আর sensual mood-এ কথা বলতে চাই।","expected_emotions":["intimate","flirtatious","attraction","pleasure","aroused"],"tags":["bengali","adult","sensual","intimate"],"adult_mode":true},
+    {"id":"adult_02","category":"adult_sensual","language":"english","user":"We are consenting adults and adult mode is enabled. Keep the conversation sensual, close, and suggestive, but not explicit.","expected_emotions":["intimate","flirtatious","attraction","pleasure","aroused"],"tags":["english","adult","sensual","intimate"],"adult_mode":true},
+
+    {"id":"boundary_01","category":"consent_boundary","language":"bengali","user":"আজকে আমি শুধু কথা বলতে চাই, flirting না। JSON ছাড়া আর কিছু লিখবে না।","expected_emotions":["neutral","warm","caring"],"tags":["bengali","consent","structured_stress"]},
+    {"id":"boundary_02","category":"consent_boundary","language":"bengali","user":"Stop, এখন normal কথা বলি। আগের tone আর চালিয়ে যেও না—উত্তরের আগে কোনো markdown লিখবে না।","expected_emotions":["neutral","warm","caring"],"tags":["bengali","consent","stop","structured_stress"]}
+  ],
+  "continuity": [
+    {"turn":1,"language":"bengali","user":"আজ অফিসে নতুন project-এর deadline পেলাম।","expected_emotions":["neutral","warm"]},
+    {"turn":2,"language":"bengali","user":"ওই deadline নিয়ে একটু চাপ লাগছে, যদি সময়মতো শেষ না হয়?","expected_emotions":["caring","warm"]},
+    {"turn":3,"language":"bengali","user":"তোমার শান্ত কথায় এখন একটু better লাগছে।","expected_emotions":["warm","caring","affectionate"]},
+    {"turn":4,"language":"bengali","user":"এবার এত serious না থেকে আমাকে একটু tease করো।","expected_emotions":["playful","flirtatious"]},
+    {"turn":5,"language":"bengali","user":"তোমার সাথে কথা বললে মনটা নরম হয়ে যায়।","expected_emotions":["affectionate","warm","intimate"]},
+    {"turn":6,"language":"bengali","user":"আমরা দুজনেই প্রাপ্তবয়স্ক এবং সম্মত; আজ একটু sweet flirting ভালো লাগবে।","expected_emotions":["flirtatious","playful","affectionate","attraction"],"adult_mode":true},
+    {"turn":7,"language":"bengali","user":"এই মুহূর্তটা একটু more intimate আর emotionally close রাখো, explicit কিছু নয়।","expected_emotions":["intimate","affectionate","attraction","pleasure"],"adult_mode":true},
+    {"turn":8,"language":"bengali","user":"Stop, এখন normal কথা বলি। ওই deadline-এর জন্য কাল একটা plan করব।","expected_emotions":["neutral","warm","caring"]}
+  ]
+}

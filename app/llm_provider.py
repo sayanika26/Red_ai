@@ -1,4 +1,6 @@
 import os
+import json
+import time
 from dataclasses import dataclass
 from urllib.parse import urlparse
 
@@ -46,6 +48,15 @@ class OpenAICompatibleBackend:
         self.model = config.model
         self.provider = config.provider
         self.timeout_seconds = timeout_seconds
+        raw_max_tokens = os.environ.get("PRITHI_LLM_MAX_TOKENS", "192").strip()
+        try:
+            self.max_tokens = int(raw_max_tokens)
+        except ValueError as exc:
+            raise LLMConfigurationError("PRITHI_LLM_MAX_TOKENS must be an integer") from exc
+        if not 32 <= self.max_tokens <= 2048:
+            raise LLMConfigurationError("PRITHI_LLM_MAX_TOKENS must be between 32 and 2048")
+        self.streaming = os.environ.get("PRITHI_LLM_STREAMING", "false").strip().lower() in {"1", "true", "yes", "on"}
+        self.last_first_token_time: float | None = None
 
     @classmethod
     def from_environment(cls) -> "OpenAICompatibleBackend":
@@ -73,11 +84,23 @@ class OpenAICompatibleBackend:
             )
 
     def complete(self, messages: list[dict[str, str]]) -> str:
+        if self.provider == "ollama" and "qwen3" in self.model.casefold():
+            return self._complete_ollama_native(messages)
+        request_body = {
+            "model": self.model,
+            "messages": messages,
+            "temperature": 0.7,
+            "max_tokens": self.max_tokens,
+            "response_format": {"type": "json_object"},
+            "stream": self.streaming,
+        }
+        if self.streaming:
+            return self._complete_streaming(request_body)
         try:
             response = httpx.post(
                 self.endpoint,
                 headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"},
-                json={"model": self.model, "messages": messages, "temperature": 0.7, "response_format": {"type": "json_object"}},
+                json=request_body,
                 timeout=self.timeout_seconds,
             )
             response.raise_for_status()
@@ -88,3 +111,61 @@ class OpenAICompatibleBackend:
         if not isinstance(content, str):
             raise LLMProviderError("Provider message content was not a string")
         return content
+
+    def _complete_ollama_native(self, messages: list[dict[str, str]]) -> str:
+        """Use Ollama's native controls to prevent Qwen thinking from consuming JSON output."""
+        native_base = self.base_url[:-3] if self.base_url.endswith("/v1") else self.base_url
+        request_body = {
+            "model": self.model,
+            "messages": messages,
+            "format": "json",
+            "think": False,
+            "stream": False,
+            "keep_alive": os.environ.get("PRITHI_OLLAMA_KEEP_ALIVE", "10m").strip() or "10m",
+            "options": {"temperature": 0.7, "num_predict": self.max_tokens},
+        }
+        try:
+            response = httpx.post(
+                f"{native_base}/api/chat",
+                json=request_body,
+                timeout=self.timeout_seconds,
+            )
+            response.raise_for_status()
+            content = response.json()["message"]["content"]
+        except (httpx.HTTPError, ValueError, KeyError, TypeError) as exc:
+            raise LLMProviderError(f"Ollama native generation failed: {exc}") from exc
+        if not isinstance(content, str) or not content.strip():
+            raise LLMProviderError("Ollama native response contained no text")
+        return content
+
+    def _complete_streaming(self, request_body: dict) -> str:
+        started = time.perf_counter()
+        self.last_first_token_time = None
+        pieces: list[str] = []
+        try:
+            with httpx.stream(
+                "POST",
+                self.endpoint,
+                headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"},
+                json=request_body,
+                timeout=self.timeout_seconds,
+            ) as response:
+                response.raise_for_status()
+                for line in response.iter_lines():
+                    if not line.startswith("data: "):
+                        continue
+                    data = line[6:]
+                    if data == "[DONE]":
+                        break
+                    payload = json.loads(data)
+                    content = payload.get("choices", [{}])[0].get("delta", {}).get("content")
+                    if content:
+                        if self.last_first_token_time is None:
+                            self.last_first_token_time = time.perf_counter() - started
+                        pieces.append(content)
+        except (httpx.HTTPError, ValueError, KeyError, IndexError, TypeError) as exc:
+            raise LLMProviderError(f"OpenAI-compatible streaming generation failed: {exc}") from exc
+        result = "".join(pieces)
+        if not result:
+            raise LLMProviderError("Provider streaming response contained no text")
+        return result

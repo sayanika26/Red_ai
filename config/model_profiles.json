@@ -1,0 +1,35 @@
+{
+  "production_profile": "default",
+  "profiles": {
+    "default": {
+      "model": "gemma3:12b",
+      "label": "Gemma 3 12B production baseline",
+      "source": "Ollama library",
+      "quantization": "Q4_K_M",
+      "evaluation_only": false,
+      "routing_role": "normal"
+    },
+    "qwen_adult_test": {
+      "model": "richardyoung/qwen3-14b-abliterated:Q4_K_M",
+      "label": "Qwen3 14B Abliterated",
+      "source": "Ollama richardyoung/qwen3-14b-abliterated",
+      "quantization": "Q4_K_M",
+      "evaluation_only": false,
+      "routing_role": "adult_opt_in"
+    },
+    "gemma_roleplay_test": {
+      "model": "R4C3R/gemma-3-12b-it-heretic:q4_k_m",
+      "label": "Gemma 3 12B IT Heretic",
+      "source": "Ollama R4C3R/gemma-3-12b-it-heretic",
+      "quantization": "Q4_K_M",
+      "evaluation_only": true
+    },
+    "impish_roleplay_test": {
+      "model": "hf.co/SicariusSicariiStuff/Impish_QWEN_14B-1M_GGUF:Q4_K_M",
+      "label": "Impish Qwen 14B 1M",
+      "source": "Hugging Face GGUF via Ollama",
+      "quantization": "Q4_K_M",
+      "evaluation_only": true
+    }
+  }
+}

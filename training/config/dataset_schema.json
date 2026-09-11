@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prithi training example",
+  "type": "object",
+  "required": ["id", "language", "mode", "category", "emotion", "relationship_context", "messages", "review"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^prithi_[a-z]+_[0-9]{4}$"},
+    "language": {"enum": ["bengali", "banglish", "hindi", "english"]},
+    "mode": {"enum": ["normal", "adult"]},
+    "category": {"type": "string"},
+    "emotion": {"type": "string"},
+    "relationship_context": {
+      "type": "object",
+      "required": ["familiarity", "trust", "affection", "playfulness", "romantic_tension"],
+      "additionalProperties": false,
+      "properties": {
+        "familiarity": {"type": "number", "minimum": 0, "maximum": 1},
+        "trust": {"type": "number", "minimum": 0, "maximum": 1},
+        "affection": {"type": "number", "minimum": 0, "maximum": 1},
+        "playfulness": {"type": "number", "minimum": 0, "maximum": 1},
+        "romantic_tension": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "messages": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["role", "content"],
+        "additionalProperties": false,
+        "properties": {
+          "role": {"enum": ["system", "user", "assistant"]},
+          "content": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": ["status", "scores", "notes"],
+      "properties": {
+        "status": {"enum": ["pending", "approved", "rejected", "edited"]},
+        "scores": {"type": "object"},
+        "notes": {"type": "string"}
+      }
+    }
+  },
+  "additionalProperties": false
+}
