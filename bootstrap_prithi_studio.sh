@@ -108,34 +108,3 @@ else
 fi
 
 echo "Bootstrap complete. Restore Google credentials separately, then run ./scripts/verify_fresh_install.sh."
-
-export OLLAMA_MODELS="${PROJECT_ROOT}/runtime/ollama/models"
-if [[ ! -x "${PROJECT_ROOT}/runtime/ollama/bin/ollama" ]]; then
-  if command -v ollama >/dev/null 2>&1; then
-    cp "$(command -v ollama)" "${PROJECT_ROOT}/runtime/ollama/bin/ollama"
-  else
-    command -v zstd >/dev/null 2>&1 || { echo "zstd is required for project-local Ollama installation." >&2; exit 1; }
-    TMP_DIR="$(mktemp -d)"; trap 'rm -rf "${TMP_DIR}"' EXIT
-    curl -fsSL https://ollama.com/download/ollama-linux-amd64.tar.zst -o "${TMP_DIR}/ollama.tar.zst"
-    tar --zstd -xf "${TMP_DIR}/ollama.tar.zst" -C "${PROJECT_ROOT}/runtime/ollama"
-  fi
-  chmod u+x "${PROJECT_ROOT}/runtime/ollama/bin/ollama"
-fi
-
-"${PROJECT_ROOT}/scripts/start_prithi_runtime.sh"
-if [[ "${SKIP_MODELS}" == false ]]; then
-  if ! OLLAMA_MODELS="${OLLAMA_MODELS}" "${PROJECT_ROOT}/runtime/ollama/bin/ollama" list | awk 'NR>1 {print $1}' | grep -Fxq gemma3:12b; then
-    OLLAMA_MODELS="${OLLAMA_MODELS}" "${PROJECT_ROOT}/runtime/ollama/bin/ollama" pull gemma3:12b
-  fi
-  if ${WITH_ADULT} && ! OLLAMA_MODELS="${OLLAMA_MODELS}" "${PROJECT_ROOT}/runtime/ollama/bin/ollama" list | awk 'NR>1 {print $1}' | grep -Fxq richardyoung/qwen3-14b-abliterated:Q4_K_M; then
-    OLLAMA_MODELS="${OLLAMA_MODELS}" "${PROJECT_ROOT}/runtime/ollama/bin/ollama" pull richardyoung/qwen3-14b-abliterated:Q4_K_M
-  fi
-  WHISPER_DIR="${PROJECT_ROOT}/runtime/whisper/models/large-v3"
-  if [[ ! -s "${WHISPER_DIR}/model.bin" ]]; then
-    "${APP_VENV}/bin/python" -c 'from faster_whisper.utils import download_model; import sys; download_model("large-v3", output_dir=sys.argv[1])' "${WHISPER_DIR}"
-  fi
-else
-  echo "Model downloads skipped for portability verification."
-fi
-
-echo "Bootstrap complete. Configure secrets, then run ./scripts/verify_fresh_install.sh."
