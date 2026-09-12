@@ -521,6 +521,93 @@ class PrithiWebTests(unittest.TestCase):
         self.assertIn("/api/adult-mode/confirm-age", script)
         self.assertIn("/api/adult-mode/enable", script)
 
+    def test_continuous_ui_keeps_manual_mode_as_default(self):
+        html = (Path(__file__).parent / "web" / "index.html").read_text(encoding="utf-8")
+        script = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn('id="manual-mode"', html)
+        self.assertIn('id="conversation-mode"', html)
+        self.assertIn('id="conversation-toggle"', html)
+        self.assertIn('selectInputMode("manual")', script)
+        self.assertIn("async function startRecording()", script)
+
+    def test_continuous_state_machine_has_guarded_transitions(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        for state in ("IDLE", "WAITING_FOR_SPEECH", "RECORDING_SPEECH", "PROCESSING", "PLAYING_REPLY", "PAUSED", "ERROR"):
+            self.assertIn(f'{state}: "{state}"', source)
+        self.assertIn("CONVERSATION_TRANSITIONS", source)
+        self.assertIn("Ignored invalid conversation transition", source)
+
+    def test_continuous_vad_defaults_are_conservative(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn("silenceMs: 900", source)
+        self.assertIn("minSpeechMs: 500", source)
+        self.assertIn("maxTurnMs: 60000", source)
+        self.assertIn("postPlaybackGuardMs: 350", source)
+        self.assertIn("window.PRITHI_VAD_CONFIG", source)
+
+    def test_continuous_vad_does_not_record_or_upload_silence(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn("aboveStartFrames >= VAD_CONFIG.startFrames", source)
+        self.assertIn("beginConversationTurn(now)", source)
+        self.assertIn("shouldSubmitConversationTurn()", source)
+        self.assertIn("voicedDurationMs >= VAD_CONFIG.minSpeechMs", source)
+
+    def test_continuous_vad_ends_on_silence_or_max_duration(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn("now - lastSpeechAt >= VAD_CONFIG.silenceMs", source)
+        self.assertIn("now - speechStartedAt >= VAD_CONFIG.maxTurnMs", source)
+        self.assertIn("finishingConversationTurn", source)
+
+    def test_continuous_mode_reuses_one_microphone_stream(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        start = source.index("async function startConversation()")
+        stop = source.index("async function stopConversation", start)
+        body = source[start:stop]
+        self.assertEqual(body.count("getUserMedia"), 2)  # capability check plus one authorization call
+        self.assertIn("conversationVadTick(conversationEpoch)", body)
+        self.assertNotIn("getUserMedia", source[source.index("function beginConversationTurn"):start])
+
+    def test_continuous_mode_requests_echo_protection(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn("echoCancellation: true", source)
+        self.assertIn("noiseSuppression: true", source)
+        self.assertIn("autoGainControl: true", source)
+
+    def test_continuous_processing_blocks_second_turn(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn("conversationState === ConversationState.WAITING_FOR_SPEECH && !activeTurnController", source)
+        self.assertIn("finishingConversationTurn || conversationState !== ConversationState.RECORDING_SPEECH", source)
+
+    def test_continuous_mic_is_inactive_during_playback(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn("transitionConversation(ConversationState.PLAYING_REPLY)", source)
+        self.assertIn("conversationState === ConversationState.WAITING_FOR_SPEECH", source)
+        self.assertIn("scheduleConversationListening", source)
+
+    def test_stop_conversation_releases_microphone_tracks(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        stop = source[source.index("async function stopConversation"):source.index("async function startRecording")]
+        self.assertIn("stream?.getTracks().forEach((track) => track.stop())", stop)
+        self.assertIn("conversationAudioContext.close()", stop)
+
+    def test_continuous_failure_recovers_to_listening(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        recover = source[source.index("function recoverConversation"):source.index("function beginConversationTurn")]
+        self.assertIn("I couldn't catch that. Try again.", recover)
+        self.assertIn("ConversationState.WAITING_FOR_SPEECH", recover)
+
+    def test_continuous_turn_preserves_language_session_and_adult_routes(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn('form.append("language", languageEl.value)', source)
+        self.assertIn('"X-Prithi-User": browserIdentity()', source)
+        self.assertIn("/api/adult-mode", source)
+        self.assertIn('fetch("/api/voice-turn-stream"', source)
+
+    def test_visibility_loss_pauses_continuous_mode(self):
+        source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn('document.addEventListener("visibilitychange"', source)
+        self.assertIn("stopConversation({ paused: true })", source)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -104,3 +104,43 @@ python -m unittest discover -s app -p 'test_*.py'
 - STT CUDA error: run `./scripts/verify_environment.sh` and confirm NVIDIA L4/CUDA availability.
 
 Prithi v1 remains a prototype: Bengali STT can misrecognize words, expressive Gemini TTS is the largest latency component, Gemma 3 can be conservative in adult/flirty contexts, and the voice is not a fine-tuned custom Prithi foundation model.
+
+## Clone Prithi to a New Lightning Studio
+
+1. Create a Lightning Studio with an NVIDIA GPU. The known-good target is an NVIDIA L4 with about 23 GB VRAM.
+2. Open the terminal and authenticate to the private GitHub repository using an SSH key, GitHub CLI, or the Git credential helper.
+3. Clone and enter the project:
+
+   ```bash
+   git clone https://github.com/sayanika26/Red_ai.git prithi-voice
+   cd prithi-voice
+   ```
+
+4. Choose one setup:
+
+   ```bash
+   ./bootstrap_prithi_studio.sh                     # application only
+   ./bootstrap_prithi_studio.sh --with-adult-model  # application + optional adult model
+   ./bootstrap_prithi_studio.sh --with-training     # application + training environment
+   ```
+
+5. Restore Google credentials separately as described in `docs/SECRETS_RESTORE.md`, then run:
+
+   ```bash
+   ./scripts/verify_fresh_install.sh
+   ./scripts/start_prithi_all.sh
+   ```
+
+6. Open Lightning's port viewer for port `8000`, enter the private Prithi web token from `app/.env`, and allow browser microphone access.
+
+The production Ollama model is about 8 GB, faster-whisper large-v3 is about 3 GB, and the optional adult Ollama model is about 9 GB. Budget at least 18 GB for app-only setup or 29 GB with the adult model, plus package caches and headroom. Download time depends on Studio/network speed and commonly dominates setup.
+
+Git restores source, web UI, tests, safe configuration templates, manifests, and safe training/evaluation text artifacts. It never restores secrets, SQLite user memory, recordings, generated audio, model caches, or LoRA checkpoints. See `docs/PORTABILITY_AUDIT.md`, `docs/NEW_LIGHTNING_STUDIO_CHECKLIST.md`, and `docs/MODEL_BACKUP_STRATEGY.md`.
+
+For a one-line-style beginner wrapper downloaded from a trusted source or run inside a clone:
+
+```bash
+bash install_prithi.sh --repo https://github.com/sayanika26/Red_ai.git --branch main --with-adult-model
+```
+
+Private repository authentication is deliberately not embedded in any installer.

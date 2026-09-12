@@ -1,0 +1,18 @@
+{
+  "project_version": "1.0.0",
+  "python": "3.10.20",
+  "platform": "Linux x86_64",
+  "known_good_gpu": "NVIDIA L4",
+  "gpu_memory_gb": 23,
+  "cuda_expectation": "CUDA 12-compatible NVIDIA driver; application torch CUDA must report available on a GPU Studio",
+  "ollama": "0.33.3",
+  "packages": {
+    "fastapi": "0.141.1",
+    "uvicorn": "0.52.4",
+    "faster-whisper": "1.2.1",
+    "ctranslate2": "4.8.2",
+    "torch": "2.11.0",
+    "transformers": "4.49.0",
+    "httpx": "0.28.1"
+  }
+}

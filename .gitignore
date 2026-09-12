@@ -6,13 +6,15 @@ secrets/
 *.key
 *.p12
 
-# Large models, caches, and runtime state
+# Large models, caches, and runtime/user state
 runtime/
 *.db
 *.sqlite
 *.sqlite3
 .cache/
 .huggingface/
+**/.cache/
+**/huggingface/cache/
 __pycache__/
 **/__pycache__/
 *.pyc
@@ -20,9 +22,10 @@ __pycache__/
 *.log
 *.tmp
 backups/
+private_backups/
 .DS_Store
 
-# Generated audio and private recordings
+# Generated audio, diagnostics, and private recordings
 app/output/
 output/
 reference/
@@ -32,13 +35,16 @@ voice_auditions/
 *.m4a
 *.flac
 
-# Dataset audio and generated datasets (metadata templates remain tracked)
+# Dataset audio and generated datasets (safe metadata remains tracked)
 dataset/raw/
 dataset/processed/
 dataset/synthetic_google_leda/
 
-# Fine-tuning artifacts (keep safe configs, scripts, and reviewed JSONL trackable)
+# Fine-tuning artifacts (safe configs, reports, scripts, and reviewed JSONL remain trackable)
 training/checkpoints/
 training/**/checkpoints/
 training/**/outputs/
 training/**/cache/
+training/models/
+training/hf_cache/
+

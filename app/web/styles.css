@@ -127,6 +127,9 @@ body[data-status="recording"] .mini-wave i:nth-child(4), body[data-status="speak
 .select-wrap::after { content: "⌄"; position: absolute; right: 1rem; top: 50%; transform: translateY(-55%); color: var(--muted); pointer-events: none; }
 select { width: 100%; min-height: 48px; appearance: none; border: 1px solid var(--line); border-radius: 14px; padding: .75rem 2.5rem .75rem .9rem; color: var(--text); background: rgba(255,255,255,.04); outline: none; }
 select:focus { border-color: rgba(231,128,179,.45); box-shadow: 0 0 0 3px rgba(231,128,179,.08); }
+.input-mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: .75rem; padding: 4px; border: 1px solid var(--line); border-radius: 13px; background: rgba(5,3,8,.28); }
+.input-mode-option { min-height: 38px; border: 0; border-radius: 9px; color: var(--soft); background: transparent; cursor: pointer; font-size: .72rem; font-weight: 700; transition: color .18s ease, background .18s ease, box-shadow .18s ease; }
+.input-mode-option.active { color: var(--text); background: rgba(255,255,255,.075); box-shadow: 0 4px 14px rgba(0,0,0,.18); }
 .talk { width: 100%; min-height: 72px; margin-top: .8rem; position: relative; overflow: hidden; display: grid; grid-template-columns: 42px 1fr 12px; align-items: center; gap: .7rem; border: 0; border-radius: 18px; padding: .75rem .95rem; text-align: left; cursor: pointer; background: linear-gradient(125deg, #d45f98, #9c63dc); box-shadow: 0 16px 36px rgba(175,77,138,.22); transition: transform .18s ease, filter .18s ease; }
 .talk:hover { transform: translateY(-1px); filter: brightness(1.06); }
 .talk:active { transform: translateY(1px); }
@@ -138,6 +141,22 @@ select:focus { border-color: rgba(231,128,179,.45); box-shadow: 0 0 0 3px rgba(2
 .talk-pulse { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.85); }
 body[data-status="recording"] .talk { background: linear-gradient(125deg, #9e3d63, #6e3758); }
 body[data-status="recording"] .talk-pulse { animation: pulse 1s infinite; }
+.conversation-talk[aria-pressed="true"] { background: linear-gradient(125deg, #9d3e6c, #7046a7); }
+.conversation-icon { position: relative; border-radius: 50%; }
+.hands-free-rings, .hands-free-rings::before, .hands-free-rings::after { position: absolute; inset: 12px; border: 2px solid rgba(255,255,255,.9); border-radius: 50%; content: ""; }
+.hands-free-rings::before { inset: -6px; opacity: .55; }
+.hands-free-rings::after { inset: -11px; opacity: .25; }
+.conversation-state { margin-top: .75rem; padding: .72rem .8rem; display: flex; align-items: center; gap: .7rem; border: 1px solid rgba(121,217,164,.16); border-radius: 13px; color: var(--muted); background: rgba(121,217,164,.045); }
+.conversation-state-dot { flex: 0 0 auto; width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 6px rgba(121,217,164,.08); }
+.conversation-state strong, .conversation-state small { display: block; }
+.conversation-state strong { color: var(--text); font-size: .76rem; }
+.conversation-state small { margin-top: .14rem; color: var(--soft); font-size: .64rem; }
+.conversation-state[data-state="WAITING_FOR_SPEECH"] .conversation-state-dot { animation: pulse 1.5s infinite; }
+.conversation-state[data-state="RECORDING_SPEECH"] { border-color: rgba(255,119,148,.25); background: rgba(255,119,148,.06); }
+.conversation-state[data-state="RECORDING_SPEECH"] .conversation-state-dot { background: var(--danger); animation: pulse .8s infinite; }
+.conversation-state[data-state="PROCESSING"] .conversation-state-dot { background: var(--amber); animation: pulse 1.2s infinite; }
+.conversation-state[data-state="PLAYING_REPLY"] .conversation-state-dot { background: #b99bff; animation: pulse 1.1s infinite; }
+.conversation-state[data-state="PAUSED"] .conversation-state-dot, .conversation-state[data-state="ERROR"] .conversation-state-dot { background: var(--danger); }
 .mic-feedback { margin-top: .8rem; padding: .75rem; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.022); }
 .mic-feedback-copy { display: flex; align-items: center; justify-content: space-between; gap: .75rem; color: var(--muted); font-size: .72rem; }
 .mic-feedback-copy strong { color: var(--text); font-variant-numeric: tabular-nums; }

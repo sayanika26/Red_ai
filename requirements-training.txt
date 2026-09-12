@@ -1,0 +1,8 @@
+transformers>=4.49,<5
+datasets>=3,<5
+peft>=0.14,<1
+trl>=0.15,<1
+accelerate>=1,<2
+bitsandbytes>=0.45,<1
+sentencepiece>=0.2,<1
+safetensors>=0.5,<1

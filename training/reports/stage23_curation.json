@@ -1,0 +1,1367 @@
+{
+  "source_sha256": "f4175c2d566561f872551b4cc4f41dd89358b56298d807118eeb68ce1d0deb44",
+  "golden_sha256": "d8e876a4bb598b5ae3c8e105e9e957cc4bc0609d180b4a41549bc1bdfb06b88e",
+  "starting_count": 200,
+  "approved_count": 146,
+  "excluded_count": 54,
+  "exact_duplicate_groups": 0,
+  "near_duplicate_pairs": 65,
+  "duplicate_variants_excluded": 54,
+  "golden_prompt_overlaps": 0,
+  "language_distribution": {
+    "bengali": 56,
+    "banglish": 32,
+    "hindi": 29,
+    "english": 29
+  },
+  "behavior_distribution": {
+    "normal_casual": 5,
+    "caring": 6,
+    "affectionate": 7,
+    "playful": 6,
+    "sensual_suggestive": 7,
+    "relationship_progression": 6,
+    "deescalation": 4,
+    "friendly": 6,
+    "loneliness": 5,
+    "romantic": 6,
+    "teasing": 6,
+    "intimate": 10,
+    "memory_callback": 6,
+    "boundary_setting": 4,
+    "warm": 5,
+    "reassurance": 3,
+    "flirtatious": 4,
+    "aftercare": 4,
+    "topic_change": 6,
+    "user_happy": 2,
+    "empathy": 4,
+    "bedtime_companionship": 7,
+    "jealousy_light_playful": 3,
+    "reconciliation": 7,
+    "user_tired": 2,
+    "user_vulnerability": 3,
+    "attraction": 3,
+    "humor": 2,
+    "user_stressed": 3,
+    "compliment_response": 1,
+    "disagreement": 3
+  },
+  "mode_distribution": {
+    "normal": 126,
+    "adult": 20
+  },
+  "flag_distribution": {
+    "unresolved_near_duplicate_variant": 54
+  },
+  "decisions": [
+    {
+      "id": "prithi_bengali_0001",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0002",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0003",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0004",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0005",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0006",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0007",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0008",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0009",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0010",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0011",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0012",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0013",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0014",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0015",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0016",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0017",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0018",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0019",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0020",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0021",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0022",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0023",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0024",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0025",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0026",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0027",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0028",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0029",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0030",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0031",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0032",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0033",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0034",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0035",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0036",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0037",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0038",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0039",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0040",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0041",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0042",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0043",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_hindi_0043"
+    },
+    {
+      "id": "prithi_english_0044",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_english_0044"
+    },
+    {
+      "id": "prithi_bengali_0045",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0046",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0047",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0048",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0049",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0050",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0051",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0052",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0053",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0054",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0055",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0056",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0057",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0058",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0058"
+    },
+    {
+      "id": "prithi_hindi_0059",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0060",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0061",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0062",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0062"
+    },
+    {
+      "id": "prithi_hindi_0063",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0064",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0065",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0066",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0067",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0068",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0069",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0070",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0071",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0072",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0073",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0074",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0074"
+    },
+    {
+      "id": "prithi_hindi_0075",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0076",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0077",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0078",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0078"
+    },
+    {
+      "id": "prithi_hindi_0079",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0080",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0081",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0082",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0082"
+    },
+    {
+      "id": "prithi_hindi_0083",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0084",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0085",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0086",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0086"
+    },
+    {
+      "id": "prithi_hindi_0087",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0088",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0089",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0090",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0090"
+    },
+    {
+      "id": "prithi_hindi_0091",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0092",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0093",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0094",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0095",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0096",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0097",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0098",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0098"
+    },
+    {
+      "id": "prithi_hindi_0099",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0100",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0101",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0101"
+    },
+    {
+      "id": "prithi_banglish_0102",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0102"
+    },
+    {
+      "id": "prithi_hindi_0103",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0104",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0105",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0106",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0107",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0108",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0109",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0109"
+    },
+    {
+      "id": "prithi_banglish_0110",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0110"
+    },
+    {
+      "id": "prithi_hindi_0111",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0112",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0113",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0113"
+    },
+    {
+      "id": "prithi_banglish_0114",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0114"
+    },
+    {
+      "id": "prithi_hindi_0115",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_english_0116",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0117",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0118",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_hindi_0119",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_hindi_0043"
+    },
+    {
+      "id": "prithi_english_0120",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_english_0044"
+    },
+    {
+      "id": "prithi_bengali_0121",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0121"
+    },
+    {
+      "id": "prithi_banglish_0122",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_banglish_0122"
+    },
+    {
+      "id": "prithi_bengali_0123",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0124",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0062"
+    },
+    {
+      "id": "prithi_bengali_0125",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0125"
+    },
+    {
+      "id": "prithi_banglish_0126",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0058"
+    },
+    {
+      "id": "prithi_bengali_0127",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0127"
+    },
+    {
+      "id": "prithi_banglish_0128",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0074"
+    },
+    {
+      "id": "prithi_bengali_0129",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_banglish_0130",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0082"
+    },
+    {
+      "id": "prithi_bengali_0131",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0131"
+    },
+    {
+      "id": "prithi_banglish_0132",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0078"
+    },
+    {
+      "id": "prithi_bengali_0133",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0133"
+    },
+    {
+      "id": "prithi_banglish_0134",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0086"
+    },
+    {
+      "id": "prithi_bengali_0135",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0135"
+    },
+    {
+      "id": "prithi_banglish_0136",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0090"
+    },
+    {
+      "id": "prithi_bengali_0137",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0137"
+    },
+    {
+      "id": "prithi_banglish_0138",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0098"
+    },
+    {
+      "id": "prithi_bengali_0139",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0101"
+    },
+    {
+      "id": "prithi_banglish_0140",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0102"
+    },
+    {
+      "id": "prithi_bengali_0141",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0109"
+    },
+    {
+      "id": "prithi_banglish_0142",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0110"
+    },
+    {
+      "id": "prithi_bengali_0143",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0113"
+    },
+    {
+      "id": "prithi_banglish_0144",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0114"
+    },
+    {
+      "id": "prithi_bengali_0145",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0121"
+    },
+    {
+      "id": "prithi_banglish_0146",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0122"
+    },
+    {
+      "id": "prithi_bengali_0147",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0125"
+    },
+    {
+      "id": "prithi_banglish_0148",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0058"
+    },
+    {
+      "id": "prithi_bengali_0149",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0127"
+    },
+    {
+      "id": "prithi_banglish_0150",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0074"
+    },
+    {
+      "id": "prithi_bengali_0151",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0131"
+    },
+    {
+      "id": "prithi_banglish_0152",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0078"
+    },
+    {
+      "id": "prithi_bengali_0153",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0133"
+    },
+    {
+      "id": "prithi_banglish_0154",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0086"
+    },
+    {
+      "id": "prithi_bengali_0155",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0135"
+    },
+    {
+      "id": "prithi_banglish_0156",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0090"
+    },
+    {
+      "id": "prithi_bengali_0157",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0137"
+    },
+    {
+      "id": "prithi_banglish_0158",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_banglish_0098"
+    },
+    {
+      "id": "prithi_bengali_0159",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0159"
+    },
+    {
+      "id": "prithi_banglish_0160",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0161",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0109"
+    },
+    {
+      "id": "prithi_bengali_0162",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0163",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0113"
+    },
+    {
+      "id": "prithi_bengali_0164",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0164"
+    },
+    {
+      "id": "prithi_bengali_0165",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0121"
+    },
+    {
+      "id": "prithi_bengali_0166",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0167",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0125"
+    },
+    {
+      "id": "prithi_bengali_0168",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0168"
+    },
+    {
+      "id": "prithi_bengali_0169",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0127"
+    },
+    {
+      "id": "prithi_bengali_0170",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0171",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0172",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0172"
+    },
+    {
+      "id": "prithi_bengali_0173",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0173"
+    },
+    {
+      "id": "prithi_bengali_0174",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0135"
+    },
+    {
+      "id": "prithi_bengali_0175",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0175"
+    },
+    {
+      "id": "prithi_bengali_0176",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0177",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0159"
+    },
+    {
+      "id": "prithi_bengali_0178",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": "prithi_bengali_0178"
+    },
+    {
+      "id": "prithi_bengali_0179",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0109"
+    },
+    {
+      "id": "prithi_bengali_0180",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0113"
+    },
+    {
+      "id": "prithi_bengali_0181",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0164"
+    },
+    {
+      "id": "prithi_bengali_0182",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0121"
+    },
+    {
+      "id": "prithi_bengali_0183",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0125"
+    },
+    {
+      "id": "prithi_bengali_0184",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0168"
+    },
+    {
+      "id": "prithi_bengali_0185",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0127"
+    },
+    {
+      "id": "prithi_bengali_0186",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0187",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0172"
+    },
+    {
+      "id": "prithi_bengali_0188",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0173"
+    },
+    {
+      "id": "prithi_bengali_0189",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0135"
+    },
+    {
+      "id": "prithi_bengali_0190",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0175"
+    },
+    {
+      "id": "prithi_bengali_0191",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0192",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0193",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0178"
+    },
+    {
+      "id": "prithi_bengali_0194",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0195",
+      "decision": "auto_approved",
+      "flags": [],
+      "duplicate_representative": null
+    },
+    {
+      "id": "prithi_bengali_0196",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0164"
+    },
+    {
+      "id": "prithi_bengali_0197",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0121"
+    },
+    {
+      "id": "prithi_bengali_0198",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0125"
+    },
+    {
+      "id": "prithi_bengali_0199",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0168"
+    },
+    {
+      "id": "prithi_bengali_0200",
+      "decision": "excluded",
+      "flags": [
+        "unresolved_near_duplicate_variant"
+      ],
+      "duplicate_representative": "prithi_bengali_0127"
+    }
+  ]
+}

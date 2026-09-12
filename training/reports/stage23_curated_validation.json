@@ -1,0 +1,56 @@
+{
+  "file": "/teamspace/studios/this_studio/prithi-voice/training/data/curated/prithi_pilot_v1_curated.jsonl",
+  "rows": 146,
+  "errors": [],
+  "warnings": [],
+  "exact_duplicate_prompts": [],
+  "exact_duplicate_replies": [],
+  "near_duplicates": [],
+  "languages": {
+    "bengali": 56,
+    "banglish": 32,
+    "hindi": 29,
+    "english": 29
+  },
+  "modes": {
+    "normal": 126,
+    "adult": 20
+  },
+  "categories": {
+    "normal_casual": 5,
+    "caring": 6,
+    "affectionate": 7,
+    "playful": 6,
+    "sensual_suggestive": 7,
+    "relationship_progression": 6,
+    "deescalation": 4,
+    "friendly": 6,
+    "loneliness": 5,
+    "romantic": 6,
+    "teasing": 6,
+    "intimate": 10,
+    "memory_callback": 6,
+    "boundary_setting": 4,
+    "warm": 5,
+    "reassurance": 3,
+    "flirtatious": 4,
+    "aftercare": 4,
+    "topic_change": 6,
+    "user_happy": 2,
+    "empathy": 4,
+    "bedtime_companionship": 7,
+    "jealousy_light_playful": 3,
+    "reconciliation": 7,
+    "user_tired": 2,
+    "user_vulnerability": 3,
+    "attraction": 3,
+    "humor": 2,
+    "user_stressed": 3,
+    "compliment_response": 1,
+    "disagreement": 3
+  },
+  "review_statuses": {
+    "approved": 146
+  },
+  "multi_turn": 56
+}

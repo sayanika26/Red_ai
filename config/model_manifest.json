@@ -1,0 +1,21 @@
+{
+  "production_llm": {
+    "provider": "ollama",
+    "model": "gemma3:12b",
+    "required": true,
+    "approximate_download_gb": 8.1
+  },
+  "adult_llm": {
+    "provider": "ollama",
+    "model": "richardyoung/qwen3-14b-abliterated:Q4_K_M",
+    "required": false,
+    "approximate_download_gb": 9.0
+  },
+  "stt": {
+    "provider": "faster-whisper",
+    "model": "large-v3",
+    "required": true,
+    "approximate_download_gb": 3.1,
+    "local_dir": "runtime/whisper/models/large-v3"
+  }
+}

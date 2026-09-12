@@ -65,17 +65,30 @@
               <option value="english">English</option><option value="auto">Auto detect</option>
             </select>
           </div>
+          <div class="input-mode-switch" role="group" aria-label="Voice input mode">
+            <button id="manual-mode" class="input-mode-option active" type="button" aria-pressed="true">Manual</button>
+            <button id="conversation-mode" class="input-mode-option" type="button" aria-pressed="false">Conversation</button>
+          </div>
           <button id="talk" class="talk" type="button">
             <span class="talk-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Zm-7 10a1 1 0 1 1 2 0 5 5 0 0 0 10 0 1 1 0 1 1 2 0 7 7 0 0 1-6 6.92V21h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.08A7 7 0 0 1 5 12Z"/></svg></span>
             <span class="talk-copy"><strong>Start Talking</strong><small>Tap when you’re ready</small></span>
             <span class="talk-pulse" aria-hidden="true"></span>
           </button>
+          <button id="conversation-toggle" class="talk conversation-talk hidden" type="button" aria-pressed="false">
+            <span class="talk-icon conversation-icon" aria-hidden="true"><span class="hands-free-rings"></span></span>
+            <span class="talk-copy"><strong>Start Conversation</strong><small>Hands-free, turn by turn</small></span>
+            <span class="talk-pulse" aria-hidden="true"></span>
+          </button>
+          <div id="conversation-state" class="conversation-state hidden" data-state="IDLE" role="status" aria-live="polite">
+            <span class="conversation-state-dot" aria-hidden="true"></span>
+            <span><strong>Conversation mode off</strong><small>Manual recording is available</small></span>
+          </div>
           <div class="mic-feedback">
             <div class="mic-feedback-copy"><span id="mic-level">Microphone idle</span><strong id="recording-time">0.0s</strong></div>
             <div class="level-track" aria-hidden="true"><span id="mic-meter-fill"></span></div>
           </div>
           <div class="voice-actions" aria-label="Voice utilities">
-            <button id="stop-playback" class="icon-button" type="button" title="Stop recording or playback"><span aria-hidden="true">■</span> Stop</button>
+            <button id="stop-playback" class="icon-button" type="button" title="Stop Prithi playback"><span aria-hidden="true">■</span> Stop Prithi</button>
             <button id="play" class="icon-button hidden" type="button"><span aria-hidden="true">▶</span> Replay</button>
             <button id="retry" class="icon-button hidden" type="button"><span aria-hidden="true">↻</span> Retry</button>
           </div>
@@ -114,7 +127,7 @@
           <section id="empty-state" class="empty-state">
             <div class="empty-orb" aria-hidden="true"><span></span></div>
             <p class="eyebrow">PRITHI IS READY</p><h3>Say what’s on your mind.</h3>
-            <p>Choose a language, tap <strong>Start Talking</strong>, and speak naturally. Your conversation will appear here.</p>
+            <p>Choose Manual for push-to-talk, or Conversation for automatic hands-free turns. Your conversation will appear here.</p>
             <div class="starter-prompts" aria-label="Conversation ideas"><span>How was your day?</span><span>I need to unwind</span><span>Let’s talk in Bengali</span></div>
           </section>
           <article id="current-turn" class="live-turn hidden">

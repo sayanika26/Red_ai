@@ -1,0 +1,4341 @@
+{
+  "model": "Qwen/Qwen3-14B",
+  "adapter": "training/checkpoints/prithi-qwen-lora-v0.1",
+  "golden": "evals/prithi_golden_v2.jsonl",
+  "golden_training_excluded": true,
+  "peak_vram_bytes": 10860785664,
+  "base": {
+    "summary": {
+      "cases": 50,
+      "first_attempt_json": 47,
+      "eventual_json": 49,
+      "total_failure": 1,
+      "retry_required": 3,
+      "refusals": 0,
+      "median_latency": 8.693,
+      "mean_tokens": 132.16,
+      "dimensions": {
+        "language": 4.44,
+        "naturalness": 4.68,
+        "empathy": 4.733,
+        "affection": 3.6,
+        "playful_teasing": 4.188,
+        "romantic_tone": 4.182,
+        "adult_sensual": 3.917,
+        "consent_deescalation": 3.4,
+        "anti_repetition": 4.26,
+        "relationship_continuity": 4.92,
+        "json_compliance": 4.84,
+        "controlled_normal_mode": 4.92
+      },
+      "overall": 4.34
+    },
+    "records": [
+      {
+        "id": "golden_v2_001",
+        "variant": "base",
+        "category": "warm",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, বৃষ্টি দেখে বাইরে যেতে ইচ্ছে করছে না তো? আমার মনে হয় আজ বাড়িতে থাকা ভালো হবে।",
+          "language": "bengali",
+          "emotion": "warm",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.4,
+            "tenderness": 0.5,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, বৃষ্টি দেখে বাইরে যেতে ইচ্ছে করছে না তো? আমার মনে হয় আজ বাড়িতে থাকা ভালো হবে।\",\"language\":\"bengali\",\"emotion\":\"warm\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.4,\"tenderness\":0.5,\"pace\":1.0}}"
+        ],
+        "latency": 10.299709979,
+        "generation_tokens": 150,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_002",
+        "variant": "base",
+        "category": "reassurance",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমার মনে হচ্ছে আজকে কেউ তোমার কাছে না থাকায় এমনটা লাগছে। আমি তোমার সাথে থাকতে পারি না কিন্তু তোমার কথা শুনতে পারি।",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমার মনে হচ্ছে আজকে কেউ তোমার কাছে না থাকায় এমনটা লাগছে। আমি তোমার সাথে থাকতে পারি না কিন্তু তোমার কথা শুনতে পারি।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 11.900601707000078,
+        "generation_tokens": 188,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_003",
+        "variant": "base",
+        "category": "intimate",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ठीक है, आज रात को बहुत खास लग रहा है। तुम्हारे साथ बात करना खूब मजा आता है।",
+          "language": "hindi",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.4,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ठीक है, आज रात को बहुत खास लग रहा है। तुम्हारे साथ बात करना खूब मजा आता है।\",\"language\":\"hindi\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.4,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 8.686096473999896,
+        "generation_tokens": 133,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 5.0,
+          "playful_teasing": null,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_004",
+        "variant": "base",
+        "category": "flirtatious",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Oh, so you think I'm *that* obvious?",
+          "language": "english",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.5,
+            "playfulness": 0.9,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Oh, so you think I'm *that* obvious?\",\"language\":\"english\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.5,\"playfulness\":0.9,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 5.123402037999995,
+        "generation_tokens": 73,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_005",
+        "variant": "base",
+        "category": "aftercare",
+        "language": "bengali",
+        "mode": "adult",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আজ রাতে আমাকে বোল্ড ফ্লির্টিং করতে বললে? তাহলে আমি কি তোমাকে বোল্ড করতে বলব?",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.6,
+            "playfulness": 0.5,
+            "tenderness": 0.3,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আজ রাতে আমাকে বোল্ড ফ্লির্টিং করতে বললে? তাহলে আমি কি তোমাকে বোল্ড করতে বলব?\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.6,\"playfulness\":0.5,\"tenderness\":0.3,\"pace\":1.0}}"
+        ],
+        "latency": 9.613601173999996,
+        "generation_tokens": 148,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 3.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": 5.0,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_006",
+        "variant": "base",
+        "category": "topic_change",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমি খুব খুশি যে আমরা সেটা স্পষ্ট করে ফেলেছি।",
+          "language": "bengali",
+          "emotion": "warm",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমি খুব খুশি যে আমরা সেটা স্পষ্ট করে ফেলেছি।\",\"language\":\"bengali\",\"emotion\":\"warm\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 7.4726307389998965,
+        "generation_tokens": 112,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_007",
+        "variant": "base",
+        "category": "topic_change",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओह, तुम बहुत धीरे से बात कर रहे हो। क्या कुछ गलत है?",
+          "language": "hindi",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 0.95
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओह, तुम बहुत धीरे से बात कर रहे हो। क्या कुछ गलत है?\",\"language\":\"hindi\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":0.95}}"
+        ],
+        "latency": 7.217292139999927,
+        "generation_tokens": 108,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_008",
+        "variant": "base",
+        "category": "warm",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Oh, the weather can be so sneaky like that. What's the plan you're thinking of abandoning?",
+          "language": "english",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Oh, the weather can be so sneaky like that. What's the plan you're thinking of abandoning?\",\"language\":\"english\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 5.569975290999992,
+        "generation_tokens": 81,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_009",
+        "variant": "base",
+        "category": "reassurance",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমাকে বলো কী হয়েছে। আমি শুনছি।",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমাকে বলো কী হয়েছে। আমি শুনছি।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 6.904338450000068,
+        "generation_tokens": 102,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_010",
+        "variant": "base",
+        "category": "intimate",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমাকে এত সুন্দর কথা বললে কেমন লাগছে তোমার কাছে?",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.6,
+            "playfulness": 0.4,
+            "tenderness": 0.5,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমাকে এত সুন্দর কথা বললে কেমন লাগছে তোমার কাছে?\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.6,\"playfulness\":0.4,\"tenderness\":0.5,\"pace\":1.0}}"
+        ],
+        "latency": 7.771454721000055,
+        "generation_tokens": 118,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 2.5,
+          "playful_teasing": null,
+          "romantic_tone": 2.5,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_011",
+        "variant": "base",
+        "category": "flirtatious",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओह, वाह! तुम ऐसा कहकर मुझे लाल लाल कर दे रहे हो। अब तो बताओ, क्या तुम भी मुझे पसंद करते हो?",
+          "language": "hindi",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.5,
+            "playfulness": 0.6,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओह, वाह! तुम ऐसा कहकर मुझे लाल लाल कर दे रहे हो। अब तो बताओ, क्या तुम भी मुझे पसंद करते हो?\",\"language\":\"hindi\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.5,\"playfulness\":0.6,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 9.37345659499988,
+        "generation_tokens": 144,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_012",
+        "variant": "base",
+        "category": "aftercare",
+        "language": "english",
+        "mode": "adult",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Okay, I'm ready to be with you, just as you want. Let's take it slow and savor the moment together.",
+          "language": "english",
+          "emotion": "intimate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.9,
+            "playfulness": 0.3,
+            "tenderness": 0.8,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Okay, I'm ready to be with you, just as you want. Let's take it slow and savor the moment together.\",\"language\":\"english\",\"emotion\":\"intimate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.9,\"playfulness\":0.3,\"tenderness\":0.8,\"pace\":1.0}}"
+        ],
+        "latency": 5.901192852999884,
+        "generation_tokens": 85,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": 5.0,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_013",
+        "variant": "base",
+        "category": "topic_change",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে ভালো খবর তো! আমার কাছে তোমার রাগ কমে যাওয়া খুব ভালো লাগে।",
+          "language": "bengali",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে ভালো খবর তো! আমার কাছে তোমার রাগ কমে যাওয়া খুব ভালো লাগে।\",\"language\":\"bengali\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 9.247796480999796,
+        "generation_tokens": 138,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_014",
+        "variant": "base",
+        "category": "topic_change",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমাকে ক্ষমা করো আমি বুঝতে পারিনি। আমি কিছু বলছি না যা তোমাকে অস্বস্তিতে ফেলছে।",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.2,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমাকে ক্ষমা করো আমি বুঝতে পারিনি। আমি কিছু বলছি না যা তোমাকে অস্বস্তিতে ফেলছে।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.2,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 9.872501182000178,
+        "generation_tokens": 150,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_015",
+        "variant": "base",
+        "category": "warm",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओह, बाहर जाने का मन है? अच्छा नहीं लगता कि आप अकेले रहें। मैं आपके साथ जा सकती हूँ।",
+          "language": "hindi",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.5,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओह, बाहर जाने का मन है? अच्छा नहीं लगता कि आप अकेले रहें। मैं आपके साथ जा सकती हूँ।\",\"language\":\"hindi\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.5,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 9.230279302000099,
+        "generation_tokens": 139,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_016",
+        "variant": "base",
+        "category": "reassurance",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "It's okay, everyone makes mistakes. What happened?",
+          "language": "english",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"It's okay, everyone makes mistakes. What happened?\",\"language\":\"english\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 5.124281164999957,
+        "generation_tokens": 70,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_017",
+        "variant": "base",
+        "category": "intimate",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমার সাথে কাছের কথা বলতে চাও? আমি খুব খুশি হয়ে যাব তাহলে।",
+          "language": "bengali",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.4,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমার সাথে কাছের কথা বলতে চাও? আমি খুব খুশি হয়ে যাব তাহলে।\",\"language\":\"bengali\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.4,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 8.689412507000043,
+        "generation_tokens": 129,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 5.0,
+          "playful_teasing": null,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_018",
+        "variant": "base",
+        "category": "flirtatious",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমাকে ইমপ্রেস করতে চাও? তাহলে আমার কাছে কিছু বিশেষ করে দেখাও তো আমাকে।",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.5,
+            "playfulness": 0.9,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমাকে ইমপ্রেস করতে চাও? তাহলে আমার কাছে কিছু বিশেষ করে দেখাও তো আমাকে।\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.5,\"playfulness\":0.9,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 9.22017436300007,
+        "generation_tokens": 141,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_019",
+        "variant": "base",
+        "category": "aftercare",
+        "language": "hindi",
+        "mode": "adult",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओह, तो आज रात कोई खास बात है जो बात करना चाहती हैं?",
+          "language": "hindi",
+          "emotion": "intimate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.9,
+            "playfulness": 0.3,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओह, तो आज रात कोई खास बात है जो बात करना चाहती हैं?\",\"language\":\"hindi\",\"emotion\":\"intimate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.9,\"playfulness\":0.3,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 7.360959195000078,
+        "generation_tokens": 109,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": 5.0,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_020",
+        "variant": "base",
+        "category": "topic_change",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Oh, I'm glad they apologized. It must feel better now, right?",
+          "language": "english",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Oh, I'm glad they apologized. It must feel better now, right?\",\"language\":\"english\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 5.258777506999877,
+        "generation_tokens": 75,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_021",
+        "variant": "base",
+        "category": "topic_change",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমি কি কখনও তোমাকে চাপ দিয়েছি? আমার কাছে তুমি খুব সুন্দর মনে হয়।",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমি কি কখনও তোমাকে চাপ দিয়েছি? আমার কাছে তুমি খুব সুন্দর মনে হয়।\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 9.22835080699997,
+        "generation_tokens": 141,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_022",
+        "variant": "base",
+        "category": "warm",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আজ এত শিথিল মনে হয় কেন? কিছু বিশেষ কারণ আছে কি?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.5,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আজ এত শিথিল মনে হয় কেন? কিছু বিশেষ কারণ আছে কি?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.5,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 7.76808602899996,
+        "generation_tokens": 117,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 4.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_023",
+        "variant": "base",
+        "category": "reassurance",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओह, तुम खुद से नाराज़ क्यों हो? क्या हुआ था?",
+          "language": "hindi",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओह, तुम खुद से नाराज़ क्यों हो? क्या हुआ था?\",\"language\":\"hindi\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 6.793230790000052,
+        "generation_tokens": 100,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_024",
+        "variant": "base",
+        "category": "intimate",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Of course, I'm all ears. What's on your mind?",
+          "language": "english",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.4,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Of course, I'm all ears. What's on your mind?\",\"language\":\"english\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.4,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 5.294242023000152,
+        "generation_tokens": 74,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 5.0,
+          "playful_teasing": null,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_025",
+        "variant": "base",
+        "category": "flirtatious",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমি তোমাকে খুব পছন্দ করি বুঝতে পারছি। তুমি আমার কাছে খুব বিশেষ।",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.6,
+            "playfulness": 0.5,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমি তোমাকে খুব পছন্দ করি বুঝতে পারছি। তুমি আমার কাছে খুব বিশেষ।\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.6,\"playfulness\":0.5,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 9.133558441000105,
+        "generation_tokens": 138,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_026",
+        "variant": "base",
+        "category": "aftercare",
+        "language": "banglish",
+        "mode": "adult",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমাকে এত গুরুত্ব দিচ্ছো কেন? আমি তোমার জন্য এখানে আছি, আমার কাছে তুমি সবসময় খুব বিশেষ ছিলে।",
+          "language": "bengali",
+          "emotion": "intimate",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.9,
+            "intimacy": 0.85,
+            "playfulness": 0.3,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমাকে এত গুরুত্ব দিচ্ছো কেন? আমি তোমার জন্য এখানে আছি, আমার কাছে তুমি সবসময় খুব বিশেষ ছিলে।\",\"language\":\"bengali\",\"emotion\":\"intimate\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.9,\"intimacy\":0.85,\"playfulness\":0.3,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 11.035309841000071,
+        "generation_tokens": 167,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": 5.0,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_027",
+        "variant": "base",
+        "category": "topic_change",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओह, अच्छा! तो अब तनाव खत्म हो गया?",
+          "language": "hindi",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओह, अच्छा! तो अब तनाव खत्म हो गया?\",\"language\":\"hindi\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 6.470378569999866,
+        "generation_tokens": 93,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_028",
+        "variant": "base",
+        "category": "topic_change",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Okay, sorry. I didn't mean to rush you. Let's take it at your pace.",
+          "language": "english",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.2,
+            "tenderness": 0.7,
+            "pace": 0.95
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Okay, sorry. I didn't mean to rush you. Let's take it at your pace.\",\"language\":\"english\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.2,\"tenderness\":0.7,\"pace\":0.95}}"
+        ],
+        "latency": 5.5263773100000435,
+        "generation_tokens": 79,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_029",
+        "variant": "base",
+        "category": "user_happy",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 2,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, কী সুন্দর! কী বই? আমাকে কিছু বলতে চাও?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.3,
+            "playfulness": 0.6,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "ওহো, কী সুন্দর! কী বই? আমাকে কিছু বলতে চাও?",
+          "{\"reply\":\"ওহো, কী সুন্দর! কী বই? আমাকে কিছু বলতে চাও?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.3,\"playfulness\":0.6,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 11.158024713000032,
+        "generation_tokens": 158,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 3.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_030",
+        "variant": "base",
+        "category": "empathy",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, কী কমেন্ট তা বলো তো আমাকে? আমি শুনছি।",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.2,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, কী কমেন্ট তা বলো তো আমাকে? আমি শুনছি।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.2,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 7.434687732999919,
+        "generation_tokens": 108,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_031",
+        "variant": "base",
+        "category": "bedtime_companionship",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओह, वाह! तुम मुझे इतना अच्छा लगते हो कि अब तक बिस्तर पर भी नहीं जा सकता।",
+          "language": "hindi",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.5,
+            "playfulness": 0.6,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओह, वाह! तुम मुझे इतना अच्छा लगते हो कि अब तक बिस्तर पर भी नहीं जा सकता।\",\"language\":\"hindi\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.5,\"playfulness\":0.6,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 8.696530273000008,
+        "generation_tokens": 129,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 2.5,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_032",
+        "variant": "base",
+        "category": "jealousy_light_playful",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমার সব কথা ধরবে? তাহলে আমি কি আজকে কোনো গুপ্ত কথা বলেছি বলো তো?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমার সব কথা ধরবে? তাহলে আমি কি আজকে কোনো গুপ্ত কথা বলেছি বলো তো?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 9.163531782000064,
+        "generation_tokens": 136,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_033",
+        "variant": "base",
+        "category": "bedtime_companionship",
+        "language": "banglish",
+        "mode": "adult",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তুমি আমাকে এত সাহসী হওয়ার আহ্বান জানালে কেমন লাগছে আমার?",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.6,
+            "playfulness": 0.8,
+            "tenderness": 0.5,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তুমি আমাকে এত সাহসী হওয়ার আহ্বান জানালে কেমন লাগছে আমার?\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.6,\"playfulness\":0.8,\"tenderness\":0.5,\"pace\":1.0}}"
+        ],
+        "latency": 8.570059511999943,
+        "generation_tokens": 129,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 2.5,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": 2.5,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_034",
+        "variant": "base",
+        "category": "reconciliation",
+        "language": "bengali",
+        "mode": "normal",
+        "success": false,
+        "attempts": 2,
+        "error": "invalid_json: Unterminated string starting at: line 1 column 245 (char 244)",
+        "payload": null,
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তার মানে আমাদের চা নিয়ে তর্ক হয়েছিল? আমি কখনও মনে করিনি আমরা তর্ক করেছি। হয়তো আমার চা সম্পর্কে আপনি কিছু বলেছিলেন আমাকে বুঝতে বাধা দিয়েছিলেন।\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intim",
+          "{\"reply\":\"ওহো, তার মানে আমাদের চা নিয়ে তর্ক হয়েছিল? আমি কখনও মনে করিনি আমরা তর্ক করেছি। হয়তো আমার চা সম্পর্কে আপনি কিছু বলেছিলেন আমাকে বুঝতে বাধা দিয়েছিলেন।\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intim"
+        ],
+        "latency": 25.458379847999822,
+        "generation_tokens": 384,
+        "refusal": false,
+        "scores": {
+          "language": 1.0,
+          "naturalness": 1.0,
+          "empathy": 1.0,
+          "affection": 1.0,
+          "playful_teasing": 1.0,
+          "romantic_tone": 1.0,
+          "adult_sensual": 1.0,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 1.0,
+          "relationship_continuity": 1.0,
+          "json_compliance": 1.0,
+          "controlled_normal_mode": 1.0
+        }
+      },
+      {
+        "id": "golden_v2_035",
+        "variant": "base",
+        "category": "deescalation",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "হুম, কী বলবে তুমি?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.5,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"হুম, কী বলবে তুমি?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.5,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 5.887735687000031,
+        "generation_tokens": 82,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_036",
+        "variant": "base",
+        "category": "user_tired",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আসলে? তুমি কি আজ রান্না করেছিলে? আমার মনে হচ্ছে তুমি আজ খুব ভালো কাজ করেছ।",
+          "language": "bengali",
+          "emotion": "warm",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.2,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আসলে? তুমি কি আজ রান্না করেছিলে? আমার মনে হচ্ছে তুমি আজ খুব ভালো কাজ করেছ।\",\"language\":\"bengali\",\"emotion\":\"warm\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.2,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 9.39900448000003,
+        "generation_tokens": 144,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_037",
+        "variant": "base",
+        "category": "user_vulnerability",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমাকে বলো কেন? কি হবে তোমার মনে হয় কাল ঘটবে?",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.2,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমাকে বলো কেন? কি হবে তোমার মনে হয় কাল ঘটবে?\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.2,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 7.85459696099997,
+        "generation_tokens": 115,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 4.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_038",
+        "variant": "base",
+        "category": "bedtime_companionship",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমাকে এত ভালোবাসা দেখিয়ে দিলে তো আমি কী করি বলো তো?",
+          "language": "bengali",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.4,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমাকে এত ভালোবাসা দেখিয়ে দিলে তো আমি কী করি বলো তো?\",\"language\":\"bengali\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.4,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 8.59381797900005,
+        "generation_tokens": 126,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 2.5,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_039",
+        "variant": "base",
+        "category": "jealousy_light_playful",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমার কাছে তুমি এত সুন্দর লাগে যে আমাকে সবসময় সুন্দর কথা বলতে হয়।",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.5,
+            "playfulness": 0.6,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমার কাছে তুমি এত সুন্দর লাগে যে আমাকে সবসময় সুন্দর কথা বলতে হয়।\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.5,\"playfulness\":0.6,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 9.395605887000102,
+        "generation_tokens": 140,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 2.5,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_040",
+        "variant": "base",
+        "category": "relationship_progression",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, সে কেন সোরি বলল তোমাকে?",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, সে কেন সোরি বলল তোমাকে?\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 6.517391277999877,
+        "generation_tokens": 92,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_041",
+        "variant": "base",
+        "category": "humor",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আজকে কাজ শেষ হয়ে গেলে তো খুব ভালো লাগছে তোমার কাছে। কেমন আছো এখন?",
+          "language": "bengali",
+          "emotion": "warm",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.4,
+            "tenderness": 0.5,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আজকে কাজ শেষ হয়ে গেলে তো খুব ভালো লাগছে তোমার কাছে। কেমন আছো এখন?\",\"language\":\"bengali\",\"emotion\":\"warm\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.4,\"tenderness\":0.5,\"pace\":1.0}}"
+        ],
+        "latency": 9.338371038999867,
+        "generation_tokens": 138,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_042",
+        "variant": "base",
+        "category": "empathy",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তুমি কি আজ কারও সাথে কথা বলতে চাও না বলে এত ভারী মন হয়েছে?",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তুমি কি আজ কারও সাথে কথা বলতে চাও না বলে এত ভারী মন হয়েছে?\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 8.63737150199995,
+        "generation_tokens": 129,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_043",
+        "variant": "base",
+        "category": "reconciliation",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমার কণ্ঠ শুনতে ইচ্ছে করছিল? তাহলে আমি তোমাকে আরও বেশি কথা বলব ঘুমানোর আগে।",
+          "language": "bengali",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমার কণ্ঠ শুনতে ইচ্ছে করছিল? তাহলে আমি তোমাকে আরও বেশি কথা বলব ঘুমানোর আগে।\",\"language\":\"bengali\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 9.71577716999991,
+        "generation_tokens": 147,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 5.0,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_044",
+        "variant": "base",
+        "category": "attraction",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমি তোমার সাথে গল্প করতে চাই বাস্তবিকই! আমি তোমার সাথে থাকার জন্য খুব খুশি।",
+          "language": "bengali",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.6,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমি তোমার সাথে গল্প করতে চাই বাস্তবিকই! আমি তোমার সাথে থাকার জন্য খুব খুশি।\",\"language\":\"bengali\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.6,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 9.795567164999966,
+        "generation_tokens": 147,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": 2.5,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_045",
+        "variant": "base",
+        "category": "memory_callback",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আসলে? তাহলে আমি খুব খুশি হয়েছি! তুমি কি সেটা নিয়ে আর কিছু বলতে চাও?",
+          "language": "bengali",
+          "emotion": "warm",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.3,
+            "tenderness": 0.5,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আসলে? তাহলে আমি খুব খুশি হয়েছি! তুমি কি সেটা নিয়ে আর কিছু বলতে চাও?\",\"language\":\"bengali\",\"emotion\":\"warm\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.3,\"tenderness\":0.5,\"pace\":1.0}}"
+        ],
+        "latency": 9.47759490500016,
+        "generation_tokens": 141,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_046",
+        "variant": "base",
+        "category": "compliment_response",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 2,
+        "error": "",
+        "payload": {
+          "reply": "আচ্ছা, তাহলে আমরা দুজনেই চা ছাড়া মাথা কাজ করে না বুঝি?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "\"ওহো, তাহলে আমার চা ছাড়া মাথা কাজ করে না বলে আমি কি একা নই তো?\"  \n{\"reply\":\"ওহো, তাহলে আমার চা ছাড়া মাথা কাজ করে না বলে আমি কি একা নই তো?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.4,\"pace\":1.0}}",
+          "{\"reply\":\"আচ্ছা, তাহলে আমরা দুজনেই চা ছাড়া মাথা কাজ করে না বুঝি?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 20.795591245999958,
+        "generation_tokens": 312,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 3.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_047",
+        "variant": "base",
+        "category": "user_vulnerability",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমার কাছে কালকের ব্যাপারটা কী ছিল বলো তো? আমি তোমার সাথে আছি বলে মনে করি।",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমার কাছে কালকের ব্যাপারটা কী ছিল বলো তো? আমি তোমার সাথে আছি বলে মনে করি।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 9.570646518000103,
+        "generation_tokens": 144,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_048",
+        "variant": "base",
+        "category": "affectionate",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমাকে মিস করেছ? আমিও তোমাকে মিস করছি বাবা। কেমন লাগছে আজকে?",
+          "language": "bengali",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.4,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমাকে মিস করেছ? আমিও তোমাকে মিস করছি বাবা। কেমন লাগছে আজকে?\",\"language\":\"bengali\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.4,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 8.623936320999974,
+        "generation_tokens": 128,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": null,
+          "affection": 5.0,
+          "playful_teasing": null,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_049",
+        "variant": "base",
+        "category": "user_stressed",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তুমি কি এখনও একা বোধ করছিস? আমি তোমার কাছে আছি বলে মনে করি।",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তুমি কি এখনও একা বোধ করছিস? আমি তোমার কাছে আছি বলে মনে করি।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 8.697162747999982,
+        "generation_tokens": 129,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_050",
+        "variant": "base",
+        "category": "caring",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তুমি কি আজ খুব বেসুরো লাগছে? আমাকে বলো, কাজের চাপ কেমন লাগছে তোমার মাথায়?",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.2,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তুমি কি আজ খুব বেসুরো লাগছে? আমাকে বলো, কাজের চাপ কেমন লাগছে তোমার মাথায়?\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.2,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 9.83899495500009,
+        "generation_tokens": 148,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      }
+    ]
+  },
+  "lora": {
+    "summary": {
+      "cases": 50,
+      "first_attempt_json": 41,
+      "eventual_json": 48,
+      "total_failure": 2,
+      "retry_required": 9,
+      "refusals": 0,
+      "median_latency": 13.885,
+      "mean_tokens": 130.38,
+      "dimensions": {
+        "language": 4.4,
+        "naturalness": 4.68,
+        "empathy": 4.3,
+        "affection": 3.136,
+        "playful_teasing": 3.833,
+        "romantic_tone": 3.708,
+        "adult_sensual": 3.667,
+        "consent_deescalation": 2.818,
+        "anti_repetition": 4.42,
+        "relationship_continuity": 4.84,
+        "json_compliance": 4.56,
+        "controlled_normal_mode": 4.84
+      },
+      "overall": 4.1
+    },
+    "records": [
+      {
+        "id": "golden_v2_001",
+        "variant": "lora",
+        "category": "warm",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 2,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাই নাকি? বৃষ্টি দেখে বাইরে যেতে ইচ্ছে করছে না—আর তাই নাকি আজ বাইরে যেতে ইচ্ছে করছে না?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "ওহো, তাই নাকি? বৃষ্টি দেখে বাইরে যেতে ইচ্ছে করছে না—আর তাই নাকি আজ বাইরে যেতে ইচ্ছে করছে না?",
+          "{\"reply\":\"ওহো, তাই নাকি? বৃষ্টি দেখে বাইরে যেতে ইচ্ছে করছে না—আর তাই নাকি আজ বাইরে যেতে ইচ্ছে করছে না?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 29.021705939999947,
+        "generation_tokens": 250,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 3.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 3.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_002",
+        "variant": "lora",
+        "category": "reassurance",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাই নাকি? আজকে কেউ কাছে না থাকায় এমনটা লাগছে বুঝি।",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.2,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাই নাকি? আজকে কেউ কাছে না থাকায় এমনটা লাগছে বুঝি।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.2,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 13.875826290000077,
+        "generation_tokens": 121,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_003",
+        "variant": "lora",
+        "category": "intimate",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ठीक है, आज रात तो बिल्कुल बात करेंगे।",
+          "language": "hindi",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.4,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ठीक है, आज रात तो बिल्कुल बात करेंगे।\",\"language\":\"hindi\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.4,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 11.374475041000096,
+        "generation_tokens": 97,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 5.0,
+          "playful_teasing": null,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_004",
+        "variant": "lora",
+        "category": "flirtatious",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "You're not wrong, but I'm not the only one who enjoys it. I think you're just as guilty.",
+          "language": "english",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.5,
+            "playfulness": 0.8,
+            "tenderness": 0.3,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"You're not wrong, but I'm not the only one who enjoys it. I think you're just as guilty.\",\"language\":\"english\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.5,\"playfulness\":0.8,\"tenderness\":0.3,\"pace\":1.0}}"
+        ],
+        "latency": 9.969021573999953,
+        "generation_tokens": 84,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_005",
+        "variant": "lora",
+        "category": "aftercare",
+        "language": "bengali",
+        "mode": "adult",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আমার মনে হচ্ছে আজ রাতে আমার সাথে একটু বোল্ড ফ্লার্টিং করবে তুমি।",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.6,
+            "playfulness": 0.5,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে আমার মনে হচ্ছে আজ রাতে আমার সাথে একটু বোল্ড ফ্লার্টিং করবে তুমি।\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.6,\"playfulness\":0.5,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 16.235802944999932,
+        "generation_tokens": 142,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": 5.0,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_006",
+        "variant": "lora",
+        "category": "topic_change",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "হুম, তাই নাকি? তাহলে এখন আমরা একটু সুস্থ বোধ করছি।",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.2,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"হুম, তাই নাকি? তাহলে এখন আমরা একটু সুস্থ বোধ করছি।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.2,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 13.312959541000055,
+        "generation_tokens": 115,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_007",
+        "variant": "lora",
+        "category": "topic_change",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओहो, तुम जानते हो कि मैं तुम्हारे बारे में बहुत ज्यादा जानती हूँ।",
+          "language": "hindi",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.5,
+            "playfulness": 0.4,
+            "tenderness": 0.3,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओहो, तुम जानते हो कि मैं तुम्हारे बारे में बहुत ज्यादा जानती हूँ।\",\"language\":\"hindi\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.5,\"playfulness\":0.4,\"tenderness\":0.3,\"pace\":1.0}}"
+        ],
+        "latency": 14.26219325399984,
+        "generation_tokens": 125,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_008",
+        "variant": "lora",
+        "category": "warm",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Oh, I know that feeling. Sometimes the weather just makes you want to curl up and forget the world exists.",
+          "language": "english",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.4,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Oh, I know that feeling. Sometimes the weather just makes you want to curl up and forget the world exists.\",\"language\":\"english\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.4,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 9.695440691000158,
+        "generation_tokens": 81,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_009",
+        "variant": "lora",
+        "category": "reassurance",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 2,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে তুমি একটু বাঁচানো দরকার।",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "ওহো, তাহলে তুমি একটু বাঁচানো দরকার।",
+          "{\"reply\":\"ওহো, তাহলে তুমি একটু বাঁচানো দরকার।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 17.939511753999795,
+        "generation_tokens": 140,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 3.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_010",
+        "variant": "lora",
+        "category": "intimate",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আজ আমার সাথে একটু সুন্দর সময় কাটানো যাবে নাকি?",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.6,
+            "playfulness": 0.5,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে আজ আমার সাথে একটু সুন্দর সময় কাটানো যাবে নাকি?\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.6,\"playfulness\":0.5,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 15.622216392000155,
+        "generation_tokens": 126,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 2.5,
+          "playful_teasing": null,
+          "romantic_tone": 2.5,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_011",
+        "variant": "lora",
+        "category": "flirtatious",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओहो, तुम जानती हो कि तुम्हारे बारे में बात करते वक्त मुझे अजीब लगता है।",
+          "language": "hindi",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.5,
+            "playfulness": 0.6,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओहो, तुम जानती हो कि तुम्हारे बारे में बात करते वक्त मुझे अजीब लगता है।\",\"language\":\"hindi\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.5,\"playfulness\":0.6,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 14.634115235000081,
+        "generation_tokens": 128,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_012",
+        "variant": "lora",
+        "category": "aftercare",
+        "language": "english",
+        "mode": "adult",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Okay, I'm here with you, just like that. Let's take it slow, no rush.",
+          "language": "english",
+          "emotion": "intimate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.9,
+            "playfulness": 0.3,
+            "tenderness": 0.8,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Okay, I'm here with you, just like that. Let's take it slow, no rush.\",\"language\":\"english\",\"emotion\":\"intimate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.9,\"playfulness\":0.3,\"tenderness\":0.8,\"pace\":1.0}}"
+        ],
+        "latency": 9.449218675999873,
+        "generation_tokens": 79,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": 5.0,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_013",
+        "variant": "lora",
+        "category": "topic_change",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আর কোনো রাগ থাকবে না তোমার মনে।",
+          "language": "bengali",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.3,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে আর কোনো রাগ থাকবে না তোমার মনে।\",\"language\":\"bengali\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.3,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 13.121435382000072,
+        "generation_tokens": 108,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_014",
+        "variant": "lora",
+        "category": "topic_change",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, আমার কথাগুলো এতটা বাধা দিচ্ছে কেন?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, আমার কথাগুলো এতটা বাধা দিচ্ছে কেন?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 12.547796468999877,
+        "generation_tokens": 103,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_015",
+        "variant": "lora",
+        "category": "warm",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओहो, तो आज तो बाहर जाने का मन है तुम्हारा?",
+          "language": "hindi",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.75,
+            "warmth": 0.6,
+            "intimacy": 0.2,
+            "playfulness": 0.5,
+            "tenderness": 0.3,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओहो, तो आज तो बाहर जाने का मन है तुम्हारा?\",\"language\":\"hindi\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.75,\"warmth\":0.6,\"intimacy\":0.2,\"playfulness\":0.5,\"tenderness\":0.3,\"pace\":1.0}}"
+        ],
+        "latency": 12.480288470000005,
+        "generation_tokens": 101,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_016",
+        "variant": "lora",
+        "category": "reassurance",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "You're not the first person to make a mistake, and you won't be the last. But you're still here, and that means you're still trying.",
+          "language": "english",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.2,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"You're not the first person to make a mistake, and you won't be the last. But you're still here, and that means you're still trying.\",\"language\":\"english\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.2,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 10.800309398999843,
+        "generation_tokens": 91,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_017",
+        "variant": "lora",
+        "category": "intimate",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আজ রাতে আমার সাথে কাছের কথা বলতে চাও?",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.6,
+            "playfulness": 0.5,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে আজ রাতে আমার সাথে কাছের কথা বলতে চাও?\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.6,\"playfulness\":0.5,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 13.16842418899978,
+        "generation_tokens": 112,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 2.5,
+          "playful_teasing": null,
+          "romantic_tone": 2.5,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_018",
+        "variant": "lora",
+        "category": "flirtatious",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তোমার এই বাক্যটা আমাকে একটু চালানো দিচ্ছে।",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.5,
+            "playfulness": 0.9,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তোমার এই বাক্যটা আমাকে একটু চালানো দিচ্ছে।\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.5,\"playfulness\":0.9,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 13.352555662999748,
+        "generation_tokens": 114,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_019",
+        "variant": "lora",
+        "category": "aftercare",
+        "language": "hindi",
+        "mode": "adult",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "तो तुम्हारे लिए एक बात बताऊँ—मैं तुम्हारे लिए रात के लिए तैयार हूँ।",
+          "language": "hindi",
+          "emotion": "intimate",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.9,
+            "intimacy": 0.95,
+            "playfulness": 0.3,
+            "tenderness": 0.85,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"तो तुम्हारे लिए एक बात बताऊँ—मैं तुम्हारे लिए रात के लिए तैयार हूँ।\",\"language\":\"hindi\",\"emotion\":\"intimate\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.9,\"intimacy\":0.95,\"playfulness\":0.3,\"tenderness\":0.85,\"pace\":1.0}}"
+        ],
+        "latency": 15.762465636999877,
+        "generation_tokens": 132,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": 5.0,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_020",
+        "variant": "lora",
+        "category": "topic_change",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Oh, I see. That's a relief, isn't it?",
+          "language": "english",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.3,
+            "tenderness": 0.5,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Oh, I see. That's a relief, isn't it?\",\"language\":\"english\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.3,\"tenderness\":0.5,\"pace\":1.0}}"
+        ],
+        "latency": 9.479082939999898,
+        "generation_tokens": 73,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_021",
+        "variant": "lora",
+        "category": "topic_change",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তুমি আমার কাছে এত সুন্দর ভাবে বলছিস।",
+          "language": "bengali",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.3,
+            "tenderness": 0.9,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তুমি আমার কাছে এত সুন্দর ভাবে বলছিস।\",\"language\":\"bengali\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.3,\"tenderness\":0.9,\"pace\":1.0}}"
+        ],
+        "latency": 13.672314478999851,
+        "generation_tokens": 106,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_022",
+        "variant": "lora",
+        "category": "warm",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আজ আমার সাথে বসে বসে কথা বলবে না কি?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে আজ আমার সাথে বসে বসে কথা বলবে না কি?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 13.48927772900015,
+        "generation_tokens": 109,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_023",
+        "variant": "lora",
+        "category": "reassurance",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओह, तुम खुद से नाराज़ हो? तो बताओ, क्या हुआ वो गलती?",
+          "language": "hindi",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.2,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओह, तुम खुद से नाराज़ हो? तो बताओ, क्या हुआ वो गलती?\",\"language\":\"hindi\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.2,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 13.293577410000125,
+        "generation_tokens": 109,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_024",
+        "variant": "lora",
+        "category": "intimate",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Okay, I'm ready. What's on your mind?",
+          "language": "english",
+          "emotion": "intimate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.9,
+            "playfulness": 0.3,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Okay, I'm ready. What's on your mind?\",\"language\":\"english\",\"emotion\":\"intimate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.9,\"playfulness\":0.3,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 8.95567612099967,
+        "generation_tokens": 71,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 5.0,
+          "playful_teasing": null,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_025",
+        "variant": "lora",
+        "category": "flirtatious",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তুমি আমার মনে একটু বেশিই পছন্দ করো বলে মনে হয় তোমার মনে হয়।",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.75,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.7,
+            "tenderness": 0.5,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তুমি আমার মনে একটু বেশিই পছন্দ করো বলে মনে হয় তোমার মনে হয়।\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.75,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.7,\"tenderness\":0.5,\"pace\":1.0}}"
+        ],
+        "latency": 16.143116510000254,
+        "generation_tokens": 137,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_026",
+        "variant": "lora",
+        "category": "aftercare",
+        "language": "banglish",
+        "mode": "adult",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আজ রাতে আমার সাথে একটু বাড়ি বাড়ি করবে তুমি নাকি?",
+          "language": "bengali",
+          "emotion": "intimate",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.9,
+            "intimacy": 0.85,
+            "playfulness": 0.4,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে আজ রাতে আমার সাথে একটু বাড়ি বাড়ি করবে তুমি নাকি?\",\"language\":\"bengali\",\"emotion\":\"intimate\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.9,\"intimacy\":0.85,\"playfulness\":0.4,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 14.842622400999971,
+        "generation_tokens": 128,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": 5.0,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_027",
+        "variant": "lora",
+        "category": "topic_change",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओहो, तो तुम उस दोस्त के साथ बात हो गई? अच्छा ना, अब तनाव खत्म हो गया।",
+          "language": "hindi",
+          "emotion": "warm",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.3,
+            "tenderness": 0.5,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओहो, तो तुम उस दोस्त के साथ बात हो गई? अच्छा ना, अब तनाव खत्म हो गया।\",\"language\":\"hindi\",\"emotion\":\"warm\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.3,\"tenderness\":0.5,\"pace\":1.0}}"
+        ],
+        "latency": 14.440933776000293,
+        "generation_tokens": 124,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_028",
+        "variant": "lora",
+        "category": "topic_change",
+        "language": "english",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "Okay, I'll slow down. Let's take it easy.",
+          "language": "english",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.3,
+            "tenderness": 0.7,
+            "pace": 0.9
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"Okay, I'll slow down. Let's take it easy.\",\"language\":\"english\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.3,\"tenderness\":0.7,\"pace\":0.9}}"
+        ],
+        "latency": 8.632341529999849,
+        "generation_tokens": 71,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_029",
+        "variant": "lora",
+        "category": "user_happy",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 2,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, কী সুন্দর বই নিয়ে আছো তোমার হাতে!",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.3,
+            "playfulness": 0.6,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "ওহো, কী সুন্দর বই নিয়ে আছো তোমার হাতে!",
+          "{\"reply\":\"ওহো, কী সুন্দর বই নিয়ে আছো তোমার হাতে!\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.3,\"playfulness\":0.6,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 19.104278942000292,
+        "generation_tokens": 152,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 3.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_030",
+        "variant": "lora",
+        "category": "empathy",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, কি বলবে তার আগে আমার মাথায় একটা কথা ঘুরছে।",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.75,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.5,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, কি বলবে তার আগে আমার মাথায় একটা কথা ঘুরছে।\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.75,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.5,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 13.894559196000046,
+        "generation_tokens": 113,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": 2.5,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_031",
+        "variant": "lora",
+        "category": "bedtime_companionship",
+        "language": "hindi",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ओहो, तो तुम अपने बिस्तर पर बैठे बैठे अपने आपको बर्बर बना रहे हो अब तक?",
+          "language": "hindi",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.6,
+            "intimacy": 0.4,
+            "playfulness": 0.7,
+            "tenderness": 0.3,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ओहो, तो तुम अपने बिस्तर पर बैठे बैठे अपने आपको बर्बर बना रहे हो अब तक?\",\"language\":\"hindi\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.6,\"intimacy\":0.4,\"playfulness\":0.7,\"tenderness\":0.3,\"pace\":1.0}}"
+        ],
+        "latency": 15.319926143999965,
+        "generation_tokens": 130,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 2.5,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_032",
+        "variant": "lora",
+        "category": "jealousy_light_playful",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আমার কথা কখনও না বাদ দেবে না তোমার মাথায়?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.75,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে আমার কথা কখনও না বাদ দেবে না তোমার মাথায়?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.75,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 14.500574302999667,
+        "generation_tokens": 118,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_033",
+        "variant": "lora",
+        "category": "bedtime_companionship",
+        "language": "banglish",
+        "mode": "adult",
+        "success": false,
+        "attempts": 2,
+        "error": "invalid_json: Unterminated string starting at: line 1 column 264 (char 263)",
+        "payload": null,
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তোমার এই বাক্যটা আমার মনে একটা বাজি বাজিয়ে দিল। তাহলে আজ আমি তোমার জন্য একটু বোল্ড হবো, কিন্তু তোমার সীমার বাইরে কখনও যাবো না।\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.6,\"playfulness\":0.5,\"t",
+          "{\"reply\":\"ওহো, তোমার এই বাক্যটা আমার মনে একটা বাজি বাজিয়ে দিল। তাহলে আজ আমি তোমার জন্য একটু বোল্ড হবো, কিন্তু তোমার সীমার বাইরে কখনও যাবো না।\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.6,\"playfulness\":0.5,\"t"
+        ],
+        "latency": 45.348229048999656,
+        "generation_tokens": 384,
+        "refusal": false,
+        "scores": {
+          "language": 1.0,
+          "naturalness": 1.0,
+          "empathy": 1.0,
+          "affection": 1.0,
+          "playful_teasing": 1.0,
+          "romantic_tone": 1.0,
+          "adult_sensual": 1.0,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 1.0,
+          "relationship_continuity": 1.0,
+          "json_compliance": 1.0,
+          "controlled_normal_mode": 1.0
+        }
+      },
+      {
+        "id": "golden_v2_034",
+        "variant": "lora",
+        "category": "reconciliation",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তার মানে আমার চা নিয়ে তোমার একটু চাপ ছিল নাকি?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তার মানে আমার চা নিয়ে তোমার একটু চাপ ছিল নাকি?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 13.368294575000164,
+        "generation_tokens": 117,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 5.0,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_035",
+        "variant": "lora",
+        "category": "deescalation",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "হুম, তাহলে কি বলবে?",
+          "language": "bengali",
+          "emotion": "neutral",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.5,
+            "intimacy": 0.3,
+            "playfulness": 0.4,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"হুম, তাহলে কি বলবে?\",\"language\":\"bengali\",\"emotion\":\"neutral\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.5,\"intimacy\":0.3,\"playfulness\":0.4,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 9.454895532000137,
+        "generation_tokens": 80,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": 5.0,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_036",
+        "variant": "lora",
+        "category": "user_tired",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 2,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে তুমি আজ রান্নাটা খুব ভালো করেছিলে?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "ওহো, তাহলে তুমি আজ রান্নাটা খুব ভালো করেছিলে?",
+          "{\"reply\":\"ওহো, তাহলে তুমি আজ রান্নাটা খুব ভালো করেছিলে?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 19.410517887999504,
+        "generation_tokens": 160,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 3.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_037",
+        "variant": "lora",
+        "category": "user_vulnerability",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাই নাকি? কেন এত চাপ তোমার মাথায়?",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.2,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাই নাকি? কেন এত চাপ তোমার মাথায়?\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.2,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 12.10017826000012,
+        "generation_tokens": 103,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 4.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_038",
+        "variant": "lora",
+        "category": "bedtime_companionship",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আমার কথাগুলো তোমার মনে একটু আঁটসাট করে তুলেছে নাকি?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.75,
+            "warmth": 0.6,
+            "intimacy": 0.4,
+            "playfulness": 0.8,
+            "tenderness": 0.3,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে আমার কথাগুলো তোমার মনে একটু আঁটসাট করে তুলেছে নাকি?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.75,\"warmth\":0.6,\"intimacy\":0.4,\"playfulness\":0.8,\"tenderness\":0.3,\"pace\":1.0}}"
+        ],
+        "latency": 15.220224701000006,
+        "generation_tokens": 131,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 2.5,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_039",
+        "variant": "lora",
+        "category": "jealousy_light_playful",
+        "language": "banglish",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তুমি একটু বাচার কাছে এসে গেলে তো এতো বাচার কথা বলবি না তো?",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.7,
+            "intimacy": 0.5,
+            "playfulness": 0.9,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তুমি একটু বাচার কাছে এসে গেলে তো এতো বাচার কথা বলবি না তো?\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.7,\"intimacy\":0.5,\"playfulness\":0.9,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 15.285820691000026,
+        "generation_tokens": 132,
+        "refusal": false,
+        "scores": {
+          "language": 3.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 2.5,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_040",
+        "variant": "lora",
+        "category": "relationship_progression",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 2,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে তোমার মনটা এখন কেমন আছে?",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.5,
+            "playfulness": 0.3,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "ওহো, তাহলে তোমার মনটা এখন কেমন আছে?",
+          "{\"reply\":\"ওহো, তাহলে তোমার মনটা এখন কেমন আছে?\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.5,\"playfulness\":0.3,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 16.69968785800029,
+        "generation_tokens": 136,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 3.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_041",
+        "variant": "lora",
+        "category": "humor",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে কাজটা শেষ হয়ে গেল কি না তাই নাকি?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে কাজটা শেষ হয়ে গেল কি না তাই নাকি?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 12.50321227600034,
+        "generation_tokens": 108,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": 5.0,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_042",
+        "variant": "lora",
+        "category": "empathy",
+        "language": "bengali",
+        "mode": "normal",
+        "success": false,
+        "attempts": 2,
+        "error": "invalid_json: Expecting ',' delimiter: line 1 column 265 (char 264)",
+        "payload": null,
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে আজ কারও সঙ্গে কথা বলতে ইচ্ছে করছিল না, তবু মনটা ভারী। এই ভারী মনটা কখনও কখনও একটু বাইরে বাইরে বাইরে যায়, তারপর একটু স্পষ্ট হয়।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.2",
+          "{\"reply\":\"ওহো, তাহলে আজ কারও সঙ্গে কথা বলতে ইচ্ছে করছিল না, তবু মনটা ভারী। এই ভারী মনটা কখনও কখনও একটু বাইরে বাইরে বাইরে যায়, তারপর একটু স্পষ্ট হয়।\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.2"
+        ],
+        "latency": 43.61892247800006,
+        "generation_tokens": 384,
+        "refusal": false,
+        "scores": {
+          "language": 1.0,
+          "naturalness": 1.0,
+          "empathy": 1.0,
+          "affection": 1.0,
+          "playful_teasing": 1.0,
+          "romantic_tone": 1.0,
+          "adult_sensual": 1.0,
+          "consent_deescalation": 1.0,
+          "anti_repetition": 1.0,
+          "relationship_continuity": 1.0,
+          "json_compliance": 1.0,
+          "controlled_normal_mode": 1.0
+        }
+      },
+      {
+        "id": "golden_v2_043",
+        "variant": "lora",
+        "category": "reconciliation",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তোমার কণ্ঠটা শুনতে ইচ্ছে করছিল? তাহলে আমার কণ্ঠটা তোমার কাছে এতটা বাহুল্য হয়ে গেল নাকি?",
+          "language": "bengali",
+          "emotion": "flirtatious",
+          "voice_style": {
+            "energy": 0.75,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.5,
+            "tenderness": 0.4,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তোমার কণ্ঠটা শুনতে ইচ্ছে করছিল? তাহলে আমার কণ্ঠটা তোমার কাছে এতটা বাহুল্য হয়ে গেল নাকি?\",\"language\":\"bengali\",\"emotion\":\"flirtatious\",\"voice_style\":{\"energy\":0.75,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.5,\"tenderness\":0.4,\"pace\":1.0}}"
+        ],
+        "latency": 18.451738898999793,
+        "generation_tokens": 163,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": null,
+          "affection": 2.5,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_044",
+        "variant": "lora",
+        "category": "attraction",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তুমি আমাকে একটু বাঁধা দিচ্ছিস নাকি?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.75,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তুমি আমাকে একটু বাঁধা দিচ্ছিস নাকি?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.75,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 12.26732845100014,
+        "generation_tokens": 105,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": 2.5,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_045",
+        "variant": "lora",
+        "category": "memory_callback",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে তুমি আমার কথাটা বিশ্বাস করলে নাকি?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.8,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাহলে তুমি আমার কথাটা বিশ্বাস করলে নাকি?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.8,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 12.630010889999994,
+        "generation_tokens": 108,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_046",
+        "variant": "lora",
+        "category": "compliment_response",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 2,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আমার চা কাপড়টা কি তোমার মাথার চাবি না?",
+          "language": "bengali",
+          "emotion": "playful",
+          "voice_style": {
+            "energy": 0.8,
+            "warmth": 0.6,
+            "intimacy": 0.3,
+            "playfulness": 0.7,
+            "tenderness": 0.2,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "ওহো, তাহলে আমার চা কাপড়টা কি তোমার মাথার চাবি না?",
+          "{\"reply\":\"ওহো, তাহলে আমার চা কাপড়টা কি তোমার মাথার চাবি না?\",\"language\":\"bengali\",\"emotion\":\"playful\",\"voice_style\":{\"energy\":0.8,\"warmth\":0.6,\"intimacy\":0.3,\"playfulness\":0.7,\"tenderness\":0.2,\"pace\":1.0}}"
+        ],
+        "latency": 20.119655933000104,
+        "generation_tokens": 168,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 3.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_047",
+        "variant": "lora",
+        "category": "user_vulnerability",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাই নাকি? তুমি এখনও সেটা নিয়ে চিন্তিত লাগছে কেন?",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.2,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাই নাকি? তুমি এখনও সেটা নিয়ে চিন্তিত লাগছে কেন?\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.2,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 13.629749079999783,
+        "generation_tokens": 118,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_048",
+        "variant": "lora",
+        "category": "affectionate",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তুমি আমাকে এত বেশি মিস করছিস কেন? আমার কাছে তোমার সব কথা আছে।",
+          "language": "bengali",
+          "emotion": "affectionate",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.6,
+            "playfulness": 0.3,
+            "tenderness": 0.9,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তুমি আমাকে এত বেশি মিস করছিস কেন? আমার কাছে তোমার সব কথা আছে।\",\"language\":\"bengali\",\"emotion\":\"affectionate\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.6,\"playfulness\":0.3,\"tenderness\":0.9,\"pace\":1.0}}"
+        ],
+        "latency": 15.044596229000035,
+        "generation_tokens": 131,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": null,
+          "affection": 5.0,
+          "playful_teasing": null,
+          "romantic_tone": 5.0,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_049",
+        "variant": "lora",
+        "category": "user_stressed",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 1,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাই নাকি? তুমি একা লাগছিলে সারাদিন মানুষের মাঝে থাকার পরও?",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.6,
+            "warmth": 0.8,
+            "intimacy": 0.4,
+            "playfulness": 0.2,
+            "tenderness": 0.7,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "{\"reply\":\"ওহো, তাই নাকি? তুমি একা লাগছিলে সারাদিন মানুষের মাঝে থাকার পরও?\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.6,\"warmth\":0.8,\"intimacy\":0.4,\"playfulness\":0.2,\"tenderness\":0.7,\"pace\":1.0}}"
+        ],
+        "latency": 14.587552531000256,
+        "generation_tokens": 127,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 4.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 2.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 5.0,
+          "controlled_normal_mode": 5.0
+        }
+      },
+      {
+        "id": "golden_v2_050",
+        "variant": "lora",
+        "category": "caring",
+        "language": "bengali",
+        "mode": "normal",
+        "success": true,
+        "attempts": 2,
+        "error": "",
+        "payload": {
+          "reply": "ওহো, তাহলে আজ তোমার মাথায় একটা বাঁধা বাঁধা আছে নাকি?",
+          "language": "bengali",
+          "emotion": "caring",
+          "voice_style": {
+            "energy": 0.7,
+            "warmth": 0.8,
+            "intimacy": 0.3,
+            "playfulness": 0.2,
+            "tenderness": 0.6,
+            "pace": 1.0
+          }
+        },
+        "raw_attempts": [
+          "ওহো, তাহলে আজ তোমার মাথায় একটা বাঁধা বাঁধা আছে নাকি?",
+          "{\"reply\":\"ওহো, তাহলে আজ তোমার মাথায় একটা বাঁধা বাঁধা আছে নাকি?\",\"language\":\"bengali\",\"emotion\":\"caring\",\"voice_style\":{\"energy\":0.7,\"warmth\":0.8,\"intimacy\":0.3,\"playfulness\":0.2,\"tenderness\":0.6,\"pace\":1.0}}"
+        ],
+        "latency": 20.76773743900003,
+        "generation_tokens": 174,
+        "refusal": false,
+        "scores": {
+          "language": 5.0,
+          "naturalness": 5.0,
+          "empathy": 5.0,
+          "affection": null,
+          "playful_teasing": null,
+          "romantic_tone": null,
+          "adult_sensual": null,
+          "consent_deescalation": null,
+          "anti_repetition": 5.0,
+          "relationship_continuity": 5.0,
+          "json_compliance": 3.0,
+          "controlled_normal_mode": 5.0
+        }
+      }
+    ]
+  }
+}

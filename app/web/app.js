@@ -10,6 +10,10 @@ const relationshipResetButton = document.querySelector("#relationship-reset");
 const memoryDeleteButton = document.querySelector("#memory-delete");
 const stopPlaybackButton = document.querySelector("#stop-playback");
 const playButton = document.querySelector("#play");
+const manualModeButton = document.querySelector("#manual-mode");
+const conversationModeButton = document.querySelector("#conversation-mode");
+const conversationToggleButton = document.querySelector("#conversation-toggle");
+const conversationStateEl = document.querySelector("#conversation-state");
 const languageEl = document.querySelector("#language");
 languageEl.value = "bengali";
 function showSelectedLanguage() {
@@ -52,6 +56,54 @@ let meterContext = null;
 let meterFrame = null;
 let starting = false;
 let currentTurnComplete = false;
+let recordingOrigin = "manual";
+
+const VAD_CONFIG = Object.freeze({
+  startThreshold: 0.012,
+  endThreshold: 0.007,
+  silenceMs: 900,
+  minSpeechMs: 500,
+  maxTurnMs: 60000,
+  postPlaybackGuardMs: 350,
+  startFrames: 3,
+  ...(window.PRITHI_VAD_CONFIG || {}),
+});
+
+const ConversationState = Object.freeze({
+  IDLE: "IDLE",
+  WAITING_FOR_SPEECH: "WAITING_FOR_SPEECH",
+  RECORDING_SPEECH: "RECORDING_SPEECH",
+  PROCESSING: "PROCESSING",
+  PLAYING_REPLY: "PLAYING_REPLY",
+  PAUSED: "PAUSED",
+  ERROR: "ERROR",
+});
+
+const CONVERSATION_TRANSITIONS = Object.freeze({
+  IDLE: ["WAITING_FOR_SPEECH", "PAUSED", "ERROR"],
+  WAITING_FOR_SPEECH: ["RECORDING_SPEECH", "PAUSED", "ERROR", "IDLE"],
+  RECORDING_SPEECH: ["PROCESSING", "WAITING_FOR_SPEECH", "PAUSED", "ERROR", "IDLE"],
+  PROCESSING: ["PLAYING_REPLY", "WAITING_FOR_SPEECH", "PAUSED", "ERROR", "IDLE"],
+  PLAYING_REPLY: ["WAITING_FOR_SPEECH", "PAUSED", "ERROR", "IDLE"],
+  PAUSED: ["WAITING_FOR_SPEECH", "IDLE", "ERROR"],
+  ERROR: ["WAITING_FOR_SPEECH", "PAUSED", "IDLE"],
+});
+
+let inputMode = "manual";
+let conversationActive = false;
+let conversationState = ConversationState.IDLE;
+let conversationAudioContext = null;
+let conversationAnalyser = null;
+let conversationMeterData = null;
+let conversationFrame = null;
+let conversationEpoch = 0;
+let aboveStartFrames = 0;
+let speechStartedAt = 0;
+let lastSpeechAt = 0;
+let voicedDurationMs = 0;
+let lastVadFrameAt = 0;
+let finishingConversationTurn = false;
+let postPlaybackTimer = null;
 
 const statusStage = {
   recording: "recording",
@@ -67,6 +119,57 @@ function setTalkState(isRecording) {
   if (title) title.textContent = isRecording ? "Stop Talking" : "Start Talking";
   if (subtitle) subtitle.textContent = isRecording ? "Tap to finish your thought" : "Tap when you’re ready";
   talkButton.setAttribute("aria-label", isRecording ? "Stop talking" : "Start talking");
+}
+
+function conversationStateCopy(state) {
+  return {
+    IDLE: ["Conversation mode off", "Manual recording is available"],
+    WAITING_FOR_SPEECH: ["Listening for you", "Start speaking when you’re ready"],
+    RECORDING_SPEECH: ["Hearing you", "Your turn will end after a natural pause"],
+    PROCESSING: ["Prithi is thinking", "Microphone detection is paused"],
+    PLAYING_REPLY: ["Prithi is speaking", "Microphone detection is paused"],
+    PAUSED: ["Conversation paused", "Tap Resume Conversation to continue"],
+    ERROR: ["Let’s try that again", "Returning to listening mode"],
+  }[state] || ["Conversation mode", "Ready"];
+}
+
+function renderConversationState() {
+  const [title, detail] = conversationStateCopy(conversationState);
+  conversationStateEl.dataset.state = conversationState;
+  conversationStateEl.querySelector("strong").textContent = title;
+  conversationStateEl.querySelector("small").textContent = detail;
+  const active = conversationActive && conversationState !== ConversationState.IDLE;
+  manualModeButton.disabled = active;
+  conversationModeButton.disabled = active;
+  conversationToggleButton.setAttribute("aria-pressed", active ? "true" : "false");
+  conversationToggleButton.querySelector("strong").textContent = active ? "Stop Conversation" : (conversationState === ConversationState.PAUSED ? "Resume Conversation" : "Start Conversation");
+  conversationToggleButton.querySelector("small").textContent = active ? title : "Hands-free, turn by turn";
+}
+
+function transitionConversation(nextState, { force = false } = {}) {
+  if (nextState === conversationState) return;
+  const allowed = CONVERSATION_TRANSITIONS[conversationState] || [];
+  if (!force && !allowed.includes(nextState)) {
+    console.warn(`Ignored invalid conversation transition ${conversationState} -> ${nextState}`);
+    return;
+  }
+  conversationState = nextState;
+  renderConversationState();
+}
+
+function selectInputMode(mode) {
+  const busy = starting || activeTurnController || recorder?.state === "recording";
+  if (!['manual', 'conversation'].includes(mode) || (busy && mode !== inputMode) || (conversationActive && mode !== "conversation")) return;
+  inputMode = mode;
+  const conversationSelected = mode === "conversation";
+  manualModeButton.classList.toggle("active", !conversationSelected);
+  manualModeButton.setAttribute("aria-pressed", conversationSelected ? "false" : "true");
+  conversationModeButton.classList.toggle("active", conversationSelected);
+  conversationModeButton.setAttribute("aria-pressed", conversationSelected ? "true" : "false");
+  talkButton.classList.toggle("hidden", conversationSelected);
+  conversationToggleButton.classList.toggle("hidden", !conversationSelected);
+  conversationStateEl.classList.toggle("hidden", !conversationSelected);
+  renderConversationState();
 }
 
 function updateStageTrack(state) {
@@ -324,8 +427,191 @@ function preferredMimeType() {
   return choices.find((type) => MediaRecorder.isTypeSupported(type)) || "";
 }
 
+function microphoneConstraints() {
+  return {
+    audio: {
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true,
+      channelCount: 1,
+    },
+  };
+}
+
+function updateConversationMeter(rms, now) {
+  const level = rms < 0.00316 ? "Low" : rms > 0.25 ? "High" : "Good";
+  document.querySelector("#mic-level").textContent = `Microphone ${level.toLowerCase()}`;
+  const elapsed = conversationState === ConversationState.RECORDING_SPEECH
+    ? Math.max(0, (now - speechStartedAt) / 1000)
+    : 0;
+  recordingTime.textContent = `${elapsed.toFixed(1)}s`;
+  micMeterFill.style.width = `${Math.max(4, Math.min(100, rms * 360))}%`;
+}
+
+function shouldSubmitConversationTurn() {
+  return voicedDurationMs >= VAD_CONFIG.minSpeechMs;
+}
+
+function scheduleConversationListening(epoch = conversationEpoch) {
+  window.clearTimeout(postPlaybackTimer);
+  postPlaybackTimer = window.setTimeout(() => {
+    if (!conversationActive || epoch !== conversationEpoch) return;
+    aboveStartFrames = 0;
+    setStatus("Listening", "idle");
+    transitionConversation(ConversationState.WAITING_FOR_SPEECH);
+  }, VAD_CONFIG.postPlaybackGuardMs);
+}
+
+function recoverConversation(message) {
+  if (!conversationActive) return;
+  errorEl.textContent = message || "I couldn't catch that. Try again.";
+  errorEl.classList.remove("hidden");
+  transitionConversation(ConversationState.ERROR, { force: true });
+  window.setTimeout(() => {
+    if (!conversationActive) return;
+    clearError();
+    transitionConversation(ConversationState.WAITING_FOR_SPEECH, { force: true });
+    setStatus("Listening", "idle");
+  }, 1100);
+}
+
+function beginConversationTurn(now) {
+  if (!conversationActive || conversationState !== ConversationState.WAITING_FOR_SPEECH || activeTurnController) return;
+  const mimeType = preferredMimeType();
+  recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+  chunks = [];
+  recordingOrigin = "conversation";
+  finishingConversationTurn = false;
+  speechStartedAt = now;
+  lastSpeechAt = now;
+  lastVadFrameAt = now;
+  voicedDurationMs = 0;
+  recorder.addEventListener("dataavailable", (event) => {
+    if (event.data.size) chunks.push(event.data);
+  });
+  recorder.addEventListener("stop", () => {
+    const recordedBlob = new Blob(chunks, { type: recorder?.mimeType || "audio/webm" });
+    chunks = [];
+    finishingConversationTurn = false;
+    if (discardRecording || !conversationActive) return;
+    if (!shouldSubmitConversationTurn() || !recordedBlob.size) {
+      recoverConversation("I couldn't catch that. Try again.");
+      return;
+    }
+    sendRecording(recordedBlob, "conversation");
+  }, { once: true });
+  recorder.start();
+  setStatus("Recording", "recording");
+  transitionConversation(ConversationState.RECORDING_SPEECH);
+}
+
+function finishConversationTurn(reason = "silence") {
+  if (finishingConversationTurn || conversationState !== ConversationState.RECORDING_SPEECH) return;
+  finishingConversationTurn = true;
+  transitionConversation(ConversationState.PROCESSING);
+  setStatus("Transcribing", "transcribing");
+  if (recorder?.state === "recording") recorder.stop();
+  else recoverConversation(reason === "short" ? "I couldn't catch that. Try again." : "The recording could not be completed. Try again.");
+}
+
+function conversationVadTick(epoch) {
+  if (!conversationActive || epoch !== conversationEpoch || !conversationAnalyser) return;
+  conversationAnalyser.getFloatTimeDomainData(conversationMeterData);
+  let sum = 0;
+  for (const value of conversationMeterData) sum += value * value;
+  const rms = Math.sqrt(sum / conversationMeterData.length);
+  const now = performance.now();
+  updateConversationMeter(rms, now);
+
+  if (conversationState === ConversationState.WAITING_FOR_SPEECH && !activeTurnController) {
+    aboveStartFrames = rms >= VAD_CONFIG.startThreshold ? aboveStartFrames + 1 : 0;
+    if (aboveStartFrames >= VAD_CONFIG.startFrames) beginConversationTurn(now);
+  } else if (conversationState === ConversationState.RECORDING_SPEECH) {
+    const frameDuration = Math.min(100, Math.max(0, now - lastVadFrameAt));
+    if (rms >= VAD_CONFIG.endThreshold) {
+      lastSpeechAt = now;
+      voicedDurationMs += frameDuration;
+    }
+    lastVadFrameAt = now;
+    if (now - speechStartedAt >= VAD_CONFIG.maxTurnMs) finishConversationTurn("maximum duration");
+    else if (now - lastSpeechAt >= VAD_CONFIG.silenceMs) finishConversationTurn(shouldSubmitConversationTurn() ? "silence" : "short");
+  }
+  conversationFrame = requestAnimationFrame(() => conversationVadTick(epoch));
+}
+
+async function startConversation() {
+  clearError();
+  if (conversationActive || starting || activeTurnController) return;
+  if (diagnosticMode) {
+    showError("Conversation mode is unavailable while STT diagnostics are enabled.");
+    return;
+  }
+  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+    showError("This browser does not support hands-free microphone recording.");
+    return;
+  }
+  try {
+    starting = true;
+    conversationToggleButton.disabled = true;
+    stream = await navigator.mediaDevices.getUserMedia(microphoneConstraints());
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) throw new Error("Web Audio is not supported by this browser.");
+    conversationAudioContext = new AudioContextClass();
+    await conversationAudioContext.resume();
+    conversationAnalyser = conversationAudioContext.createAnalyser();
+    conversationAnalyser.fftSize = 2048;
+    conversationAudioContext.createMediaStreamSource(stream).connect(conversationAnalyser);
+    conversationMeterData = new Float32Array(conversationAnalyser.fftSize);
+    conversationActive = true;
+    conversationEpoch += 1;
+    discardRecording = false;
+    aboveStartFrames = 0;
+    transitionConversation(ConversationState.WAITING_FOR_SPEECH, { force: true });
+    setStatus("Listening", "idle");
+    conversationVadTick(conversationEpoch);
+  } catch (error) {
+    await stopConversation({ paused: false, abortTurn: false });
+    const message = error.name === "NotAllowedError"
+      ? "Microphone permission was denied. Allow microphone access and try again."
+      : (error.message || "No usable microphone was found.");
+    showError(message);
+  } finally {
+    starting = false;
+    conversationToggleButton.disabled = false;
+    renderConversationState();
+  }
+}
+
+async function stopConversation({ paused = false, abortTurn = true } = {}) {
+  conversationActive = false;
+  conversationEpoch += 1;
+  window.clearTimeout(postPlaybackTimer);
+  cancelAnimationFrame(conversationFrame);
+  if (abortTurn) activeTurnController?.abort();
+  if (recorder?.state === "recording" && recordingOrigin === "conversation") {
+    discardRecording = true;
+    recorder.stop();
+  }
+  if (responseAudio && !responseAudio.paused) {
+    responseAudio.pause();
+    responseAudio.currentTime = 0;
+  }
+  stream?.getTracks().forEach((track) => track.stop());
+  stream = null;
+  if (conversationAudioContext && conversationAudioContext.state !== "closed") await conversationAudioContext.close();
+  conversationAudioContext = null;
+  conversationAnalyser = null;
+  conversationMeterData = null;
+  micMeterFill.style.width = "4%";
+  recordingTime.textContent = "0.0s";
+  document.querySelector("#mic-level").textContent = "Microphone idle";
+  transitionConversation(paused ? ConversationState.PAUSED : ConversationState.IDLE, { force: true });
+  setStatus(paused ? "Paused" : "Ready", paused ? "error" : "idle");
+}
+
 async function startRecording() {
   clearError();
+  if (inputMode !== "manual" || conversationActive) return;
   if (starting || activeTurnController) return;
   if (diagnosticMode && !document.querySelector("#diagnostic-consent").checked) {
     showError("Check the diagnostic recording consent box before starting.");
@@ -338,17 +624,20 @@ async function startRecording() {
   try {
     starting = true;
     talkButton.disabled = true;
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    stream = await navigator.mediaDevices.getUserMedia(microphoneConstraints());
     const mimeType = preferredMimeType();
     recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
     chunks = [];
+    recordingOrigin = "manual";
     recorder.addEventListener("dataavailable", (event) => {
       if (event.data.size) chunks.push(event.data);
     });
     discardRecording = false;
     recorder.addEventListener("stop", () => {
-      stopMeter();
-      stream?.getTracks().forEach((track) => track.stop());
+      if (recordingOrigin === "manual") {
+        stopMeter();
+        stream?.getTracks().forEach((track) => track.stop());
+      }
       if (discardRecording) {
         chunks = [];
         setStatus("Ready");
@@ -386,12 +675,14 @@ function stopRecording() {
   setStatus("Transcribing", "transcribing");
 }
 
-async function sendRecording() {
+async function sendRecording(recordedBlob = null, origin = recordingOrigin) {
+  const continuousTurn = origin === "conversation";
   const mimeType = recorder?.mimeType || "audio/webm";
-  const blob = new Blob(chunks, { type: mimeType });
-  chunks = [];
+  const blob = recordedBlob || new Blob(chunks, { type: mimeType });
+  if (!recordedBlob) chunks = [];
   if (!blob.size) {
-    showError("The recording was empty. Please try again.");
+    if (continuousTurn) recoverConversation("I couldn't catch that. Try again.");
+    else showError("The recording was empty. Please try again.");
     talkButton.disabled = false;
     return;
   }
@@ -452,12 +743,18 @@ async function sendRecording() {
       if (done) break;
     }
   } catch (error) {
-    if (error.name === "AbortError") setStatus("Ready");
-    else showError(error.message);
+    if (error.name === "AbortError") {
+      if (!conversationActive) setStatus("Ready");
+    } else if (continuousTurn && conversationActive) {
+      recoverConversation(error.message || "I couldn't catch that. Try again.");
+    } else showError(error.message);
   } finally {
     activeTurnController = null;
     talkButton.disabled = false;
     setTalkState(false);
+    if (continuousTurn && conversationActive && conversationState === ConversationState.PROCESSING) {
+      recoverConversation("I couldn't catch that. Try again.");
+    }
   }
 }
 
@@ -512,15 +809,26 @@ async function prepareAndPlay(audioUrl) {
   if (responseObjectUrl) URL.revokeObjectURL(responseObjectUrl);
   responseObjectUrl = URL.createObjectURL(blob);
   responseAudio = new Audio(responseObjectUrl);
-  responseAudio.addEventListener("ended", () => setStatus("Ready"), { once: true });
+  responseAudio.addEventListener("ended", () => {
+    if (conversationActive) scheduleConversationListening();
+    else setStatus("Ready");
+  });
+  if (conversationActive) transitionConversation(ConversationState.PLAYING_REPLY);
   setStatus("Speaking", "speaking");
   try {
     await responseAudio.play();
     playButton.classList.add("hidden");
   } catch (_) {
-    setStatus("Ready");
     playButton.classList.remove("hidden");
-    showError("Autoplay was blocked. Tap “Play Prithi” to hear the response.");
+    if (conversationActive) {
+      transitionConversation(ConversationState.PAUSED);
+      errorEl.textContent = "Autoplay was blocked. Tap “Play Prithi” to hear the response.";
+      errorEl.classList.remove("hidden");
+      setStatus("Paused", "error");
+    } else {
+      setStatus("Ready");
+      showError("Autoplay was blocked. Tap “Play Prithi” to hear the response.");
+    }
   }
 }
 
@@ -529,28 +837,44 @@ talkButton.addEventListener("click", () => {
   else startRecording();
 });
 
-stopPlaybackButton.addEventListener("click", () => {
+manualModeButton.addEventListener("click", () => selectInputMode("manual"));
+conversationModeButton.addEventListener("click", () => selectInputMode("conversation"));
+conversationToggleButton.addEventListener("click", async () => {
+  if (conversationActive) await stopConversation();
+  else await startConversation();
+});
+
+stopPlaybackButton.addEventListener("click", async () => {
   window.clearTimeout(stopTimer);
-  if (recorder?.state === "recording") {
+  if (recorder?.state === "recording" && recordingOrigin === "manual") {
     discardRecording = true;
     recorder.stop();
     stream?.getTracks().forEach((track) => track.stop());
     setTalkState(false);
   }
-  activeTurnController?.abort();
   if (responseAudio) {
     responseAudio.pause();
     responseAudio.currentTime = 0;
   }
   playButton.classList.add("hidden");
-  setStatus("Ready");
+  if (conversationActive) scheduleConversationListening();
+  else {
+    activeTurnController?.abort();
+    setStatus("Ready");
+  }
 });
 
 playButton.addEventListener("click", async () => {
   if (!responseAudio) return;
   clearError();
+  if (conversationActive) transitionConversation(ConversationState.PLAYING_REPLY, { force: true });
   setStatus("Speaking", "speaking");
   await responseAudio.play();
+  playButton.classList.add("hidden");
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && conversationActive) stopConversation({ paused: true });
 });
 
 resetButton.addEventListener("click", async () => {
@@ -657,5 +981,7 @@ adultDisableButton.addEventListener("click", async () => {
 checkHealth();
 document.querySelector("#retry").addEventListener("click", () => {
   document.querySelector("#retry").classList.add("hidden");
-  startRecording();
+  if (inputMode === "conversation") startConversation();
+  else startRecording();
 });
+selectInputMode("manual");

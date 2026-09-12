@@ -1,0 +1,147 @@
+{
+  "file": "/teamspace/studios/this_studio/prithi-voice/training/data/raw/prithi_pilot_v1.jsonl",
+  "rows": 200,
+  "errors": [],
+  "warnings": [],
+  "exact_duplicate_prompts": [],
+  "exact_duplicate_replies": [],
+  "near_duplicates": [
+    {
+      "left": "prithi_hindi_0043",
+      "right": "prithi_hindi_0119",
+      "similarity": 0.922
+    },
+    {
+      "left": "prithi_english_0044",
+      "right": "prithi_english_0120",
+      "similarity": 0.956
+    },
+    {
+      "left": "prithi_banglish_0058",
+      "right": "prithi_banglish_0126",
+      "similarity": 0.943
+    },
+    {
+      "left": "prithi_banglish_0058",
+      "right": "prithi_banglish_0148",
+      "similarity": 0.932
+    },
+    {
+      "left": "prithi_banglish_0062",
+      "right": "prithi_banglish_0124",
+      "similarity": 0.942
+    },
+    {
+      "left": "prithi_banglish_0074",
+      "right": "prithi_banglish_0128",
+      "similarity": 0.925
+    },
+    {
+      "left": "prithi_banglish_0078",
+      "right": "prithi_banglish_0132",
+      "similarity": 0.946
+    },
+    {
+      "left": "prithi_banglish_0078",
+      "right": "prithi_banglish_0152",
+      "similarity": 0.936
+    },
+    {
+      "left": "prithi_banglish_0082",
+      "right": "prithi_banglish_0130",
+      "similarity": 0.941
+    },
+    {
+      "left": "prithi_banglish_0086",
+      "right": "prithi_banglish_0134",
+      "similarity": 0.926
+    },
+    {
+      "left": "prithi_banglish_0090",
+      "right": "prithi_banglish_0136",
+      "similarity": 0.942
+    },
+    {
+      "left": "prithi_banglish_0090",
+      "right": "prithi_banglish_0156",
+      "similarity": 0.931
+    },
+    {
+      "left": "prithi_banglish_0098",
+      "right": "prithi_banglish_0138",
+      "similarity": 0.923
+    },
+    {
+      "left": "prithi_bengali_0164",
+      "right": "prithi_bengali_0181",
+      "similarity": 0.934
+    },
+    {
+      "left": "prithi_bengali_0164",
+      "right": "prithi_bengali_0196",
+      "similarity": 0.934
+    },
+    {
+      "left": "prithi_bengali_0168",
+      "right": "prithi_bengali_0184",
+      "similarity": 0.939
+    },
+    {
+      "left": "prithi_bengali_0168",
+      "right": "prithi_bengali_0199",
+      "similarity": 0.939
+    },
+    {
+      "left": "prithi_bengali_0184",
+      "right": "prithi_bengali_0199",
+      "similarity": 0.925
+    }
+  ],
+  "languages": {
+    "bengali": 90,
+    "banglish": 50,
+    "hindi": 30,
+    "english": 30
+  },
+  "modes": {
+    "normal": 180,
+    "adult": 20
+  },
+  "categories": {
+    "normal_casual": 7,
+    "caring": 9,
+    "affectionate": 10,
+    "playful": 7,
+    "sensual_suggestive": 7,
+    "relationship_progression": 7,
+    "deescalation": 4,
+    "friendly": 7,
+    "loneliness": 8,
+    "romantic": 10,
+    "teasing": 7,
+    "intimate": 14,
+    "memory_callback": 6,
+    "boundary_setting": 4,
+    "warm": 6,
+    "reassurance": 7,
+    "flirtatious": 6,
+    "aftercare": 4,
+    "topic_change": 6,
+    "user_happy": 5,
+    "empathy": 6,
+    "bedtime_companionship": 9,
+    "jealousy_light_playful": 5,
+    "reconciliation": 9,
+    "user_tired": 4,
+    "user_vulnerability": 5,
+    "attraction": 5,
+    "humor": 4,
+    "user_stressed": 5,
+    "compliment_response": 4,
+    "disagreement": 3
+  },
+  "review_statuses": {
+    "pending": 200
+  },
+  "multi_turn": 56
+}
