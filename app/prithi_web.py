@@ -1,6 +1,7 @@
 import os
 import asyncio
 import json
+import inspect
 import logging
 from logging.handlers import RotatingFileHandler
 import re
@@ -43,6 +44,11 @@ from prithi_stt import MODEL_PATH, SUPPORTED_LANGUAGES, language_code
 from prithi_transcript_quality import assess_transcript, RETRY_MESSAGE
 from prithi_voice_chat import PrithiVoicePipeline
 from prithi_stt_diagnostics import register_diagnostics
+from prithi_context import TurnContext, analyze_context
+from prithi_learning import LearningStore, learning_signal, prompt_for_behaviors
+from prithi_mood import MoodState, MoodStore, blend_voice_style, update_mood
+from prithi_roleplay import RoleplayState
+from prithi_strategy import compose_adaptive_prompt, select_strategy
 
 
 APP_DIR = Path(__file__).resolve().parent
@@ -89,6 +95,9 @@ class SessionState:
     user_id: str
     relationship_restored: bool = False
     adult_opt_in: bool = False
+    mood: MoodState | None = None
+    roleplay: RoleplayState | None = None
+    adaptive_debug: dict[str, Any] | None = None
 
 
 @dataclass
@@ -197,6 +206,8 @@ def create_app(
     app.state.audio_files: dict[str, AudioState] = {}
     app.state.state_lock = threading.Lock()
     app.state.memory = memory_store or MemoryStore(DEFAULT_DB_PATH)
+    app.state.moods = MoodStore(app.state.memory.db_path)
+    app.state.learning = LearningStore(app.state.memory.db_path)
     if pipeline_factory is _default_pipeline_factory:
         app.state.model_router = model_router
         def create_default_pipeline() -> PrithiVoicePipeline:
@@ -288,10 +299,68 @@ def create_app(
                     brain.current_emotion = str(restored.get("current_emotion", "neutral"))
                     brain.previous_emotion = str(restored.get("previous_emotion", "neutral"))
                     relationship_restored = True
-                state = SessionState(pipeline, threading.Lock(), time.time(), user_id, relationship_restored, False)
+                state = SessionState(
+                    pipeline, threading.Lock(), time.time(), user_id, relationship_restored, False,
+                    app.state.moods.load(user_id), RoleplayState(), None,
+                )
                 app.state.sessions[session_id] = state
             state.last_used = time.time()
             return state
+
+    def prepare_adaptive_turn(state: SessionState, transcript: str, language: str, conversation_mode: str) -> str:
+        context = analyze_context(transcript, language if language != "auto" else None)
+        if state.roleplay is None:
+            state.roleplay = RoleplayState()
+        state.roleplay.apply_boundary(context.boundary_signal)
+        memories = app.state.memory.relevant_memories(state.user_id, transcript, limit=6)
+        tags = [context.user_intent, context.user_emotion, context.user_need, context.language]
+        learned = app.state.learning.relevant(state.user_id, tags, limit=3)
+        strategy = select_strategy(
+            context,
+            adult_mode=conversation_mode == ADULT_MODE,
+            has_relevant_memory=bool(memories),
+        )
+        state.mood = state.mood or app.state.moods.load(state.user_id)
+        next_mood = update_mood(state.mood, context, strategy, adult_mode=conversation_mode == ADULT_MODE)
+        state.adaptive_debug = {
+            "context": context.as_dict(), "response_strategy": strategy,
+            "mood": next_mood.as_dict(), "roleplay_active": bool(state.roleplay.active),
+            "relevant_memory_count": len(memories), "learned_behavior_count": len(learned),
+            "_transcript": transcript,
+        }
+        brain = getattr(state.pipeline, "brain", None)
+        relationship = brain.relationship_state.as_dict() if brain is not None else {}
+        return compose_adaptive_prompt(
+            context=context, strategy=strategy, mood=next_mood.as_dict(), relationship=relationship,
+            roleplay_prompt=state.roleplay.prompt(), learned_prompt=prompt_for_behaviors(learned),
+            adult_mode=conversation_mode == ADULT_MODE,
+        )
+
+    def finalize_adaptive_turn(state: SessionState, brain: dict[str, Any]) -> None:
+        debug = state.adaptive_debug or {}
+        mood_values = debug.get("mood")
+        if mood_values:
+            state.mood = MoodState(**mood_values)
+            app.state.moods.save(state.user_id, state.mood)
+            brain["voice_style"] = blend_voice_style(brain.get("voice_style", {}), state.mood)
+        context_values = debug.get("context")
+        if context_values:
+            context = TurnContext(**context_values)
+            signal = learning_signal(str(debug.get("_transcript", "")), context, str(debug.get("response_strategy", "quiet_companionship")))
+            if signal:
+                kind, example_style, positive = signal
+                app.state.learning.learn(
+                    state.user_id, type=kind,
+                    tags=[context.user_intent, context.user_emotion, context.language],
+                    strategy=str(debug.get("response_strategy")), example_style=example_style,
+                    positive=positive,
+                )
+        if state.roleplay and state.roleplay.active and not state.roleplay.paused:
+            event = str(brain.get("reply", "")).strip()[:300]
+            state.roleplay.last_event = event
+            prior = state.roleplay.scene_summary.strip()
+            state.roleplay.scene_summary = (prior + " " + event).strip()[-800:]
+        brain["adaptive"] = {key: value for key, value in debug.items() if not key.startswith("_")}
 
     def persist_successful_turn(
         state: SessionState,
@@ -464,6 +533,52 @@ def create_app(
         state.adult_opt_in = False
         return adult_mode_payload(state, user_id)
 
+    @app.get("/api/brain-state", dependencies=[Depends(require_token)])
+    def brain_state(
+        session_id: str = Depends(current_session),
+        user_id: str = Depends(current_user),
+    ) -> dict[str, Any]:
+        state = get_session(session_id, user_id)
+        brain = getattr(state.pipeline, "brain", None)
+        debug = dict(state.adaptive_debug or {})
+        debug.pop("_transcript", None)
+        return {
+            "model": getattr(getattr(brain, "backend", None), "model", None),
+            "emotion": getattr(brain, "current_emotion", "neutral"),
+            "relationship": brain.relationship_state.as_dict() if brain else {},
+            "roleplay": (state.roleplay or RoleplayState()).as_dict(),
+            **debug,
+        }
+
+    @app.post("/api/roleplay/start", dependencies=[Depends(require_token)])
+    def start_roleplay(
+        scenario: str = Form(...), role: str = Form(default="Prithi"), tone: str = Form(default="natural"),
+        adult_scene: bool = Form(default=False), session_id: str = Depends(current_session),
+        user_id: str = Depends(current_user),
+    ) -> dict[str, Any]:
+        state = get_session(session_id, user_id)
+        roleplay = state.roleplay or RoleplayState()
+        try:
+            roleplay.start(scenario, role=role, tone=tone, adult_scene=adult_scene,
+                           age_confirmed=app.state.memory.adult_age_confirmed(user_id),
+                           adult_opt_in=state.adult_opt_in)
+        except PermissionError as exc:
+            raise HTTPException(status_code=403, detail=str(exc))
+        state.roleplay = roleplay
+        return roleplay.as_dict()
+
+    @app.post("/api/roleplay/{action}", dependencies=[Depends(require_token)])
+    def change_roleplay(
+        action: str, session_id: str = Depends(current_session), user_id: str = Depends(current_user),
+    ) -> dict[str, Any]:
+        if action not in {"pause", "resume", "reset"}:
+            raise HTTPException(status_code=404, detail="Unsupported roleplay action")
+        state = get_session(session_id, user_id)
+        roleplay = state.roleplay or RoleplayState()
+        getattr(roleplay, action)()
+        state.roleplay = roleplay
+        return roleplay.as_dict()
+
     def clear_session_conversation(session_id: str, user_id: str) -> None:
         with app.state.state_lock:
             state = app.state.sessions.get(session_id)
@@ -593,6 +708,11 @@ def create_app(
                     options: dict[str, Any] = {"memory_context": memory_context}
                     if getattr(state.pipeline, "model_router", None) is not None:
                         options.update(turn_mode_options(state, user_id))
+                    mode = str(options.get("conversation_mode", NORMAL_MODE))
+                    process_parameters = inspect.signature(state.pipeline.process_audio).parameters
+                    if "adaptive_context_factory" in process_parameters:
+                        options["adaptive_context_factory"] = lambda text: prepare_adaptive_turn(state, text, normalized_language, mode)
+                        options["adaptive_finalize"] = lambda value: finalize_adaptive_turn(state, value)
                     return state.pipeline.process_audio(converted, normalized_language, **options)
 
             result = await run_in_threadpool(process)
@@ -655,6 +775,7 @@ def create_app(
             "model_switch_occurred": routing.get("switch_occurred", False),
             "model_switch_latency": routing.get("switch_latency", 0.0),
             "adult_mode_disabled": adult_mode_disabled,
+            "adaptive": brain.get("adaptive", {}),
         }
         if status == "TTS_FAILED":
             log_timing(request_id=request_id, endpoint="voice-turn", status=status, total=payload["total_time"])
@@ -781,7 +902,12 @@ def create_app(
                     }
                     if getattr(state.pipeline, "model_router", None) is not None:
                         response_options.update(turn_mode_options(state, user_id))
+                    mode = str(response_options.get("conversation_mode", NORMAL_MODE))
+                    adaptive_prompt = prepare_adaptive_turn(state, transcript, normalized_language, mode)
+                    if "adaptive_context" in inspect.signature(state.pipeline.respond_only).parameters:
+                        response_options["adaptive_context"] = adaptive_prompt
                     brain = await run_in_threadpool(state.pipeline.respond_only, transcript, **response_options)
+                    finalize_adaptive_turn(state, brain)
                 except Exception:
                     yield event("error", stage="llm", message="Prithi could not generate a reply")
                     return
@@ -819,6 +945,7 @@ def create_app(
                     model_switch_occurred=routing.get("switch_occurred", False),
                     model_switch_latency=routing.get("switch_latency", 0.0),
                     adult_mode_disabled=adult_mode_disabled,
+                    adaptive=brain.get("adaptive", {}),
                     elapsed=reply_visible,
                 )
                 try:

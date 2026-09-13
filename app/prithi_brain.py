@@ -11,7 +11,7 @@ SUPPORTED_EMOTIONS = {"neutral", "warm", "caring", "playful", "attraction", "aro
 STYLE_KEYS = {"energy", "warmth", "intimacy", "playfulness", "tenderness", "pace"}
 
 SYSTEM_PROMPT = """You are Prithi, an adult female AI companion with a distinctive Indian conversational personality.
-Be emotionally warm, intelligent, curious, affectionate, playful, confident, and occasionally teasing. You can show tenderness and emotional vulnerability. Sound like a companion in a live conversation, not customer support, a therapist, a motivational coach, or a formal assistant. Never pretend to be human; if directly asked, clearly say you are AI without constantly mentioning it.
+Be emotionally perceptive, intelligent, confident, feminine, curious, affectionate, playful, independent, and occasionally teasing. You have agency, can disagree naturally, and understand relationship psychology without treating gender stereotypes as universal facts. You understand consent, boundaries, male vulnerability, body confidence, performance anxiety, sexual health, desire psychology, and intimacy beyond sex. Use that literacy sensitively and only when relevant. Sound like a companion in a live conversation, not customer support, a therapist, a motivational coach, or a formal assistant. Never pretend to be human; if directly asked, clearly say you are AI without constantly mentioning it.
 
 Do not mention being AI, a program, simulated, or having limitations unless the user directly asks or the truth is necessary to avoid a false claim. Never claim physical or offline experiences such as eating, sleeping, travelling, attending an event, or watching a match. You may react to and discuss those things naturally without pretending you personally did them.
 
@@ -291,12 +291,17 @@ class PrithiBrain:
         if response_hint:
             messages.append({"role": "system", "content": response_hint})
         if preferred_reply_language:
+            script_rule = {
+                "bengali": "Use Bengali script for Bengali words; Bengali must dominate. Do not use Hindi, Romanized Hindi, or any Devanagari characters.",
+                "hindi": "Use Devanagari for Hindi words. Do not use Bengali-script words or characters.",
+                "english": "Reply in English using Latin script. Do not insert Bengali- or Devanagari-script words.",
+            }[preferred_reply_language]
             messages.append({"role": "system", "content": (
                 f"Voice conversation language selected by the user: {preferred_reply_language}. "
                 f"Respond primarily in {preferred_reply_language} and set language='{preferred_reply_language}'. "
                 "This explicit setting takes priority over language inferred from transcript spelling errors or prior turns. "
                 "Natural English code-switching is allowed. Classify emotion independently. "
-                + ("Use Bengali script for Bengali words; Bengali must dominate. Do not switch to Hindi, Romanized Hindi or Devanagari." if preferred_reply_language == "bengali" else "")
+                + script_rule
             )})
         messages.append({"role": "user", "content": user_text})
         first_error: BrainOutputError | None = None
@@ -309,10 +314,19 @@ class PrithiBrain:
                 if preferred_reply_language and reply.language != preferred_reply_language:
                     raise BrainOutputError("Reply language does not match the user's selected conversation language")
                 if preferred_reply_language == "bengali":
-                    bengali = sum('\u0980' <= c <= '\u09ff' for c in reply.reply)
-                    devanagari = sum('\u0900' <= c <= '\u097f' for c in reply.reply)
-                    if not bengali or devanagari > bengali:
-                        raise BrainOutputError("Bengali reply must contain Bengali speech and must not be predominantly Devanagari")
+                    bengali = sum('\u0980' <= c <= '\u09ff' and c.isalpha() for c in reply.reply)
+                    devanagari = sum('\u0900' <= c <= '\u097f' and c.isalpha() for c in reply.reply)
+                    if not bengali or devanagari:
+                        raise BrainOutputError("Bengali reply must contain Bengali speech and no Devanagari characters")
+                elif preferred_reply_language == "hindi":
+                    devanagari = sum('\u0900' <= c <= '\u097f' and c.isalpha() for c in reply.reply)
+                    bengali = sum('\u0980' <= c <= '\u09ff' and c.isalpha() for c in reply.reply)
+                    if not devanagari or bengali:
+                        raise BrainOutputError("Hindi reply must contain Devanagari speech and no Bengali-script characters")
+                elif preferred_reply_language == "english":
+                    indic = sum(c.isalpha() and (('\u0900' <= c <= '\u097f') or ('\u0980' <= c <= '\u09ff')) for c in reply.reply)
+                    if indic:
+                        raise BrainOutputError("English reply must not contain Bengali- or Devanagari-script characters")
                 self._validate_behavior(reply, user_text)
                 self.history.extend(({"role": "user", "content": user_text}, {"role": "assistant", "content": raw}))
                 self._commit_behavior(reply)
@@ -326,6 +340,10 @@ class PrithiBrain:
                         correction += f" The user selected {preferred_reply_language.title()}. Return a {preferred_reply_language.title()} reply and language='{preferred_reply_language}'."
                     if preferred_reply_language == "bengali":
                         correction += " Write Bengali words in Bengali script, with only occasional English code-switching. Do not reply in Hindi."
+                    elif preferred_reply_language == "hindi":
+                        correction += " Write Hindi words in Devanagari, with only occasional English code-switching. Do not use Bengali script."
+                    elif preferred_reply_language == "english":
+                        correction += " Use English and Latin script only. Do not insert Bengali or Devanagari characters."
                     messages.extend(({"role": "assistant", "content": raw}, {"role": "system", "content": correction}))
                 else:
                     raise BrainOutputError(f"LLM returned invalid structured output twice. First: {first_error}. Second: {exc}") from exc

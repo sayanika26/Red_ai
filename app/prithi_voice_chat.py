@@ -118,8 +118,12 @@ class PrithiVoicePipeline:
         conversation_mode: str = NORMAL_MODE,
         age_confirmed: bool = False,
         adult_opt_in: bool = False,
+        adaptive_context: str | None = None,
     ) -> dict[str, Any]:
-        hint = CONCISE_VOICE_HINT if self.reply_mode == "concise" else None
+        hints = [CONCISE_VOICE_HINT] if self.reply_mode == "concise" else []
+        if adaptive_context:
+            hints.append(adaptive_context)
+        hint = "\n".join(hints) or None
         options = {}
         if hint:
             options["response_hint"] = hint
@@ -182,6 +186,9 @@ class PrithiVoicePipeline:
         conversation_mode: str = NORMAL_MODE,
         age_confirmed: bool = False,
         adult_opt_in: bool = False,
+        adaptive_context: str | None = None,
+        adaptive_context_factory: Callable[[str], str] | None = None,
+        adaptive_finalize: Callable[[dict[str, Any]], None] | None = None,
     ) -> dict[str, Any]:
         started = time.perf_counter()
         result: dict[str, Any] = {
@@ -207,6 +214,8 @@ class PrithiVoicePipeline:
             return result
 
         try:
+            if adaptive_context_factory is not None:
+                adaptive_context = adaptive_context_factory(transcript)
             result["brain"] = self.respond_only(
                 transcript,
                 language if language != "auto" else None,
@@ -214,7 +223,10 @@ class PrithiVoicePipeline:
                 conversation_mode=conversation_mode,
                 age_confirmed=age_confirmed,
                 adult_opt_in=adult_opt_in,
+                adaptive_context=adaptive_context,
             )
+            if adaptive_finalize is not None:
+                adaptive_finalize(result["brain"])
         except Exception as exc:
             result.update(status="BRAIN_FAILED", error=f"{type(exc).__name__}: {exc}")
             result["total_time"] = time.perf_counter() - started

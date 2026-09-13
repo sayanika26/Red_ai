@@ -38,11 +38,26 @@ class ReplyLanguageTests(unittest.TestCase):
         self.assertEqual(brain.respond('শুনছো?',preferred_reply_language='bengali').reply,'হ্যাঁ, আমি শুনছি।')
         self.assertEqual(brain.backend.complete.call_count,2)
 
+    def test_single_devanagari_word_in_bengali_retries(self):
+        brain=self.brain(output('bengali','আচ্ছা, बोलो।'),output('bengali','আচ্ছা, বলো।'))
+        self.assertEqual(brain.respond('কথা বলো',preferred_reply_language='bengali').reply,'আচ্ছা, বলো।')
+        self.assertEqual(brain.backend.complete.call_count,2)
+
     def test_hindi_selected(self):
         self.assertEqual(self.brain(output('hindi','हाँ, बोलो।')).respond('hello',preferred_reply_language='hindi').language,'hindi')
 
+    def test_bengali_word_in_hindi_retries(self):
+        brain=self.brain(output('hindi','हाँ, কী बात है?'),output('hindi','हाँ, क्या बात है?'))
+        self.assertEqual(brain.respond('बताओ',preferred_reply_language='hindi').reply,'हाँ, क्या बात है?')
+        self.assertEqual(brain.backend.complete.call_count,2)
+
     def test_english_selected(self):
         self.assertEqual(self.brain(output('english','I am listening.')).respond('hello',preferred_reply_language='english').language,'english')
+
+    def test_indic_script_in_english_retries(self):
+        brain=self.brain(output('english','Okay, বলো.'),output('english','Okay, tell me.'))
+        self.assertEqual(brain.respond('hello',preferred_reply_language='english').reply,'Okay, tell me.')
+        self.assertEqual(brain.backend.complete.call_count,2)
 
     def test_auto_inference(self):
         self.assertEqual(self.brain(output('hindi','हाँ, बोलो।')).respond('hello').language,'hindi')

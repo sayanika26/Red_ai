@@ -58,14 +58,29 @@ mkdir -p "${HOME}/.virtualenvs" \
   "${PROJECT_ROOT}/runtime/prithi_memory" "${PROJECT_ROOT}/runtime/web" \
   "${PROJECT_ROOT}/app/output" "${PROJECT_ROOT}/secrets"
 
-if [[ ! -x "${APP_VENV}/bin/python" ]]; then
-  "${PYTHON_BIN}" -m venv "${APP_VENV}"
-fi
+create_venv() {
+  local target="$1"
+  if [[ -x "${target}/bin/python" ]] && "${target}/bin/python" -m pip --version >/dev/null 2>&1; then
+    return 0
+  fi
+  if command -v uv >/dev/null 2>&1; then
+    [[ "${target}" == "${HOME}/.virtualenvs/"* ]] || { echo "Unsafe virtualenv target: ${target}" >&2; exit 1; }
+    rm -rf "${target}"
+    uv venv --seed --python 3.10 "${target}"
+  else
+    "${PYTHON_BIN}" -m venv "${target}" || {
+      echo "Python venv creation failed. Install python3-venv or install uv, then rerun." >&2
+      exit 1
+    }
+  fi
+}
+
+create_venv "${APP_VENV}"
 "${APP_VENV}/bin/python" -m pip install --upgrade pip
 "${APP_VENV}/bin/python" -m pip install -r "${PROJECT_ROOT}/requirements.txt"
 
 if ${WITH_TRAINING}; then
-  if [[ ! -x "${TRAINING_VENV}/bin/python" ]]; then "${PYTHON_BIN}" -m venv "${TRAINING_VENV}"; fi
+  create_venv "${TRAINING_VENV}"
   "${TRAINING_VENV}/bin/python" -m pip install --upgrade pip
   "${TRAINING_VENV}/bin/python" -m pip install -r "${PROJECT_ROOT}/requirements-training.txt"
 fi

@@ -777,6 +777,12 @@ async function handleProgress(event) {
       const r = event.relationship_state;
       document.querySelector("#relationship-debug").textContent = `Emotion: ${event.current_emotion} · Previous: ${event.previous_emotion} · Familiarity: ${Number(r.familiarity).toFixed(2)} · Trust: ${Number(r.trust).toFixed(2)} · Affection: ${Number(r.affection).toFixed(2)} · Playfulness: ${Number(r.playfulness).toFixed(2)} · Romantic tension: ${Number(r.romantic_tension).toFixed(2)} · Question: ${event.question_used ? "yes" : "no"} · Memory candidates: ${event.memory_candidate_count ?? 0} · Saved: ${event.memory_saved_count ?? 0}`;
     }
+    if (event.adaptive) {
+      const a = event.adaptive;
+      const mood = a.mood || {};
+      const moodText = Object.entries(mood).map(([key, value]) => `${key} ${Number(value).toFixed(2)}`).join(" · ");
+      document.querySelector("#brain-debug").textContent = `Model: ${event.selected_model || "unknown"} · Strategy: ${a.response_strategy || "unknown"} · Mood: ${moodText || "default"} · Roleplay: ${a.roleplay_active ? "on" : "off"} · Memories used: ${a.relevant_memory_count || 0} · Learned behaviors: ${a.learned_behavior_count || 0}`;
+    }
     if (!memoryPanel.classList.contains("hidden")) await loadMemory(true);
     replyEl.textContent = event.text;
     replyEl.classList.remove("muted");
