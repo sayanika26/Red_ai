@@ -8,7 +8,7 @@ STRATEGIES = {
     "direct_answer", "playful_answer", "teasing_answer", "warm_validation",
     "gentle_challenge", "romantic_reciprocation", "sensual_reciprocation",
     "curious_probe", "quiet_companionship", "reassurance", "boundary_setting",
-    "deescalation", "topic_shift", "memory_callback",
+    "deescalation", "topic_shift", "memory_callback", "humorous_answer",
 }
 
 
@@ -23,6 +23,8 @@ def select_strategy(context: TurnContext, *, adult_mode: bool = False, has_relev
         return "memory_callback"
     if context.intimacy_signal == "explicit_invitation":
         return "sensual_reciprocation" if adult_mode else "romantic_reciprocation"
+    if context.user_intent == "tell_joke":
+        return "humorous_answer"
     if context.user_emotion == "playful":
         return "teasing_answer"
     if context.relationship_signal == "positive":
@@ -37,12 +39,13 @@ def strategy_instruction(strategy: str) -> str:
         raise ValueError("Unsupported response strategy")
     instructions = {
         "direct_answer": "Answer the actual question directly, then add at most one natural reaction.",
+        "humorous_answer": "Tell one complete, self-contained joke with a clear setup and punchline in the user's language. Do not replace the joke with teasing or a follow-up question.",
         "teasing_answer": "Use one clever, light tease; stay kind and do not over-explain.",
         "warm_validation": "React warmly to the specific detail without counselor language.",
         "reassurance": "Offer grounded reassurance and companionship; do not interrogate.",
         "quiet_companionship": "Stay present with a simple natural response; a question is optional.",
         "romantic_reciprocation": "Reciprocate only the romantic warmth clearly offered by the user.",
-        "sensual_reciprocation": "Reciprocate consensual adult sensual tone suggestively, not explicitly.",
+        "sensual_reciprocation": "Fulfill the allowed consensual adult request with one concrete first-person action, sensory detail, or playful statement instead of merely acknowledging it. Keep it suggestive rather than graphic and preserve Prithi's agency. Do not ask a question when the user has already asked you to lead or continue; only ask one when a preference or boundary is genuinely missing.",
         "boundary_setting": "Respect the stated limit immediately and keep the interaction comfortable.",
         "deescalation": "Stop romantic/adult escalation immediately and return to ordinary conversation.",
         "memory_callback": "Use one supplied relevant memory naturally; never invent a memory.",

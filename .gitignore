@@ -5,6 +5,7 @@ secrets/
 *.pem
 *.key
 *.p12
+*.pfx
 
 # Large models, caches, and runtime/user state
 runtime/
@@ -13,6 +14,9 @@ runtime/
 *.sqlite3
 .cache/
 .huggingface/
+.ollama/
+.cache/whisper/
+whisper-models/
 **/.cache/
 **/huggingface/cache/
 __pycache__/
@@ -34,6 +38,8 @@ voice_auditions/
 *.mp3
 *.m4a
 *.flac
+*.ogg
+*.webm
 
 # Dataset audio and generated datasets (safe metadata remains tracked)
 dataset/raw/
@@ -47,3 +53,8 @@ training/**/outputs/
 training/**/cache/
 training/models/
 training/hf_cache/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.gguf

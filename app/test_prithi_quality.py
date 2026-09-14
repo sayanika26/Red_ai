@@ -28,6 +28,30 @@ class QualityTests(unittest.TestCase):
     def test_low_confidence(self):
         self.assertFalse(assess_transcript({'text':'test', 'segment_metrics':[{'avg_logprob':-2, 'no_speech_prob':.99}]}, 'english')['passed'])
 
+    def test_bengali_semantic_recovery_uses_context_and_decoder_confidence(self):
+        result = {
+            'text': 'সেটা শারা দিন কাছে আছে',
+            'language_probability': .42,
+            'segment_metrics': [{'avg_logprob': -.95, 'no_speech_prob': .55, 'compression_ratio': 1.1}],
+        }
+        gate = assess_transcript(result, 'bengali', previous_text='আজ অফিসের কাজ নিয়ে খুব চাপ ছিল')
+        self.assertFalse(gate['passed'])
+        self.assertIn('low_confidence_context_mismatch', gate['reasons'])
+        self.assertLess(gate['semantic_confidence'], .58)
+
+    def test_context_change_is_allowed_when_acoustically_confident(self):
+        result = {
+            'text': 'সেটা আমার খুব ভালো লেগেছে',
+            'language_probability': .96,
+            'segment_metrics': [{'avg_logprob': -.12, 'no_speech_prob': .01, 'compression_ratio': 1.0}],
+        }
+        self.assertTrue(assess_transcript(result, 'bengali', previous_text='আজ অফিসে কাজ ছিল')['passed'])
+
+    def test_known_bengali_job_close_homophone_is_rejected(self):
+        gate = assess_transcript({'text': 'আজকি শারা দিন অনেক কাছ ছিলো'}, 'bengali')
+        self.assertFalse(gate['passed'])
+        self.assertIn('known_bengali_semantic_confusion', gate['reasons'])
+
     def test_language_mapping(self):
         self.assertEqual([language_code(k) for k in ('bengali','hindi','english','auto')], ['bn','hi','en',None])
 

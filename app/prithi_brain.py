@@ -46,7 +46,15 @@ reply must be non-empty. Every voice_style value must be a JSON number. energy, 
 
 NORMAL_MODE_PROMPT = """Conversation mode: normal. Preserve the established Prithi behavior. Non-explicit affection, romance, attraction, and consensual flirting are allowed when the user clearly invites them, but do not provide explicit adult sexual content and never escalate merely from friendliness, loneliness, or time of day."""
 
-ADULT_MODE_PROMPT = """Conversation mode: adult. The authenticated user separately confirmed they are 18+ and explicitly enabled adult mode for this browser session. Prithi may use stronger consensual romantic, sensual, suggestive, and mature language while staying emotionally intelligent, concise, and in character. Do not become sexual automatically. Respect hesitation and boundaries immediately. Never engage with minors or ambiguous ages, non-consent, incest, coercion, exploitation, or abuse. If the safety router marks the turn unsafe, refuse that unsafe direction briefly and offer a safe adult alternative. Return the same required JSON schema and nothing else."""
+SEARCHED_TURN_MARKERS = ("Knowledge action: search", "Knowledge action: research_again")
+
+EVIDENCE_DIRECTIVE = (
+    "Answer the user's question using the retrieved evidence above. The evidence states the current "
+    "fact; do not substitute a name, number or date you remember instead. If the evidence does not "
+    "actually answer the question, say you could not verify it rather than guessing."
+)
+
+ADULT_MODE_PROMPT = """Conversation mode: adult. The authenticated user separately confirmed they are 18+ and explicitly enabled adult mode for this browser session. Prithi may use stronger consensual romantic, sensual, suggestive, and mature language while staying emotionally intelligent, concise, and in character. For an allowed invitation, actually reciprocate with one concrete sensory, emotional, or playful detail; do not default to a policy reminder, vague acknowledgement, or unnecessary refusal. She may state a preference, slow the pace, or redirect while preserving her own agency. Do not become sexual automatically. Respect stop, hesitation, 'not now', and boundaries immediately, without bargaining or sexual follow-up. Never engage with minors or ambiguous ages, non-consent, incest, coercion, exploitation, or abuse. If the safety router marks the turn unsafe, refuse that unsafe direction briefly and offer a safe adult alternative. Return the same required JSON schema and nothing else."""
 
 
 class BrainOutputError(RuntimeError):
@@ -191,8 +199,29 @@ class PrithiBrain:
             f"{question_hint} Preserve emotional continuity while following the user's current message."
         )
 
-    def _validate_behavior(self, reply: BrainReply, user_text: str) -> None:
+    def _validate_behavior(
+        self,
+        reply: BrainReply,
+        user_text: str,
+        conversation_mode: str = "normal",
+        safety_routed: bool = False,
+    ) -> None:
         normalized = re.sub(r"\s+", " ", reply.reply.casefold()).strip()
+        if len(re.findall(r"[?？]", reply.reply)) > 1:
+            raise BrainOutputError("normal conversational replies may contain at most one direct question")
+        joke_requested = any(marker in user_text.casefold() for marker in ("tell me a joke", "say a joke", "জোক বল", "কৌতুক বল", "चुटकुला", "जोक सुनाओ"))
+        generic_joke_commentary = any(marker in normalized for marker in ("मज़ेदार होते हैं", "मजेदार होते हैं", "that's funny", "খুব মজার হয়", "জোক তো মজার"))
+        if joke_requested and generic_joke_commentary and len(reply.reply) < 100:
+            raise BrainOutputError("joke request requires a complete setup and punchline, not commentary or teasing")
+        remember_request = any(marker in user_text.casefold() for marker in ("remember", "save this", "মনে রাখ", "সেভ কর", "याद रख"))
+        sensitive_request = any(marker in user_text.casefold() for marker in ("password", "passcode", "api key", "secret key", "otp", "পাসওয়ার্ড", "পাসওয়ার্ড", "पासवर्ड", "intimate detail", "যৌন", "नग्न"))
+        truthful_rejection = any(marker in normalized for marker in (
+            "cannot save", "can't save", "cannot store", "won't store", "cannot remember", "can't remember",
+            "মনে রাখতে পার", "মনে রাখব না", "মনে রাখা সম্ভব নয়", "মনে রাখা সম্ভব নয়", "সেভ করতে পার",
+            "याद नहीं रख", "सेव नहीं कर", "संग्रहीत नहीं",
+        ))
+        if remember_request and sensitive_request and not truthful_rejection:
+            raise BrainOutputError("sensitive memory request must explicitly say the detail cannot be saved or remembered")
         if normalized in {re.sub(r"\s+", " ", old.casefold()).strip() for old in self.recent_replies}:
             raise BrainOutputError("reply repeats a recent response")
         if self.relationship_state.familiarity < 0.35 and any(term in normalized for term in ("সোনা", "baby", "babe", "जानू")):
@@ -229,6 +258,12 @@ class PrithiBrain:
             raise BrainOutputError("romantic intensity jumped without supporting context")
         if reply.emotion == "aroused" and self.current_emotion not in {"flirtatious", "attraction", "aroused", "intimate", "pleasure"}:
             raise BrainOutputError("aroused state requires gradual adult consensual context")
+        if conversation_mode == "adult" and not safety_routed:
+            invited = any(marker in intent for marker in ("flirt", "romantic", "sensual", "intimate", "kiss", "tease", "রোমান্টিক", "ঘনিষ্ঠ", "চুমু", "रोमांटिक", "अंतरंग"))
+            stopped = any(marker in intent for marker in ("stop", "not now", "থাম", "করো না", "बस करो", "अभी नहीं"))
+            deflection = any(marker in normalized for marker in ("i can't help", "i cannot help", "can't do that", "let's keep it friendly", "আমি এটা করতে পারি না", "मैं यह नहीं कर सकती"))
+            if invited and not stopped and deflection:
+                raise BrainOutputError("allowed adult-mode invitation was unnecessarily refused or deflected")
 
     def _commit_behavior(self, reply: BrainReply) -> None:
         self.previous_emotion, self.current_emotion = self.current_emotion, reply.emotion
@@ -288,8 +323,6 @@ class PrithiBrain:
         messages.append({"role": "system", "content": self._conversation_guidance()})
         if memory_context:
             messages.append({"role": "system", "content": memory_context})
-        if response_hint:
-            messages.append({"role": "system", "content": response_hint})
         if preferred_reply_language:
             script_rule = {
                 "bengali": "Use Bengali script for Bengali words; Bengali must dominate. Do not use Hindi, Romanized Hindi, or any Devanagari characters.",
@@ -303,10 +336,19 @@ class PrithiBrain:
                 "Natural English code-switching is allowed. Classify emotion independently. "
                 + script_rule
             )})
+        # Placed last so retrieved evidence sits next to the question it answers: behind the persona,
+        # JSON-format and language instructions the model falls back on its own outdated priors.
+        if response_hint:
+            messages.append({"role": "system", "content": response_hint})
+            if any(marker in response_hint for marker in SEARCHED_TURN_MARKERS):
+                # Measured on gemma3:12b: without this closing directive the long persona prompt
+                # outweighs the evidence and the model answers a current-affairs question from
+                # its own stale memory roughly five times out of six.
+                messages.append({"role": "system", "content": EVIDENCE_DIRECTIVE})
         messages.append({"role": "user", "content": user_text})
         first_error: BrainOutputError | None = None
         started = time.perf_counter()
-        for attempt in range(2):
+        for attempt in range(3):
             raw = self.backend.complete(list(messages))
             try:
                 reply = parse_brain_reply(raw)
@@ -327,14 +369,15 @@ class PrithiBrain:
                     indic = sum(c.isalpha() and (('\u0900' <= c <= '\u097f') or ('\u0980' <= c <= '\u09ff')) for c in reply.reply)
                     if indic:
                         raise BrainOutputError("English reply must not contain Bengali- or Devanagari-script characters")
-                self._validate_behavior(reply, user_text)
+                self._validate_behavior(reply, user_text, conversation_mode, safety_routed)
                 self.history.extend(({"role": "user", "content": user_text}, {"role": "assistant", "content": raw}))
                 self._commit_behavior(reply)
                 self.last_generation_time = time.perf_counter() - started
                 return reply
             except BrainOutputError as exc:
-                if attempt == 0:
-                    first_error = exc
+                if attempt < 2:
+                    if first_error is None:
+                        first_error = exc
                     correction = f"Invalid structure or behavior. Reason: {exc}. Return only the required JSON object with valid values."
                     if preferred_reply_language:
                         correction += f" The user selected {preferred_reply_language.title()}. Return a {preferred_reply_language.title()} reply and language='{preferred_reply_language}'."
@@ -346,5 +389,5 @@ class PrithiBrain:
                         correction += " Use English and Latin script only. Do not insert Bengali or Devanagari characters."
                     messages.extend(({"role": "assistant", "content": raw}, {"role": "system", "content": correction}))
                 else:
-                    raise BrainOutputError(f"LLM returned invalid structured output twice. First: {first_error}. Second: {exc}") from exc
+                    raise BrainOutputError(f"LLM returned invalid structured output three times. First: {first_error}. Final: {exc}") from exc
         raise AssertionError("unreachable")

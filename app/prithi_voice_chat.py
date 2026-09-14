@@ -107,7 +107,17 @@ class PrithiVoicePipeline:
 
     def transcribe_only(self, audio_path: str | Path, language: str) -> dict[str, Any]:
         result = self.stt(audio_path, language=language)
-        result["quality_gate"] = assess_transcript(result, language)
+        previous_text = None
+        history = getattr(self.brain, "history", ())
+        try:
+            prior_items = reversed(history)
+        except TypeError:
+            prior_items = iter(())
+        for item in prior_items:
+            if isinstance(item, dict) and item.get("role") == "user":
+                previous_text = item.get("content")
+                break
+        result["quality_gate"] = assess_transcript(result, language, previous_text=previous_text)
         return result
 
     def respond_only(
@@ -208,7 +218,7 @@ class PrithiVoicePipeline:
         transcript = str(result["stt"].get("text", "")).strip()
         result["transcript"] = transcript
         if not transcript or not result["stt"]["quality_gate"]["passed"]:
-            result.update(status="STT_EMPTY", error="STT returned an empty transcript; LLM and TTS were not called")
+            result.update(status="STT_EMPTY", error=RETRY_MESSAGE)
             result["total_time"] = time.perf_counter() - started
             self.last_result = result
             return result

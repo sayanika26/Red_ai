@@ -27,8 +27,9 @@ from prithi_chat import load_local_env
 from prithi_memory import (
     DEFAULT_DB_PATH,
     MemoryStore,
-    extract_display_name,
+    contains_sensitive_data,
     extract_memory_candidates,
+    extract_profile_updates,
     save_candidates,
     stable_user_id,
 )
@@ -45,10 +46,13 @@ from prithi_transcript_quality import assess_transcript, RETRY_MESSAGE
 from prithi_voice_chat import PrithiVoicePipeline
 from prithi_stt_diagnostics import register_diagnostics
 from prithi_context import TurnContext, analyze_context
-from prithi_learning import LearningStore, learning_signal, prompt_for_behaviors
+from prithi_learning import LearningStore, learning_signals, prompt_for_behaviors
 from prithi_mood import MoodState, MoodStore, blend_voice_style, update_mood
 from prithi_roleplay import RoleplayState
 from prithi_strategy import compose_adaptive_prompt, select_strategy
+from prithi_retrieval import KnowledgeRetriever, RetrievalResult, classify_knowledge, natural_status_line
+from prithi_search import DuckDuckGoSearchProvider, SearchHistoryStore
+from prithi_followup import SilenceFollowup
 
 
 APP_DIR = Path(__file__).resolve().parent
@@ -81,10 +85,20 @@ class WebConfig:
     max_recording_seconds: float = 60.0
     audio_ttl_seconds: float = 30 * 60
     session_ttl_seconds: float = 4 * 60 * 60
+    search_enabled: bool = False
+    search_timeout_seconds: float = 8.0
+    search_ttl_seconds: int = 15 * 60
+    silence_followup_seconds: float = 45.0
 
     @classmethod
     def from_environment(cls) -> "WebConfig":
-        return cls(access_token=os.environ.get("PRITHI_WEB_ACCESS_TOKEN", "").strip())
+        return cls(
+            access_token=os.environ.get("PRITHI_WEB_ACCESS_TOKEN", "").strip(),
+            search_enabled=os.environ.get("PRITHI_WEB_SEARCH_ENABLED", "true").casefold() == "true",
+            search_timeout_seconds=float(os.environ.get("PRITHI_WEB_SEARCH_TIMEOUT", "8")),
+            search_ttl_seconds=int(os.environ.get("PRITHI_WEB_SEARCH_TTL_SECONDS", "900")),
+            silence_followup_seconds=float(os.environ.get("PRITHI_SILENCE_FOLLOWUP_SECONDS", "45")),
+        )
 
 
 @dataclass
@@ -98,6 +112,9 @@ class SessionState:
     mood: MoodState | None = None
     roleplay: RoleplayState | None = None
     adaptive_debug: dict[str, Any] | None = None
+    followup: SilenceFollowup | None = None
+    pending_clarification: str = ""
+    last_search_query: str = ""
 
 
 @dataclass
@@ -199,6 +216,7 @@ def create_app(
     converter: Callable[[Path, Path, float], tuple[float, float]] = convert_to_pcm_wav,
     memory_store: MemoryStore | None = None,
     model_router: PrithiModelRouter | None = None,
+    knowledge_retriever: KnowledgeRetriever | None = None,
 ) -> FastAPI:
     web_config = config or WebConfig.from_environment()
     app = FastAPI(title="Prithi Voice", docs_url=None, redoc_url=None, openapi_url=None)
@@ -208,6 +226,12 @@ def create_app(
     app.state.memory = memory_store or MemoryStore(DEFAULT_DB_PATH)
     app.state.moods = MoodStore(app.state.memory.db_path)
     app.state.learning = LearningStore(app.state.memory.db_path)
+    app.state.retriever = knowledge_retriever
+    if app.state.retriever is None and web_config.search_enabled:
+        app.state.retriever = KnowledgeRetriever(
+            DuckDuckGoSearchProvider(timeout=web_config.search_timeout_seconds),
+            SearchHistoryStore(app.state.memory.db_path, ttl_seconds=web_config.search_ttl_seconds),
+        )
     if pipeline_factory is _default_pipeline_factory:
         app.state.model_router = model_router
         def create_default_pipeline() -> PrithiVoicePipeline:
@@ -301,20 +325,44 @@ def create_app(
                     relationship_restored = True
                 state = SessionState(
                     pipeline, threading.Lock(), time.time(), user_id, relationship_restored, False,
-                    app.state.moods.load(user_id), RoleplayState(), None,
+                    app.state.moods.load(user_id), RoleplayState(), None, SilenceFollowup(),
                 )
                 app.state.sessions[session_id] = state
             state.last_used = time.time()
             return state
 
-    def prepare_adaptive_turn(state: SessionState, transcript: str, language: str, conversation_mode: str) -> str:
+    def prepare_adaptive_turn(
+        state: SessionState,
+        transcript: str,
+        language: str,
+        conversation_mode: str,
+        retrieval: RetrievalResult | None = None,
+    ) -> str:
         context = analyze_context(transcript, language if language != "auto" else None)
         if state.roleplay is None:
             state.roleplay = RoleplayState()
         state.roleplay.apply_boundary(context.boundary_signal)
         memories = app.state.memory.relevant_memories(state.user_id, transcript, limit=6)
-        tags = [context.user_intent, context.user_emotion, context.user_need, context.language]
+        brain = getattr(state.pipeline, "brain", None)
+        relationship = brain.relationship_state.as_dict() if brain is not None else {}
+        relationship_state = context.relationship_signal
+        tags = [
+            context.user_intent, context.user_emotion, context.user_need, context.language,
+            context.intimacy_signal, f"mode:{conversation_mode}",
+            f"roleplay:{'on' if state.roleplay.active and not state.roleplay.paused else 'off'}",
+            f"relationship:{relationship_state}",
+        ]
         learned = app.state.learning.relevant(state.user_id, tags, limit=3)
+        if retrieval is None and app.state.retriever is not None:
+            retrieval = app.state.retriever.retrieve(
+                transcript, state.pending_clarification, state.last_search_query
+            )
+        if retrieval is not None:
+            # Remember an unanswered clarification so the next reply completes the question.
+            state.pending_clarification = transcript if retrieval.decision.action == "clarify" else ""
+            # Remember the topic so a later "are you sure?" re-researches it, not that phrase.
+            if retrieval.decision.action in {"search", "research_again"} and retrieval.decision.query:
+                state.last_search_query = retrieval.decision.query
         strategy = select_strategy(
             context,
             adult_mode=conversation_mode == ADULT_MODE,
@@ -326,15 +374,24 @@ def create_app(
             "context": context.as_dict(), "response_strategy": strategy,
             "mood": next_mood.as_dict(), "roleplay_active": bool(state.roleplay.active),
             "relevant_memory_count": len(memories), "learned_behavior_count": len(learned),
-            "_transcript": transcript,
+            "knowledge_action": retrieval.decision.action if retrieval else "local",
+            "knowledge_reason": retrieval.decision.reason if retrieval else "retrieval_disabled",
+            "search_confidence": retrieval.confidence if retrieval else 1.0,
+            "search_source_count": len(retrieval.evidence.sources) if retrieval and retrieval.evidence else 0,
+            "search_retry_count": retrieval.evidence.retry_count if retrieval and retrieval.evidence else 0,
+            "_transcript": transcript, "_behavior_tags": tags,
         }
-        brain = getattr(state.pipeline, "brain", None)
-        relationship = brain.relationship_state.as_dict() if brain is not None else {}
-        return compose_adaptive_prompt(
+        prompt = compose_adaptive_prompt(
             context=context, strategy=strategy, mood=next_mood.as_dict(), relationship=relationship,
             roleplay_prompt=state.roleplay.prompt(), learned_prompt=prompt_for_behaviors(learned),
             adult_mode=conversation_mode == ADULT_MODE,
         )
+        remember_request = any(marker in transcript.casefold() for marker in ("remember", "save this", "মনে রাখ", "সেভ কর", "याद रख"))
+        if remember_request and contains_sensitive_data(transcript):
+            prompt += "\nMemory disposition: rejected_sensitive. Truthfully say this sensitive detail cannot be saved; never claim it was remembered or stored."
+        if retrieval is not None:
+            prompt += "\n" + retrieval.prompt()
+        return prompt
 
     def finalize_adaptive_turn(state: SessionState, brain: dict[str, Any]) -> None:
         debug = state.adaptive_debug or {}
@@ -346,20 +403,38 @@ def create_app(
         context_values = debug.get("context")
         if context_values:
             context = TurnContext(**context_values)
-            signal = learning_signal(str(debug.get("_transcript", "")), context, str(debug.get("response_strategy", "quiet_companionship")))
-            if signal:
-                kind, example_style, positive = signal
+            transcript = str(debug.get("_transcript", ""))
+            signals = learning_signals(
+                transcript, context,
+                str(debug.get("response_strategy", "quiet_companionship")),
+            )
+            specific = [item for item in signals if item[0] != "response_preference"]
+            meta_feedback = any(marker in transcript.casefold() for marker in ("এই style", "this style", "এভাবেই", "perfect", "এইভাবে না", "এভাবে না", "not this style"))
+            if meta_feedback and not specific:
+                negative = any(marker in transcript.casefold() for marker in ("এইভাবে না", "এভাবে না", "not this style", "পছন্দ না"))
+                app.state.learning.feedback_recent(state.user_id, positive=not negative)
+                signals = []
+            for kind, example_style, positive in signals:
+                behavior_tags = list(debug.get("_behavior_tags", [context.user_intent, context.user_emotion, context.language]))
+                mode_tags = [tag for tag in behavior_tags if tag.startswith("mode:")]
+                role_tags = [tag for tag in behavior_tags if tag.startswith("roleplay:")]
+                typed_tags = {
+                    "language_style": [context.language, *mode_tags],
+                    "teasing_intensity": ["play", context.language, *mode_tags, *role_tags],
+                    "support_style": ["seek_support", "reassurance", context.language, *mode_tags],
+                    "affection_style": ["connect", "affectionate", context.language, *mode_tags],
+                }.get(kind, behavior_tags)
                 app.state.learning.learn(
                     state.user_id, type=kind,
-                    tags=[context.user_intent, context.user_emotion, context.language],
+                    tags=typed_tags,
                     strategy=str(debug.get("response_strategy")), example_style=example_style,
                     positive=positive,
                 )
         if state.roleplay and state.roleplay.active and not state.roleplay.paused:
-            event = str(brain.get("reply", "")).strip()[:300]
-            state.roleplay.last_event = event
-            prior = state.roleplay.scene_summary.strip()
-            state.roleplay.scene_summary = (prior + " " + event).strip()[-800:]
+            state.roleplay.record_turn(str(debug.get("_transcript", "")), str(brain.get("reply", "")))
+        if state.followup is None:
+            state.followup = SilenceFollowup()
+        state.followup.note_reply(str(brain.get("reply", "")), str(brain.get("language", "english")))
         brain["adaptive"] = {key: value for key, value in debug.items() if not key.startswith("_")}
 
     def persist_successful_turn(
@@ -375,8 +450,9 @@ def create_app(
             if language != "auto":
                 app.state.memory.update_profile(state.user_id, preferred_language=language)
             if conversation_mode != ADULT_MODE:
-                if display_name := extract_display_name(transcript):
-                    app.state.memory.update_profile(state.user_id, display_name=display_name)
+                profile_updates = extract_profile_updates(transcript)
+                if profile_updates:
+                    app.state.memory.update_profile(state.user_id, **profile_updates)
             app.state.memory.save_relationship(
                 state.user_id,
                 brain.relationship_state.as_dict(),
@@ -540,8 +616,7 @@ def create_app(
     ) -> dict[str, Any]:
         state = get_session(session_id, user_id)
         brain = getattr(state.pipeline, "brain", None)
-        debug = dict(state.adaptive_debug or {})
-        debug.pop("_transcript", None)
+        debug = {key: value for key, value in (state.adaptive_debug or {}).items() if not key.startswith("_")}
         return {
             "model": getattr(getattr(brain, "backend", None), "model", None),
             "emotion": getattr(brain, "current_emotion", "neutral"),
@@ -549,6 +624,16 @@ def create_app(
             "roleplay": (state.roleplay or RoleplayState()).as_dict(),
             **debug,
         }
+
+    @app.get("/api/follow-up", dependencies=[Depends(require_token)])
+    def get_silence_followup(
+        session_id: str = Depends(current_session),
+        user_id: str = Depends(current_user),
+    ) -> dict[str, str | None]:
+        state = get_session(session_id, user_id)
+        tracker = state.followup or SilenceFollowup()
+        state.followup = tracker
+        return {"message": tracker.take_if_due(web_config.silence_followup_seconds)}
 
     @app.post("/api/roleplay/start", dependencies=[Depends(require_token)])
     def start_roleplay(
@@ -577,6 +662,10 @@ def create_app(
         roleplay = state.roleplay or RoleplayState()
         getattr(roleplay, action)()
         state.roleplay = roleplay
+        if action == "reset":
+            clear = getattr(state.pipeline, "clear_conversation", None)
+            if clear:
+                clear()
         return roleplay.as_dict()
 
     def clear_session_conversation(session_id: str, user_id: str) -> None:
@@ -653,6 +742,103 @@ def create_app(
                 state.adult_opt_in = False
         return {"status": "memory_deleted"}
 
+    @app.post("/api/text-turn", dependencies=[Depends(require_token)])
+    async def text_turn(
+        text: str = Form(...),
+        language: str = Form(default="bengali"),
+        voice_reply: bool = Form(default=True),
+        session_id: str = Depends(current_session),
+        user_id: str = Depends(current_user),
+    ) -> dict[str, Any]:
+        """Run typed text through the same session, brain, memory and voice pipeline."""
+        request_started = time.perf_counter()
+        transcript = re.sub(r"\s+", " ", text).strip()
+        normalized_language = language.strip().lower()
+        if normalized_language not in SUPPORTED_LANGUAGES:
+            raise HTTPException(status_code=400, detail="Unsupported language")
+        if not transcript:
+            raise HTTPException(status_code=400, detail="Message is empty")
+        if len(transcript) > 4000:
+            raise HTTPException(status_code=413, detail="Message is too long")
+        try:
+            state = get_session(session_id, user_id)
+        except Exception:
+            raise HTTPException(status_code=503, detail="Prithi brain is unavailable")
+        if state.followup:
+            state.followup.note_user_activity()
+
+        def process() -> tuple[dict[str, Any], dict[str, Any] | None]:
+            with state.lock:
+                state.last_used = time.time()
+                memory_context = app.state.memory.build_prompt(user_id, transcript)
+                options: dict[str, Any] = {
+                    "preferred_reply_language": normalized_language if normalized_language != "auto" else None,
+                    "memory_context": memory_context,
+                }
+                if getattr(state.pipeline, "model_router", None) is not None:
+                    options.update(turn_mode_options(state, user_id))
+                mode = str(options.get("conversation_mode", NORMAL_MODE))
+                adaptive_prompt = prepare_adaptive_turn(state, transcript, normalized_language, mode)
+                if "adaptive_context" in inspect.signature(state.pipeline.respond_only).parameters:
+                    options["adaptive_context"] = adaptive_prompt
+                brain = state.pipeline.respond_only(transcript, **options)
+                finalize_adaptive_turn(state, brain)
+                voice = state.pipeline.synthesize_only(brain) if voice_reply else None
+                return brain, voice
+
+        try:
+            brain, voice = await run_in_threadpool(process)
+        except Exception:
+            raise HTTPException(status_code=502, detail="Prithi could not complete the typed message")
+        routing = brain.get("routing", {})
+        knowledge_debug = state.adaptive_debug or {}
+        adult_mode_disabled = apply_safety_exit(state, routing)
+        memory_result = persist_successful_turn(
+            state, normalized_language, transcript, routing.get("conversation_mode", NORMAL_MODE)
+        )
+        payload: dict[str, Any] = {
+            "transcript": transcript,
+            "reply": brain["reply"],
+            "language": brain["language"],
+            "emotion": brain["emotion"],
+            "voice_style": brain.get("voice_style", {}),
+            "llm_time": brain.get("generation_time", 0.0),
+            "tts_time": 0.0,
+            "total_time": time.perf_counter() - request_started,
+            "audio_url": None,
+            "conversation_mode": routing.get("conversation_mode", NORMAL_MODE),
+            "selected_model": routing.get("selected_model"),
+            "model_switch_occurred": routing.get("switch_occurred", False),
+            "model_switch_latency": routing.get("switch_latency", 0.0),
+            "adult_mode_disabled": adult_mode_disabled,
+            "memory_saved_count": memory_result["saved_count"],
+            "relationship_state": brain.get("relationship_state", {}),
+            "current_emotion": brain.get("current_emotion"),
+            "previous_emotion": brain.get("previous_emotion"),
+            "adaptive": brain.get("adaptive", {}),
+            "voice_reply": bool(voice_reply),
+            "knowledge_action": knowledge_debug.get("knowledge_action", "local"),
+            "knowledge_reason": knowledge_debug.get("knowledge_reason", "retrieval_disabled"),
+            "search_confidence": knowledge_debug.get("search_confidence", 1.0),
+            "search_source_count": knowledge_debug.get("search_source_count", 0),
+            "search_retry_count": knowledge_debug.get("search_retry_count", 0),
+        }
+        if voice:
+            source_audio = Path(str(voice["output_path"])).resolve()
+            if not source_audio.is_file():
+                raise HTTPException(status_code=500, detail="Generated response audio is unavailable")
+            audio_id, _ = register_audio(source_audio, session_id)
+            payload.update(
+                audio_url=f"/api/audio/{audio_id}",
+                tts_time=voice.get("generation_time", 0.0),
+                tts_locale=voice.get("locale"),
+                response_duration=voice.get("duration", 0.0),
+                fallback=voice.get("fallback_occurred", False),
+                total_time=time.perf_counter() - request_started,
+            )
+        log_timing(endpoint="text-turn", status="SUCCESS", language=brain["language"], emotion=brain["emotion"], llm=payload["llm_time"], tts=payload["tts_time"], total=payload["total_time"], voice_reply=bool(voice_reply), conversation_mode=payload["conversation_mode"])
+        return payload
+
     @app.post("/api/voice-turn", dependencies=[Depends(require_token)])
     async def voice_turn(
         audio: UploadFile = File(...),
@@ -675,6 +861,8 @@ def create_app(
             state = get_session(session_id, user_id)
         except Exception:
             raise HTTPException(status_code=503, detail="Prithi brain is unavailable")
+        if state.followup:
+            state.followup.note_user_activity()
 
         with tempfile.TemporaryDirectory(prefix="prithi_web_input_") as directory:
             temp_dir = Path(directory)
@@ -832,6 +1020,8 @@ def create_app(
         except Exception:
             raise HTTPException(status_code=503, detail="Prithi brain is unavailable")
 
+        if state.followup:
+            state.followup.note_user_activity()
         temp_dir = Path(tempfile.mkdtemp(prefix="prithi_web_stream_"))
         source = temp_dir / f"upload{suffix}"
         converted = temp_dir / "input.wav"
@@ -877,7 +1067,7 @@ def create_app(
                     yield event("error", stage="stt", message="Speech recognition failed")
                     return
                 transcript = str(stt.get("text", "")).strip()
-                gate = assess_transcript(stt, normalized_language)
+                gate = stt.get("quality_gate") or assess_transcript(stt, normalized_language)
                 log_timing(request_id=request_id, status="STT_QUALITY", model=stt.get("model"), forced_language=language_code(normalized_language), quality_gate=gate, segment_count=stt.get("segment_count"), text_length=len(transcript), stt_time=stt.get("transcription_time"))
                 if not gate["passed"]:
                     yield event("error", stage="stt", message=RETRY_MESSAGE)
@@ -893,6 +1083,29 @@ def create_app(
                     model=stt.get("model"), quality_gate=gate, fallback_used=False,
                     elapsed=transcript_visible,
                 )
+                retrieval = None
+                if app.state.retriever is not None:
+                    knowledge_decision = classify_knowledge(transcript, state.pending_clarification, state.last_search_query)
+                    if knowledge_decision.action in {"search", "research_again"}:
+                        yield event(
+                            "searching",
+                            text=natural_status_line(knowledge_decision.action, normalized_language, transcript),
+                            knowledge_action=knowledge_decision.action,
+                        )
+                    retrieval = await run_in_threadpool(
+                        app.state.retriever.retrieve, transcript, state.pending_clarification, state.last_search_query
+                    )
+                    if knowledge_decision.action in {"search", "research_again"}:
+                        yield event(
+                            "reading",
+                            knowledge_action=retrieval.decision.action,
+                            search_confidence=retrieval.confidence,
+                            source_count=len(retrieval.evidence.sources) if retrieval.evidence else 0,
+                        )
+                router = app.state.model_router or getattr(state.pipeline, "model_router", None)
+                requested_mode = ADULT_MODE if state.adult_opt_in and app.state.memory.adult_age_confirmed(user_id) else NORMAL_MODE
+                if router is not None and router.active_model and router.active_model != router.model_for_mode(requested_mode):
+                    yield event("switching_mode", conversation_mode=requested_mode, selected_model=router.model_for_mode(requested_mode))
                 yield event("thinking")
                 try:
                     memory_context = await run_in_threadpool(app.state.memory.build_prompt, user_id, transcript)
@@ -903,7 +1116,7 @@ def create_app(
                     if getattr(state.pipeline, "model_router", None) is not None:
                         response_options.update(turn_mode_options(state, user_id))
                     mode = str(response_options.get("conversation_mode", NORMAL_MODE))
-                    adaptive_prompt = prepare_adaptive_turn(state, transcript, normalized_language, mode)
+                    adaptive_prompt = prepare_adaptive_turn(state, transcript, normalized_language, mode, retrieval)
                     if "adaptive_context" in inspect.signature(state.pipeline.respond_only).parameters:
                         response_options["adaptive_context"] = adaptive_prompt
                     brain = await run_in_threadpool(state.pipeline.respond_only, transcript, **response_options)
@@ -921,6 +1134,7 @@ def create_app(
                     routing.get("conversation_mode", NORMAL_MODE),
                 )
                 reply_visible = time.perf_counter() - request_started
+                yield event("answering")
                 yield event(
                     "reply",
                     text=brain["reply"],

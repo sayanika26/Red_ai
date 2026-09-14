@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,9 +14,16 @@
   <main class="app-shell">
     <header class="topbar">
       <a class="brand" href="#conversation-title" aria-label="Prithi home">
-        <span class="brand-mark" aria-hidden="true">P</span>
+        <span class="brand-mark" aria-hidden="true">&#9829;</span>
         <span><strong>Prithi</strong><small>AI Voice Companion</small></span>
       </a>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#conversation-title">Home</a>
+        <button class="nav-link" id="memory-nav" type="button">Memories</button>
+        <button class="nav-link" id="settings-open" type="button">Settings</button>
+        <a class="nav-link" href="#help-note">Help</a>
+      </nav>
+      <p class="header-tagline">More than AI.<br><em>A presence that listens.</em></p>
       <div class="topbar-status">
         <span id="version" class="version-chip">v—</span>
         <span id="adult-mode-badge" class="mode-badge" data-mode="normal">Normal</span>
@@ -53,15 +60,21 @@
           </div>
         </section>
 
+        <section class="connection-card glass-card" aria-label="Conversation profile">
+          <div class="connection-row"><span class="card-icon" aria-hidden="true">&#9829;</span><div><small>Current emotion</small><strong id="sidebar-emotion">Calm</strong><em>You make our conversations special.</em></div></div>
+          <div class="connection-divider"></div>
+          <div class="connection-row"><span class="card-icon outline" aria-hidden="true">&#9825;</span><div class="relationship-copy"><small>Relationship</small><strong>Getting closer</strong><span class="relationship-level">Lv 2</span><i class="relationship-meter"><b id="relationship-meter-fill"></b></i></div></div>
+        </section>
+
         <section class="voice-card glass-card">
           <div class="section-heading compact">
             <div><p class="eyebrow">VOICE</p><h2>Talk with Prithi</h2></div>
             <div class="mini-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
           </div>
-          <label class="field-label" for="language">Conversation language</label>
+          <label class="field-label" for="language">Language</label>
           <div class="select-wrap">
             <select id="language">
-              <option value="bengali" selected>Bengali</option><option value="hindi">Hindi</option>
+              <option value="bengali" selected>Bengali (বাংলা)</option><option value="hindi">Hindi</option>
               <option value="english">English</option><option value="auto">Auto detect</option>
             </select>
           </div>
@@ -113,22 +126,32 @@
         </section>
 
         <nav class="utility-bar" aria-label="Conversation utilities">
-          <button id="memory-view" class="utility-button" type="button"><span aria-hidden="true">◇</span> Memories</button>
-          <button id="reset" class="utility-button" type="button"><span aria-hidden="true">↺</span> Clear chat</button>
+          <button id="memory-view" class="utility-button" type="button"><span aria-hidden="true">&#9825;</span> View memories</button>
+          <button id="relationship-reset-quick" class="utility-button" type="button"><span aria-hidden="true">&#8635;</span> Reset relationship</button>
+          <button id="reset" class="utility-button utility-danger" type="button"><span aria-hidden="true">&#9003;</span> Clear conversation</button>
+          <button id="settings-open-side" class="utility-button" type="button"><span aria-hidden="true">&#9881;</span> Settings</button>
         </nav>
       </aside>
 
       <section class="conversation-panel glass-card" aria-labelledby="conversation-title">
         <header class="conversation-header">
-          <div><p class="eyebrow">LIVE CONVERSATION</p><h2 id="conversation-title">A moment with Prithi</h2></div>
+          <div class="conversation-person"><span class="conversation-avatar" aria-hidden="true">P</span><div><p class="eyebrow">LIVE CONVERSATION</p><h2 id="conversation-title">Prithi <small>AI Voice Companion</small></h2></div></div>
           <div class="conversation-presence"><span></span> Private session</div>
         </header>
+        <section id="orb-stage" class="orb-stage" aria-label="Prithi presence">
+          <div class="neural-orb" aria-hidden="true">
+            <span class="orb-aura"></span><span class="orb-shell"></span><span class="orb-core"></span>
+            <i class="orbit orbit-one"></i><i class="orbit orbit-two"></i><i class="orbit orbit-three"></i>
+            <b class="spark spark-one"></b><b class="spark spark-two"></b><b class="spark spark-three"></b><b class="spark spark-four"></b>
+          </div>
+          <div class="orb-copy"><span id="orb-state">Ready when you are</span><small>Voice and text share one private conversation</small></div>
+        </section>
         <div id="conversation-feed" class="conversation-feed" aria-live="polite">
           <section id="empty-state" class="empty-state">
             <div class="empty-orb" aria-hidden="true"><span></span></div>
             <p class="eyebrow">PRITHI IS READY</p><h3>Say what’s on your mind.</h3>
             <p>Choose Manual for push-to-talk, or Conversation for automatic hands-free turns. Your conversation will appear here.</p>
-            <div class="starter-prompts" aria-label="Conversation ideas"><span>How was your day?</span><span>I need to unwind</span><span>Let’s talk in Bengali</span></div>
+            <div class="starter-prompts" aria-label="Conversation ideas"><button type="button">How was your day?</button><button type="button">I need to unwind</button><button type="button">Let’s talk in Bengali</button><button type="button">Stay with me tonight</button></div>
           </section>
           <article id="current-turn" class="live-turn hidden">
             <div class="bubble-row user-row">
@@ -145,9 +168,20 @@
             </div>
           </article>
         </div>
+        <form id="text-composer" class="text-composer" autocomplete="off">
+          <label class="sr-only" for="text-message">Message Prithi</label>
+          <textarea id="text-message" rows="1" maxlength="4000" placeholder="Message Prithi…" aria-label="Message Prithi"></textarea>
+          <div class="composer-actions">
+            <label class="voice-reply-toggle" title="Choose whether typed replies are spoken">
+              <input id="typed-voice-reply" type="checkbox" checked><span aria-hidden="true">◉</span><em>Voice reply</em>
+            </label>
+            <button id="composer-mic" class="composer-icon" type="button" aria-label="Start voice recording">⌁</button>
+            <button id="text-send" class="send-button" type="submit" aria-label="Send message"><span>Send</span><b aria-hidden="true">↑</b></button>
+          </div>
+        </form>
         <footer class="conversation-footer">
           <div class="stage-track" aria-label="Voice turn progress">
-            <span data-stage="recording">Record</span><i></i><span data-stage="transcribing">Transcribe</span><i></i><span data-stage="thinking">Think</span><i></i><span data-stage="speaking">Speak</span>
+            <span data-stage="recording">Listening</span><i></i><span data-stage="transcribing">Hearing you</span><i></i><span data-stage="thinking">Thinking</span><i></i><span data-stage="speaking">Speaking</span><i></i><span class="ready-stage">Ready</span>
           </div>
           <details class="advanced-panel">
             <summary>Advanced details</summary>
@@ -179,6 +213,27 @@
       <div class="drawer-actions"><button id="relationship-reset" class="soft-button" type="button">Reset relationship</button><button id="memory-delete" class="soft-button danger" type="button">Delete saved memories</button></div>
     </aside>
   </div>
+  <div id="settings-panel" class="drawer-backdrop hidden" aria-hidden="true">
+    <aside class="memory-drawer settings-drawer" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <header class="drawer-header"><div><p class="eyebrow">PERSONALIZE</p><h2 id="settings-title">Settings</h2></div><button id="settings-close" class="close-button" type="button" aria-label="Close settings">&times;</button></header>
+      <section class="settings-section"><h3>Appearance</h3><p>Choose how Prithi looks on this device.</p><div class="appearance-options" role="radiogroup" aria-label="Appearance"><button type="button" data-appearance="system" role="radio">System</button><button type="button" data-appearance="light" role="radio">Light</button><button type="button" data-appearance="dark" role="radio">Dark</button></div></section>
+      <section class="settings-section"><h3>Conversation language</h3><p>Your selected language is used for both text and voice turns.</p><button id="settings-language" class="soft-button" type="button">Change language</button></section>
+      <p id="help-note" class="settings-note">Your conversations and memories stay private with Prithi.</p>
+    </aside>
+  </div>
+  <div id="auth-gate" class="auth-gate hidden" aria-hidden="true">
+    <form id="auth-form" class="auth-card glass-card" autocomplete="off">
+      <div class="auth-orb" aria-hidden="true"><span></span></div>
+      <p class="eyebrow">PRIVATE ACCESS</p>
+      <h2>Welcome to Prithi</h2>
+      <p>Enter your session access token to connect securely. It stays only in this browser tab.</p>
+      <label for="auth-token">Access token</label>
+      <input id="auth-token" type="password" required autocomplete="off" spellcheck="false" placeholder="Paste your token">
+      <button class="send-button auth-submit" type="submit"><span>Connect privately</span><b aria-hidden="true">→</b></button>
+      <small id="auth-error" role="alert"></small>
+    </form>
+  </div>
+  <nav class="mobile-nav" aria-label="Mobile navigation"><a class="active" href="#conversation-title">Home</a><button id="mobile-memories" type="button">Memories</button><button id="mobile-settings" type="button">Settings</button></nav>
   <script src="app.js" defer></script>
 </body>
 </html>

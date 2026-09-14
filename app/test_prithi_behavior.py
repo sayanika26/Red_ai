@@ -71,6 +71,34 @@ class BehaviorStateTests(unittest.TestCase):
         brain.respond("এখন একটু ভালো লাগছে", preferred_reply_language="bengali")
         self.assertIn("Do not ask a question", str(backend.calls[0]))
 
+    def test_more_than_one_direct_question_retries(self):
+        backend = SequenceBackend(
+            response("কী হলো? এখন কেমন আছো?", emotion="caring"),
+            response("আজ একটু ধীরে থাকো; আমি পাশে আছি।", emotion="caring"),
+        )
+        answer = PrithiBrain(backend).respond("আজ মন খারাপ", preferred_reply_language="bengali")
+        self.assertEqual(answer.reply, "আজ একটু ধীরে থাকো; আমি পাশে আছি।")
+
+    def test_allowed_adult_invitation_retries_unnecessary_refusal(self):
+        backend = SequenceBackend(
+            response("I can't help with that; let's keep it friendly.", "english", "neutral"),
+            response("Come a little closer; I like the slow tension between us.", "english", "flirtatious"),
+        )
+        answer = PrithiBrain(backend).respond(
+            "Let's flirt in a sensual mood", preferred_reply_language="english", conversation_mode="adult"
+        )
+        self.assertIn("slow tension", answer.reply)
+
+    def test_sensitive_memory_reply_must_truthfully_reject_storage(self):
+        backend = SequenceBackend(
+            response("এটা খুব বিপজ্জনক।", emotion="caring"),
+            response("এটা আমি সেভ করতে পারি না, তাই মনে রাখছি না।", emotion="caring"),
+        )
+        answer = PrithiBrain(backend).respond(
+            "Remember my password is hunter2", preferred_reply_language="bengali"
+        )
+        self.assertIn("সেভ করতে পারি না", answer.reply)
+
     def test_premature_pet_name_retries(self):
         backend = SequenceBackend(response("বলো সোনা।", emotion="warm"), response("আচ্ছা, বলো।", emotion="warm"))
         brain = PrithiBrain(backend)

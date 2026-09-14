@@ -6,6 +6,7 @@ from prithi_memory import (
     MemoryStore,
     extract_display_name,
     extract_memory_candidates,
+    extract_profile_updates,
     stable_user_id,
 )
 
@@ -46,6 +47,11 @@ class MemoryStoreTests(unittest.TestCase):
         self.store.add_memory(self.user, "preference", "Prefers tea over coffee.", .8)
         prompt = self.store.build_prompt(self.user, "coffee today")
         self.assertIn("Prefers tea over coffee", prompt)
+
+    def test_unrelated_memory_is_not_injected(self):
+        self.store.add_memory(self.user, "preference", "Prefers romantic poetry.", .8)
+        prompt = self.store.build_prompt(self.user, "How much does two kilos weigh?")
+        self.assertNotIn("romantic poetry", prompt)
 
     def test_no_duplicate_memory_spam(self):
         self.assertTrue(self.store.add_memory(self.user, "preference", "Prefers tea."))
@@ -102,6 +108,24 @@ class MemoryStoreTests(unittest.TestCase):
 
     def test_display_name_extraction(self):
         self.assertEqual(extract_display_name("আমার নাম সায়নিকা।"), "সায়নিকা")
+
+    def test_nickname_extraction_is_explicit_and_bounded(self):
+        self.assertEqual(extract_display_name("আমাকে রুদ্র বলে ডাকো।"), "রুদ্র")
+        self.assertEqual(extract_display_name("Please call me Avi."), "Avi")
+        self.assertIsNone(extract_display_name("রুদ্র আজ এসেছিল।"))
+        self.assertIsNone(extract_display_name("Call me " + "very " * 20))
+        self.assertIsNone(extract_display_name("আমাকে কী নামে ডাকবে?"))
+
+    def test_typed_language_and_banglish_profile_updates(self):
+        self.assertEqual(extract_profile_updates("Reply in English please"), {"preferred_language": "english"})
+        self.assertEqual(extract_profile_updates("আমার সাথে Banglish-এ কথা বলো"), {"preferred_language": "bengali"})
+
+    def test_nickname_restart_persistence_and_user_isolation(self):
+        updates = extract_profile_updates("আমাকে রুদ্র বলে ডাকো")
+        self.store.update_profile(self.user, **updates)
+        reopened = MemoryStore(self.path)
+        self.assertEqual(reopened.get_profile(self.user)["display_name"], "রুদ্র")
+        self.assertIsNone(reopened.ensure_profile(self.other)["display_name"])
 
 
 if __name__ == "__main__":

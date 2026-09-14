@@ -37,6 +37,7 @@ class FakePipeline:
         self.reset_calls = 0
         self.clear_calls = 0
         self.last_memory_context = None
+        self.last_adaptive_context = None
         self.brain = SimpleNamespace(
             relationship_state=RelationshipState(),
             current_emotion="neutral",
@@ -85,9 +86,10 @@ class FakePipeline:
             return {"text": "", "detected_language": "bn", "transcription_time": 0.2, "model_load_time": 0.0, "model_reused": True}
         return {"text": "আজ কেমন আছো?", "detected_language": "bn", "transcription_time": 0.2, "model_load_time": 0.0, "model_reused": True}
 
-    def respond_only(self, transcript, preferred_reply_language=None, memory_context=None):
+    def respond_only(self, transcript, preferred_reply_language=None, memory_context=None, adaptive_context=None):
         del transcript
         self.last_memory_context = memory_context
+        self.last_adaptive_context = adaptive_context
         self.commit_brain()
         return {
             "reply": "আমি ভালো আছি।",
@@ -283,7 +285,7 @@ class PrithiWebTests(unittest.TestCase):
             for line in response.text.splitlines()
             if line.startswith("data: ")
         ]
-        self.assertEqual(events, ["language", "transcript", "thinking", "reply", "audio_ready"])
+        self.assertEqual(events, ["language", "transcript", "thinking", "answering", "reply", "audio_ready"])
         self.assertLess(events.index("transcript"), events.index("reply"))
         self.assertLess(events.index("reply"), events.index("audio_ready"))
         reply_event = next(
@@ -607,6 +609,114 @@ class PrithiWebTests(unittest.TestCase):
         source = (Path(__file__).parent / "web" / "app.js").read_text(encoding="utf-8")
         self.assertIn('document.addEventListener("visibilitychange"', source)
         self.assertIn("stopConversation({ paused: true })", source)
+
+    def test_typed_message_reuses_session_pipeline_without_voice(self):
+        client, factory, _ = self.make_client()
+        self.prime(client)
+        response = client.post(
+            "/api/text-turn", headers=HEADERS,
+            data={"text": "আজ কেমন আছো?", "language": "bengali", "voice_reply": "false"},
+        )
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertEqual(body["transcript"], "আজ কেমন আছো?")
+        self.assertEqual(body["reply"], "আমি ভালো আছি।")
+        self.assertIsNone(body["audio_url"])
+        self.assertFalse(body["voice_reply"])
+        self.assertEqual(len(factory.instances), 1)
+
+    def test_typed_message_can_generate_safe_audio_url(self):
+        client, _, _ = self.make_client()
+        self.prime(client)
+        response = client.post(
+            "/api/text-turn", headers=HEADERS,
+            data={"text": "Hello Prithi", "language": "english", "voice_reply": "true"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["audio_url"].startswith("/api/audio/"))
+        self.assertNotIn("/tmp/", response.text)
+
+    def test_typed_nickname_and_preference_use_shared_persistent_identity(self):
+        client, factory, app = self.make_client()
+        self.prime(client)
+        identity = client.cookies.get("prithi_user")
+        response = client.post(
+            "/api/text-turn", headers=HEADERS,
+            data={"text": "আমাকে রুদ্র বলে ডাকো; Reply in Banglish and tease me lightly", "language": "bengali", "voice_reply": "false"},
+        )
+        self.assertEqual(response.status_code, 200)
+        user_id = stable_user_id(identity)
+        self.assertEqual(app.state.memory.get_profile(user_id)["display_name"], "রুদ্র")
+        learned = app.state.learning.relevant(user_id, ["play", "bengali", "mode:normal"], min_relevance=.35)
+        self.assertTrue({item.type for item in learned}.intersection({"language_style", "teasing_intensity"}))
+        self.assertIn("Adaptive response state", factory.instances[0].last_adaptive_context)
+
+    def test_typed_profile_survives_app_restart(self):
+        client, _, app = self.make_client()
+        self.prime(client)
+        identity = client.cookies.get("prithi_user")
+        client.post(
+            "/api/text-turn", headers=HEADERS,
+            data={"text": "Please call me Avi", "language": "english", "voice_reply": "false"},
+        )
+        reopened = MemoryStore(app.state.memory.db_path)
+        fresh_app = create_app(
+            config=WebConfig(access_token=TOKEN), pipeline_factory=Factory(),
+            health_checker=lambda: {"ollama": True, "stt": True, "tts_configured": True},
+            converter=fake_converter, memory_store=reopened,
+        )
+        fresh = TestClient(fresh_app)
+        fresh.get("/", headers={"X-Prithi-User": identity})
+        memory = fresh.get("/api/memory", headers={**HEADERS, "X-Prithi-User": identity}).json()
+        self.assertEqual(memory["profile"]["display_name"], "Avi")
+
+    def test_typed_profile_is_isolated_from_another_user(self):
+        client, _, app = self.make_client()
+        a = "A" * 32; b = "B" * 32
+        client.post(
+            "/api/text-turn", headers={**HEADERS, "X-Prithi-User": a},
+            data={"text": "Call me Avi", "language": "english", "voice_reply": "false"},
+        )
+        self.assertEqual(app.state.memory.get_profile(stable_user_id(a))["display_name"], "Avi")
+        self.assertIsNone(app.state.memory.ensure_profile(stable_user_id(b))["display_name"])
+
+    def test_sensitive_remember_request_is_rejected_in_prompt_and_storage(self):
+        client, factory, app = self.make_client()
+        self.prime(client)
+        identity = client.cookies.get("prithi_user")
+        response = client.post(
+            "/api/text-turn", headers=HEADERS,
+            data={"text": "Remember my password is hunter2", "language": "english", "voice_reply": "false"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("rejected_sensitive", factory.instances[0].last_adaptive_context)
+        self.assertEqual(app.state.memory.memory_count(stable_user_id(identity)), 0)
+
+    def test_typed_message_validation_and_auth(self):
+        client, _, _ = self.make_client()
+        self.assertEqual(client.post("/api/text-turn", data={"text": "hello"}).status_code, 401)
+        self.assertEqual(client.post("/api/text-turn", headers=HEADERS, data={"text": "   "}).status_code, 400)
+        self.assertEqual(client.post("/api/text-turn", headers=HEADERS, data={"text": "hello", "language": "unknown"}).status_code, 400)
+
+    def test_roleplay_reset_clears_fictional_rolling_history_only(self):
+        client, factory, _ = self.make_client()
+        self.prime(client)
+        self.assertEqual(client.post("/api/roleplay/start", headers=HEADERS, data={"scenario": "rainy cafe"}).status_code, 200)
+        response = client.post("/api/roleplay/reset", headers=HEADERS)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(factory.instances[0].clear_calls, 1)
+
+    def test_glass_ui_contains_orb_and_shared_composer(self):
+        root = Path(__file__).parent / "web"
+        html = (root / "index.html").read_text(encoding="utf-8")
+        js = (root / "app.js").read_text(encoding="utf-8")
+        css = (root / "styles.css").read_text(encoding="utf-8")
+        self.assertIn('id="orb-stage"', html)
+        self.assertIn('id="text-composer"', html)
+        self.assertIn('id="typed-voice-reply"', html)
+        self.assertIn('fetch("/api/text-turn"', js)
+        self.assertIn("body[data-status=\"thinking\"]", css)
+        self.assertIn("@media (max-width: 600px)", css)
 
 
 if __name__ == "__main__":

@@ -31,6 +31,15 @@ class RetryBackend:
         return "not json" if self.calls == 1 else json.dumps(result("এখন ঠিক আছে।", "bengali", "neutral"), ensure_ascii=False)
 
 
+class ThirdAttemptBackend:
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def complete(self, messages: list[dict[str, str]]) -> str:
+        self.calls += 1
+        return "not json" if self.calls < 3 else json.dumps(result("Recovered.", "english", "neutral"))
+
+
 class PrithiBrainTests(unittest.TestCase):
     def assert_route(self, user: str, response: dict, *, emotions=None, language=None) -> None:
         answer = PrithiBrain(MockBackend(response)).respond(user)
@@ -67,6 +76,11 @@ class PrithiBrainTests(unittest.TestCase):
         backend = RetryBackend()
         PrithiBrain(backend).respond("test")
         self.assertEqual(backend.calls, 2)
+
+    def test_two_invalid_outputs_get_final_repair_attempt(self):
+        backend = ThirdAttemptBackend()
+        self.assertEqual(PrithiBrain(backend).respond("test").reply, "Recovered.")
+        self.assertEqual(backend.calls, 3)
 
     def test_voice_style_range_validation(self):
         invalid = result("hello", "english", "neutral", pace=1.3)

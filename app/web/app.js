@@ -39,6 +39,16 @@ const adultModeBadgeEl = document.querySelector("#adult-mode-badge");
 const adultAgeStepEl = document.querySelector("#adult-age-step");
 const adultOptInStepEl = document.querySelector("#adult-opt-in-step");
 const adultDisableButton = document.querySelector("#adult-disable");
+const textComposer = document.querySelector("#text-composer");
+const textMessage = document.querySelector("#text-message");
+const textSend = document.querySelector("#text-send");
+const typedVoiceReply = document.querySelector("#typed-voice-reply");
+const composerMic = document.querySelector("#composer-mic");
+const orbState = document.querySelector("#orb-state");
+const authGate = document.querySelector("#auth-gate");
+const authForm = document.querySelector("#auth-form");
+const authTokenInput = document.querySelector("#auth-token");
+const authError = document.querySelector("#auth-error");
 let adultModeState = null;
 
 let recorder = null;
@@ -109,6 +119,10 @@ const statusStage = {
   recording: "recording",
   transcribing: "transcribing",
   thinking: "thinking",
+  searching: "thinking",
+  reading: "thinking",
+  answering: "thinking",
+  switching_mode: "thinking",
   speaking: "speaking",
   generating: "thinking",
 };
@@ -272,6 +286,13 @@ function setStatus(label, state = "idle") {
   document.body.dataset.status = state;
   profilePresence.textContent = label;
   document.querySelector("#reply-stage").textContent = label;
+  if (orbState) orbState.textContent = {
+    recording: "I’m listening",
+    transcribing: "Understanding your voice",
+    thinking: "Thinking with you",
+    speaking: "Speaking now",
+    error: "Let’s try again",
+  }[state] || "Ready when you are";
   updateStageTrack(state);
 }
 
@@ -288,12 +309,23 @@ function clearError() {
 }
 
 function accessToken() {
-  let token = sessionStorage.getItem("prithiAccessToken");
-  if (!token) {
-    token = window.prompt("Enter your Prithi access token:") || "";
-    if (token) sessionStorage.setItem("prithiAccessToken", token);
-  }
-  return token;
+  return sessionStorage.getItem("prithiAccessToken") || "";
+}
+
+function showAuthGate(message = "") {
+  authError.textContent = message;
+  authGate.classList.remove("hidden");
+  authGate.setAttribute("aria-hidden", "false");
+  document.body.classList.add("auth-open");
+  window.setTimeout(() => authTokenInput.focus(), 0);
+}
+
+function hideAuthGate() {
+  authGate.classList.add("hidden");
+  authGate.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("auth-open");
+  authTokenInput.value = "";
+  authError.textContent = "";
 }
 
 function browserIdentity() {
@@ -360,18 +392,23 @@ async function apiError(response) {
 async function checkHealth() {
   const token = accessToken();
   if (!token) {
-    showError("An access token is required.");
+    setStatus("Private", "idle");
+    showAuthGate();
     return;
   }
   try {
     const response = await fetch("/api/health", { headers: authHeaders() });
-    if (response.status === 401) sessionStorage.removeItem("prithiAccessToken");
+    if (response.status === 401) {
+      sessionStorage.removeItem("prithiAccessToken");
+      showAuthGate("That token was not accepted. Please try again.");
+    }
     if (!response.ok) throw new Error(await apiError(response));
     const health = await response.json();
     if (!health.ollama || !health.stt || !health.tts_configured) {
       throw new Error("Prithi runtime is not fully ready. Check Ollama, STT, and TTS configuration.");
     }
     document.querySelector("#version").textContent = health.version ? `v${health.version}` : "v—";
+    hideAuthGate();
     setStatus("Ready");
     await loadMemory(false);
     await loadAdultMode();
@@ -388,6 +425,15 @@ async function checkHealth() {
     showError(error.message);
   }
 }
+
+authForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const token = authTokenInput.value.trim();
+  if (!token) return;
+  sessionStorage.setItem("prithiAccessToken", token);
+  authError.textContent = "Connecting…";
+  await checkHealth();
+});
 
 async function loadMemory(showPanel = true) {
   const response = await fetch("/api/memory", { headers: authHeaders() });
@@ -770,6 +816,15 @@ async function handleProgress(event) {
     scrollConversation();
   } else if (event.event === "thinking") {
     setStatus("Thinking", "thinking");
+  } else if (event.event === "searching") {
+    if (event.text) replyEl.textContent = event.text;
+    setStatus("Searching", "searching");
+  } else if (event.event === "reading") {
+    setStatus("Reading sources", "reading");
+  } else if (event.event === "answering") {
+    setStatus("Answering", "answering");
+  } else if (event.event === "switching_mode") {
+    setStatus("Switching conversation model", "switching_mode");
   } else if (event.event === "reply") {
     setStatus("Generating voice", "thinking");
     document.querySelector("#language-debug").textContent += ` · Preferred reply: ${event.preferred_reply_language || "auto"} · Brain: ${event.brain_returned_language} · Validated: ${event.validated_reply_language}`;
@@ -837,6 +892,86 @@ async function prepareAndPlay(audioUrl) {
     }
   }
 }
+
+function autosizeComposer() {
+  textMessage.style.height = "auto";
+  textMessage.style.height = `${Math.min(144, Math.max(28, textMessage.scrollHeight))}px`;
+}
+
+async function sendTextMessage(message = textMessage.value) {
+  const text = message.trim();
+  if (!text || activeTurnController || recorder?.state === "recording") return;
+  clearError();
+  beginLiveTurn();
+  transcriptEl.textContent = text;
+  transcriptEl.classList.remove("muted");
+  replyEl.textContent = "Prithi is thinking…";
+  textMessage.value = "";
+  autosizeComposer();
+  textSend.disabled = true;
+  setStatus("Thinking", "thinking");
+  activeTurnController = new AbortController();
+  const form = new FormData();
+  form.append("text", text);
+  form.append("language", languageEl.value);
+  form.append("voice_reply", typedVoiceReply.checked ? "true" : "false");
+  try {
+    const response = await fetch("/api/text-turn", {
+      method: "POST", headers: authHeaders(), body: form, signal: activeTurnController.signal,
+    });
+    if (!response.ok) throw new Error(await apiError(response));
+    const result = await response.json();
+    replyEl.textContent = result.reply;
+    replyEl.classList.remove("muted");
+    emotionEl.textContent = result.emotion || "—";
+    profileEmotion.textContent = result.emotion ? result.emotion[0].toUpperCase() + result.emotion.slice(1) : "Calm";
+    latencyEl.textContent = `${Number(result.total_time || 0).toFixed(2)}s`;
+    currentTurnComplete = true;
+    if (result.relationship_state) {
+      const r = result.relationship_state;
+      document.querySelector("#relationship-debug").textContent = `Emotion: ${result.current_emotion || result.emotion} · Familiarity: ${Number(r.familiarity || 0).toFixed(2)} · Trust: ${Number(r.trust || 0).toFixed(2)} · Affection: ${Number(r.affection || 0).toFixed(2)} · Playfulness: ${Number(r.playfulness || 0).toFixed(2)} · Romantic tension: ${Number(r.romantic_tension || 0).toFixed(2)}`;
+    }
+    if (result.selected_model) {
+      const mode = result.conversation_mode === "adult" ? "Adult" : "Normal";
+      adultModeStatusEl.textContent = `${mode} mode · ${result.selected_model}`;
+    }
+    if (result.adult_mode_disabled) await loadAdultMode();
+    scrollConversation();
+    if (result.audio_url) await prepareAndPlay(result.audio_url);
+    else setStatus("Ready");
+  } catch (error) {
+    if (error.name !== "AbortError") showError(error.message);
+  } finally {
+    activeTurnController = null;
+    textSend.disabled = false;
+    textMessage.focus();
+  }
+}
+
+textComposer.addEventListener("submit", (event) => {
+  event.preventDefault();
+  sendTextMessage();
+});
+textMessage.addEventListener("input", autosizeComposer);
+textMessage.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+    event.preventDefault();
+    sendTextMessage();
+  }
+});
+composerMic.addEventListener("click", () => {
+  selectInputMode("manual");
+  talkButton.scrollIntoView({ behavior: "smooth", block: "center" });
+  if (recorder?.state === "recording") stopRecording();
+  else startRecording();
+});
+document.querySelectorAll(".starter-prompts button").forEach((button) => {
+  button.addEventListener("click", () => {
+    textMessage.value = button.textContent;
+    autosizeComposer();
+    textMessage.focus();
+  });
+});
 
 talkButton.addEventListener("click", () => {
   if (recorder?.state === "recording") stopRecording();
@@ -984,10 +1119,83 @@ adultDisableButton.addEventListener("click", async () => {
   }
 });
 
+async function checkSilenceFollowup() {
+  if (!accessToken() || activeTurnController || recorder?.state === "recording" || document.hidden) return;
+  try {
+    const response = await fetch("/api/follow-up", { headers: authHeaders() });
+    if (!response.ok) return;
+    const { message } = await response.json();
+    if (!message) return;
+    beginLiveTurn();
+    replyEl.textContent = message;
+    replyEl.classList.remove("muted");
+    setStatus("Prithi checked in", "idle");
+    scrollConversation();
+  } catch (_) {
+    // Follow-up is optional; never disrupt the active conversation UI.
+  }
+}
+
 checkHealth();
+window.setInterval(checkSilenceFollowup, 10000);
 document.querySelector("#retry").addEventListener("click", () => {
   document.querySelector("#retry").classList.add("hidden");
   if (inputMode === "conversation") startConversation();
   else startRecording();
 });
 selectInputMode("manual");
+
+// Appearance is presentation-only. Backend state and active microphone streams stay untouched.
+const settingsPanel = document.querySelector("#settings-panel");
+const appearanceButtons = [...document.querySelectorAll("[data-appearance]")];
+const themeStorageKey = "prithi-appearance";
+const systemThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+function preferredTheme() {
+  const appearance = localStorage.getItem(themeStorageKey) || "system";
+  return appearance === "system" ? (systemThemeQuery.matches ? "dark" : "light") : appearance;
+}
+
+function renderAppearance() {
+  const appearance = localStorage.getItem(themeStorageKey) || "system";
+  document.documentElement.dataset.theme = preferredTheme();
+  appearanceButtons.forEach((button) => {
+    const selected = button.dataset.appearance === appearance;
+    button.setAttribute("aria-checked", selected ? "true" : "false");
+  });
+}
+
+function openSettings() {
+  settingsPanel.classList.remove("hidden");
+  settingsPanel.setAttribute("aria-hidden", "false");
+  document.body.classList.add("drawer-open");
+  renderAppearance();
+}
+
+function closeSettings() {
+  settingsPanel.classList.add("hidden");
+  settingsPanel.setAttribute("aria-hidden", "true");
+  if (memoryPanel.classList.contains("hidden")) document.body.classList.remove("drawer-open");
+}
+
+document.querySelector("#settings-open").addEventListener("click", openSettings);
+document.querySelector("#settings-open-side").addEventListener("click", openSettings);
+document.querySelector("#mobile-settings").addEventListener("click", openSettings);
+document.querySelector("#settings-close").addEventListener("click", closeSettings);
+settingsPanel.addEventListener("click", (event) => { if (event.target === settingsPanel) closeSettings(); });
+document.querySelector("#memory-nav").addEventListener("click", () => memoryViewButton.click());
+document.querySelector("#mobile-memories").addEventListener("click", () => memoryViewButton.click());
+document.querySelector("#relationship-reset-quick").addEventListener("click", () => relationshipResetButton.click());
+document.querySelector("#settings-language").addEventListener("click", () => { closeSettings(); languageEl.focus(); languageEl.scrollIntoView({ behavior: "smooth", block: "center" }); });
+appearanceButtons.forEach((button) => button.addEventListener("click", () => {
+  localStorage.setItem(themeStorageKey, button.dataset.appearance);
+  renderAppearance();
+}));
+systemThemeQuery.addEventListener("change", () => {
+  if ((localStorage.getItem(themeStorageKey) || "system") === "system") renderAppearance();
+});
+new MutationObserver(() => {
+  const label = profileEmotion.textContent || "Calm";
+  document.querySelector("#sidebar-emotion").textContent = label;
+}).observe(profileEmotion, { childList: true, characterData: true, subtree: true });
+renderAppearance();

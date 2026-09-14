@@ -292,7 +292,9 @@ class MemoryStore:
             content = str(item["content"]).casefold()
             overlap = sum(term in content for term in terms)
             return (float(overlap), float(item["importance"]))
-        selected = sorted(memories, key=score, reverse=True)[:max(1, min(8, limit))]
+        recall_requested = any(marker in user_text.casefold() for marker in ("remember", "what do you know", "মনে আছে", "কী জানো", "क्या याद"))
+        candidates = memories if recall_requested else [item for item in memories if score(item)[0] > 0]
+        selected = sorted(candidates, key=score, reverse=True)[:max(1, min(8, limit))]
         if selected:
             now = utc_now()
             with self._connect() as connection:
@@ -365,12 +367,56 @@ def extract_memory_candidates(user_text: str) -> list[MemoryCandidate]:
 
 
 def extract_display_name(user_text: str) -> str | None:
+    return extract_profile_updates(user_text).get("display_name")
+
+
+def _clean_display_name(value: str) -> str | None:
+    value = re.sub(r"\s+", " ", value).strip(" \t\r\n,;:-।.!?'\"")
+    if not value or len(value) > 40 or len(value.split()) > 4:
+        return None
+    if contains_sensitive_data(value) or any(char in value for char in "<>={}|/\\"):
+        return None
+    lowered = value.casefold()
+    if lowered.startswith(("কি ", "কী ", "what ", "which ", "क्या ")) or " নামে" in lowered:
+        return None
+    letters = [char for char in value if char.isalpha()]
+    if not letters or len(letters) < max(1, len(value.replace(" ", "")) // 2):
+        return None
+    return value
+
+
+def extract_profile_updates(user_text: str) -> dict[str, str]:
+    """Extract only explicit, bounded profile statements from text or STT."""
     text = re.sub(r"\s+", " ", user_text).strip()
-    for pattern in (r"^(?:আমার নাম|my name is|मेरा नाम)\s+([^।.!?]{1,60})",):
+    updates: dict[str, str] = {}
+    name_patterns = (
+        r"^(?:আমার নাম|my name is|मेरा नाम)\s+([^।.!?]{1,60})",
+        r"(?:আমাকে|আমায়|আমায়)\s+([^।.!?]{1,40}?)\s+(?:বলে ডাকো|ডাকবে|ডাকো)",
+        r"(?:call me|you can call me|please call me)\s+([^।.!?]{1,40})",
+        r"(?:मुझे|मुझको)\s+([^।.!?]{1,40}?)\s+(?:बुलाओ|कहो)",
+    )
+    for pattern in name_patterns:
         match = re.search(pattern, text, flags=re.IGNORECASE)
         if match:
-            return match.group(1).strip()
-    return None
+            value = _clean_display_name(match.group(1))
+            if value:
+                updates["display_name"] = value
+            break
+
+    lowered = text.casefold()
+    language_patterns = {
+        "bengali": ("বাংলায় বল", "বাংলায় বল", "বাংলায় কথা", "reply in bengali", "speak bengali"),
+        "hindi": ("हिंदी में", "reply in hindi", "speak hindi"),
+        "english": ("ইংরেজিতে বল", "reply in english", "speak english", "english में"),
+    }
+    for language, markers in language_patterns.items():
+        if any(marker in lowered for marker in markers):
+            updates["preferred_language"] = language
+            break
+    # Banglish remains Bengali routing with an independently learned style.
+    if any(marker in lowered for marker in ("banglish", "বাংলিশ", "benglish")):
+        updates["preferred_language"] = "bengali"
+    return updates
 
 
 def save_candidates(store: MemoryStore, user_id: str, candidates: Iterable[MemoryCandidate]) -> int:
